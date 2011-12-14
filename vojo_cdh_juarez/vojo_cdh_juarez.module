@@ -1,0 +1,5 @@
+<?php
+
+function vojo_cdh_juarez_init(){
+    module_load_include('inc', 'vojo_cdh_juarez', 'includes/openlayers');  
+}

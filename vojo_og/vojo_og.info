@@ -1,0 +1,8 @@
+
+name = Vojo.co Organic Groups Utilities
+description = Customizes from Organic Groups behaviours for the Vojo hosted service
+core = 6.x
+dependencies[] = og
+package = Vojo.co
+
+

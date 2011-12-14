@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * 
+ */
+function vojo_og_init() {
+    _set_node_theme_from_group();
+}
+
+
+/**
+ * If looking at a blog post that belongs to only one group, set the theme based on that group's
+ * custom theme.  This needs to query the raw database, because calls to functions like 
+ * menu_get_item and node_load trigger a call to init_theme, which sets the theme before we get 
+ * a chance to!
+ */
+function _set_node_theme_from_group(){
+    if (arg(0) == 'node' && is_numeric(arg(1))) {
+        $nid = arg(1);
+        $results = db_query("SELECT og.og_theme as group_theme 
+                             FROM {og_ancestry} as oga, {og} as og 
+                             WHERE oga.nid = $nid AND oga.group_nid=og.nid", $nid);
+        $group_theme = null;
+        $group_count = 0;
+        while ($object = db_fetch_object($results)) {
+            $group_count++;
+            $group_theme = $object->group_theme;
+        }
+        if($group_theme && $group_count==1){
+            _set_custom_theme($group_theme);
+        }
+    }
+}
+
+/**
+ * Be attentive about when you call this - it could have no effect at all if theme_init() has
+ * already been called.
+ */
+function _set_custom_theme($theme_name){
+    global $custom_theme;
+    if(!empty($theme_name)){
+        $custom_theme = $theme_name;
+    }
+}
