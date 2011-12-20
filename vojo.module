@@ -17,6 +17,7 @@ function vojo_group_published_story_count($group_id) {
         while ($object = db_fetch_object($results)) {
             $story_count = $object->story_count;
         }
+        $_vojo_group_published_story_counts[$group_id] = $story_count;
     }
     return $story_count;
 }
