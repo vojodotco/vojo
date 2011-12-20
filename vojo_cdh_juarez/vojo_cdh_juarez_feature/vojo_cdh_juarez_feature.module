@@ -1,0 +1,3 @@
+<?php
+
+include_once('vojo_cdh_juarez_feature.features.inc');
