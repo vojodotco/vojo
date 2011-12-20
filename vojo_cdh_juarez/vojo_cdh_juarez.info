@@ -3,4 +3,5 @@ name = Vojo.co Juarez Utilities
 description = Provides functionality specific Juarez group on the Vojo hosted service
 core = 6.x
 dependencies[] = openlayers
+dependencies[] = views
 package = Vojo.co
