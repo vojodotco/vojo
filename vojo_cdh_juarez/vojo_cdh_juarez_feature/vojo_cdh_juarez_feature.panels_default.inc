@@ -519,7 +519,7 @@ function vojo_cdh_juarez_feature_default_panels_mini() {
     $pane->configuration = array(
       'admin_title' => 'cdhj_story_count_pane',
       'title' => '',
-      'body' => 'This year <em><?php print vojo_group_published_story_count(10014)?></em> people saw something and said something',
+      'body' => 'This year <em><?php print vojo_group_published_story_count(10054)?></em> people saw something and said something',
       'format' => '4',
       'substitute' => TRUE,
     );
