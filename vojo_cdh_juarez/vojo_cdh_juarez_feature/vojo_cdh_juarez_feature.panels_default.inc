@@ -486,5 +486,56 @@ function vojo_cdh_juarez_feature_default_panels_mini() {
   $mini->display = $display;
   $export['cdhj_group_page_feature'] = $mini;
 
+  $mini = new stdClass;
+  $mini->disabled = FALSE; /* Edit this to true to make a default mini disabled initially */
+  $mini->api_version = 1;
+  $mini->name = 'cdhj_story_count';
+  $mini->category = 'CDH Juarez';
+  $mini->admin_title = 'CDH Juarez Story Count';
+  $mini->admin_description = '';
+  $mini->requiredcontexts = array();
+  $mini->contexts = array();
+  $mini->relationships = array();
+  $display = new panels_display;
+  $display->layout = 'onecol';
+  $display->layout_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'middle' => NULL,
+    ),
+  );
+  $display->cache = array();
+  $display->title = '';
+  $display->content = array();
+  $display->panels = array();
+    $pane = new stdClass;
+    $pane->pid = 'new-1';
+    $pane->panel = 'middle';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'admin_title' => 'cdhj_story_count_pane',
+      'title' => '',
+      'body' => 'This year <em><?php print vojo_group_published_story_count(10014)?></em> people saw something and said something',
+      'format' => '4',
+      'substitute' => TRUE,
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $display->content['new-1'] = $pane;
+    $display->panels['middle'][0] = 'new-1';
+  $display->hide_title = PANELS_TITLE_NONE;
+  $display->title_pane = 'new-1';
+  $mini->display = $display;
+  $export['cdhj_story_count'] = $mini;
+
   return $export;
 }
