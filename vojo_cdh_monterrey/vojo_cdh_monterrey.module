@@ -1,0 +1,9 @@
+<?php
+
+/**
+ * Load up helpers
+ */
+function vojo_cdh_monterrey_init(){
+    // load custom map styles
+    module_load_include('inc', 'vojo_cdh_monterrey', 'includes/vojo_cdh_monterrey.openlayers');  
+}

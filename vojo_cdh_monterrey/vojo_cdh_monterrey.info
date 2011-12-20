@@ -1,0 +1,7 @@
+
+name = Vojo.co Monterrey Utilities
+description = Provides functionality specific Monterrey group on the Vojo hosted service
+core = 6.x
+dependencies[] = openlayers
+package = Vojo.co
+version = "6.x-1.0-beta"
