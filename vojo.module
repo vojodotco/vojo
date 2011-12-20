@@ -1,1 +1,22 @@
 <?php
+
+// maintain a single-query-duration cache of published story counts per group
+$_vojo_group_published_story_counts = array();
+
+/**
+ * Find out how many stories are published within a group.
+ */
+function vojo_group_published_story_count($group_id) {
+    $story_count = 0;
+    if(array_key_exists($group_id,$_vojo_group_published_story_counts)){
+        $story_count = $_vojo_group_published_story_counts[$group_id];
+    } else {
+        $results = db_query("SELECT count(n.nid) as story_count 
+                         FROM {og_ancestry} as oga, {node} as n
+                         WHERE oga.nid=n.nid AND oga.group_nid=$group_id AND n.status=1", $group_id);
+        while ($object = db_fetch_object($results)) {
+            $story_count = $object->story_count;
+        }
+    }
+    return $story_count;
+}
