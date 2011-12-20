@@ -32,7 +32,7 @@ function vojo_cdh_juarez_feature_openlayers_presets() {
     'behaviors' => array(
       'openlayers_behavior_panzoombar' => array(),
       'openlayers_behavior_zoomtolayer' => array(
-        'zoomtolayer' => 'vozmob_map',
+        'zoomtolayer' => 'cdhj_one_story_cdhj_one_story_ol_data',
         'point_zoom_level' => '13',
       ),
     ),
