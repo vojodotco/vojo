@@ -4,5 +4,6 @@ description = Customizes from Organic Groups behaviours for the Vojo hosted serv
 core = 6.x
 dependencies[] = og
 package = Vojo.co
+version = "6.x-1.0-beta"
 
 
