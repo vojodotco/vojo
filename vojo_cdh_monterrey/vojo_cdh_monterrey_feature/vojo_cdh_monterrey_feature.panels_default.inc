@@ -408,7 +408,7 @@ $arg_count = count($uri_parts);
 if ($arg_count==3) {
     $sub_title = t("Home");
     $sub_description = t("This year people like you and me have shared %report_count Heroreports", 
-          array(\'%report_count\'=> vojo_group_published_story_count(10015)) );
+          array(\'%report_count\'=> vojo_group_published_story_count(10055)) );
 } else {
     switch($uri_parts[2]){
     case "historia":
