@@ -1,10 +1,20 @@
 <?php
 
-// maintain a single-query-duration cache of published story counts per group
+// Optimization: maintain a single-query-duration cache of published story counts per group
 $_vojo_group_published_story_counts = array();
 
 /**
- * Find out how many stories are published within a group.
+ * Load up helpers
+ */
+function vojo_init(){
+    // load custom blocks
+    module_load_include('inc', 'vojo', 'includes/vojo.blocks');  
+}
+
+/**
+ * Helper function to find out how many stories are published within a group.  This is written
+ * to be called by themes and custom panels/blocks if they need to embed the count somewhere.  This
+ * manages a qingle-query-duration cache for you.
  */
 function vojo_group_published_story_count($group_id) {
     $story_count = 0;
