@@ -1,9 +1,0 @@
-<?php
-
-/**
- * Load up helpers
- */
-function vojo_cdh_juarez_init(){
-    // load custom map styles
-    module_load_include('inc', 'vojo_cdh_juarez', 'includes/vojo_cdh_juarez.openlayers');  
-}
