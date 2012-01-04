@@ -35,6 +35,6 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
 }
 
 function _vojo_block_powered_by_vozmob_contents(){
-    $content = t('Powered by')." ".l(t('VozMob'),'http://www.vozmob.net');
+    $content = l(t('Vojo.co'),'http://www.vojo.co').t(' is powered by')." ".l(t('VozMob'),'http://www.vozmob.net');
     return $content;
 }
