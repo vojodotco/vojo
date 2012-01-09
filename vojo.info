@@ -5,4 +5,15 @@ core = 6.x
 package = Vojo.co
 version = "6.x-1.0-beta"
 
-
+dependencies[] = "ctools"
+dependencies[] = "features"
+dependencies[] = "og"
+dependencies[] = "og_views"
+dependencies[] = "openlayers"
+dependencies[] = "openlayers_views"
+dependencies[] = "page_manager"
+dependencies[] = "panels"
+dependencies[] = "panels_mini"
+dependencies[] = "themekey"
+dependencies[] = "views"
+dependencies[] = "views_content"
