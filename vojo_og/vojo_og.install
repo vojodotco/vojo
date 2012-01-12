@@ -5,5 +5,5 @@
  */
 function vojo_oj_install() {
     // make sure this init runs before any other so we can customize the theme correctly
-    db_query("UPDATE {system} SET weight = -1 WHERE type = 'module' AND name = 'vojo_og'"); 
+    db_query("UPDATE {system} SET weight = -100 WHERE type = 'module' AND name = 'vojo_og'"); 
 }
