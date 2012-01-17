@@ -9,50 +9,50 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
         case 'list':
             $block_list = array();
             $block = array(
-                'info'=>t('Vojo: Powered by VozMob'),
-                'cache'=>BLOCK_CACHE_GLOBAL,
+                'info'=>t('Vojo: Powered By'),
+//                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
             );
-            $block_list['powered-by-vozmob'] = $block;
+            $block_list['powered-by'] = $block;
             $block = array(
-                'info'=>t('Vojo: Powered by Drupal'),
-                'cache'=>BLOCK_CACHE_GLOBAL,
+                'info'=>t('Vojo: Supported By'),
+//                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
             );
-            $block_list['powered-by-drupal'] = $block;
+            $block_list['supported-by'] = $block;
             $block = array(
-                'info'=>t('Vojo: Creative Commons License'),
-                'cache'=>BLOCK_CACHE_GLOBAL,
+                'info'=>t('Vojo: License'),
+//                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
             );
-            $block_list['creative-commons-license'] = $block;
+            $block_list['license'] = $block;
             $to_return = $block_list;
             break;
         case 'view':
             $block = null;
             switch($delta){
-                case 'powered-by-vozmob':
+                case 'powered-by':
                     $block = array(
                         'subject'=>null,
-                        'content'=>_vojo_block_powered_by_vozmob_contents()
+                        'content'=>_vojo_block_powered_by_contents()
                     );
                     break;
-                case 'powered-by-drupal':
+                case 'supported-by':
                     $block = array(
                         'subject'=>null,
-                        'content'=>_vojo_block_powered_by_drupal_contents()
+                        'content'=>_vojo_block_supported_by_contents()
                     );
-                    break;
-                case 'creative-commons-license':
+                    break;                
+                case 'license':
                     $block = array(
                         'subject'=>null,
-                        'content'=>_vojo_block_creative_commons_license_contents()
+                        'content'=>_vojo_block_license_contents()
                     );
                     break;                
             }
@@ -62,17 +62,19 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
     return $to_return;
 }
 
-function _vojo_block_powered_by_vozmob_contents(){
-    $content = l(t('Vojo.co'),'http://www.vojo.co').t(' is powered by')." ".l(t('VozMob'),'http://www.vozmob.net');
+function _vojo_block_powered_by_contents(){
+    $content = t('<a href="@site_link">@site_name</a> is powered by <a href="http://vozmob.net">VozMob</a> and <a href="http://drupal.org">Drupal</a>', 
+        array("@site_name"=>variable_get('site_name', "Vojo.co"), "@site_link"=>url('<front>')) );
     return $content;
 }
 
-function _vojo_block_powered_by_drupal_contents(){
-    $content = l(t('Vojo.co'),'http://www.vojo.co').t(' is powered by')." ".l(t('Drupal'),'http://drupal.org/');
+function _vojo_block_supported_by_contents(){
+    $content = t('<a href="@site_link">@site_name</a> is a project of the <a href="http://civic.mit.edu">MIT Center for Civic Media</a>',
+        array("@site_name"=>variable_get('site_name', "Vojo.co"), "@site_link"=>url('<front>')) );
     return $content;
 }
 
-function _vojo_block_creative_commons_license_contents(){
+function _vojo_block_license_contents(){
     $content = l( theme_image(drupal_get_path('module','vojo')."/img/copy-left.png"), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
     $content.= ' ';
     $content.= l( t('Creative Commons'), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
