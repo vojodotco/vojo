@@ -63,8 +63,9 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
 }
 
 function _vojo_block_powered_by_contents(){
-    $content = t('<a href="@site_link">@site_name</a> is powered by <a href="http://vozmob.net">VozMob</a> and <a href="http://drupal.org">Drupal</a>', 
-        array("@site_name"=>variable_get('site_name', "Vojo.co"), "@site_link"=>url('<front>')) );
+    $content = l( _vojo_image_path("powered-by-vozmob.gif"), "http://vozmob.net", array('html'=>true)  );
+    $content.= ' ';
+    $content.= l( _vojo_image_path("powered-by-drupal.png"), "http://drupal.org", array('html'=>true)  );
     return $content;
 }
 
@@ -75,8 +76,12 @@ function _vojo_block_supported_by_contents(){
 }
 
 function _vojo_block_license_contents(){
-    $content = l( theme_image(drupal_get_path('module','vojo')."/img/copy-left.png"), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
+    $content = l( _vojo_image_path("copy-left.png"), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
     $content.= ' ';
     $content.= l( t('Creative Commons'), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
     return $content;
+}
+
+function _vojo_image_path($imgfile){
+    return theme_image(drupal_get_path('module','vojo')."/img/".$imgfile);
 }
