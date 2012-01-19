@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Various vojo-specific blocks
+ * Provide various vojo-specific blocks to be layed out on the page
  */
 function vojo_block($op = 'list', $delta = 0, $edit = array()){
     $to_return = null;
@@ -10,7 +10,7 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
             $block_list = array();
             $block = array(
                 'info'=>t('Vojo: Powered By'),
-//                'cache'=>BLOCK_CACHE_GLOBAL,
+                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
@@ -18,7 +18,7 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
             $block_list['powered-by'] = $block;
             $block = array(
                 'info'=>t('Vojo: Supported By'),
-//                'cache'=>BLOCK_CACHE_GLOBAL,
+                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
@@ -26,7 +26,7 @@ function vojo_block($op = 'list', $delta = 0, $edit = array()){
             $block_list['supported-by'] = $block;
             $block = array(
                 'info'=>t('Vojo: License'),
-//                'cache'=>BLOCK_CACHE_GLOBAL,
+                'cache'=>BLOCK_CACHE_GLOBAL,
                 'status'=>1,
                 'region'=>'footer',
                 'visibility'=>0,
@@ -80,8 +80,4 @@ function _vojo_block_license_contents(){
     $content.= ' ';
     $content.= l( t('Creative Commons'), 'http://creativecommons.org/licenses/by-nc-sa/2.0/', array('html'=>true) );
     return $content;
-}
-
-function _vojo_image_path($imgfile){
-    return theme_image(drupal_get_path('module','vojo')."/img/".$imgfile);
 }

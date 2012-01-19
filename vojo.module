@@ -31,3 +31,10 @@ function vojo_group_published_story_count($group_id) {
     }
     return $story_count;
 }
+
+/**
+ * Use this to get the path to an image inside the "img" dir of this module
+ */
+function _vojo_image_path($imgfile){
+    return theme_image(drupal_get_path('module','vojo')."/img/".$imgfile);
+}
