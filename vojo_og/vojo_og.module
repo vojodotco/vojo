@@ -19,7 +19,7 @@ function _set_node_theme_from_group(){
         $nid = arg(1);
         $results = db_query("SELECT og.og_theme as group_theme 
                              FROM {og_ancestry} as oga, {og} as og 
-                             WHERE oga.nid = $nid AND oga.group_nid=og.nid", $nid);
+                             WHERE oga.nid = %d AND oga.group_nid=og.nid", $nid);
         $group_theme = null;
         $group_count = 0;
         while ($object = db_fetch_object($results)) {
@@ -30,6 +30,55 @@ function _set_node_theme_from_group(){
             _set_custom_theme($group_theme);
         }
     }
+}
+
+function vojo_og_get_group_nid(){
+    $group_nid = null;
+    if (arg(0) == 'node' && is_numeric(arg(1))) {
+        $nid = arg(1);
+        $results = db_query("SELECT n.type as node_type, oga.group_nid as group_nid
+                             FROM {node} as n LEFT JOIN {og_ancestry} as oga ON oga.nid = n.nid
+                             WHERE n.nid = %d", $nid);
+        $group_nid = null;
+        $node_type = null;
+        $group_count = 0;
+        print "check $nid = ";
+        while ($object = db_fetch_object($results)) {
+            $group_count++;
+            $node_type = $object->node_type;
+            $group_nid = $object->group_nid;
+        }
+        if($group_count==0 && $node_type=="group"){
+            // we're looking at a group node, return it's ID
+            $group_nid = $nid;
+        } else if ($group_count==1){
+            $group_nid = $object->group_nid;
+        } else {
+            // ERROR: nodes in vojo can't be part of more than one group!
+        }
+    }
+    return $group_nid;
+}
+
+function vojo_og_theme_screenshot_url($group_nid){
+    global $base_url;
+    // figure out what theme the group is using
+    $theme_name = null;
+    $results = db_query("SELECT og.og_theme as group_theme 
+                         FROM {og} as og 
+                         WHERE og.nid=%d", $group_nid);
+    $group_theme = null;
+    $group_count = 0;
+    while ($object = db_fetch_object($results)) {
+        $group_count++;
+        $group_theme = $object->group_theme;
+    }
+    if($group_theme && $group_count==1){
+        $theme_name = $group_theme; 
+    }
+    // figure out the path to the theme screenshot
+    print $base_url."/".drupal_get_path('theme',$group_theme)."/screenshot.png";
+    
 }
 
 /**
