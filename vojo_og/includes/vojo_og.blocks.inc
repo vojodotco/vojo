@@ -38,12 +38,26 @@ function _vojo_og_generic_group_menu_block_contents(){
     $group_nid = vojo_og_get_group_nid();
     if($group_nid){
         $group_node = node_load($group_nid);
-        $contents.= l('Home', drupal_get_path_alias("node/".$group_nid));
+        // group name
+        $contents.= "<h2>".$group_node->title."</h2>";
         $contents.= " ";
+        // MENU LINKS
+        $contents.= '<ul class="menu">';
+        // group homepage
+        $contents.= '<li class="leaf first">';
+        $contents.= l('Home', drupal_get_path_alias("node/".$group_nid));
+        $contents.= "</li>";
+        // group map
+        $contents.= '<li class="leaf">';
+        $contents.= l('Map', drupal_get_path_alias("node/".$group_nid."/map"));
+        $contents.= "</li>";
+        // admin: group unpublished blog entries
         if(user_access( variable_get('og_user_roles_default_admin_role', 0) )  ){
-            $contents.= l('Unpublished', drupal_get_path_alias("groups/".$group_nid."/unpublished"));
-            $contents.= " ";
+        $contents.= '<li class="leaf">';
+            $contents.= l('Unpublished', drupal_get_path_alias("node/".$group_nid."/unpublished"));
+            $contents.= "</li>";
         }
+        $contents.= "</ul>";
     }
     return $contents;
 }
