@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * Implementation of hook_block().
+ */
+function vojo_og_block($op = 'list', $delta = 0, $edit = array()) {
+    $to_return = null;
+    switch($op){
+        case 'list':
+            $block= array(
+                'info'=>t('Vojo: Generic Group Menu'),
+                'region'=>'navigation',
+            );
+            $block_list['generic-group-menu'] = $block;
+            $to_return = $block_list;
+            break;
+        case 'view':
+            $block = null;
+            switch($delta){
+                case 'generic-group-menu':
+                    $block = array(
+                        'subject'=>null,
+                        'content'=>_vojo_og_generic_group_menu_block_contents()
+                    );
+                    break;
+            }
+            $to_return = $block;
+            break;
+    }
+    return $to_return;
+}
+
+/**
+ * Supply a generic menu for un-themed groups
+ */
+function _vojo_og_generic_group_menu_block_contents(){
+    $contents = null;
+    $group_nid = vojo_og_get_group_nid();
+    if($group_nid){
+        $group_node = node_load($group_nid);
+        $contents.= l('Home', drupal_get_path_alias("node/".$group_nid));
+        $contents.= " ";
+        if(user_access( variable_get('og_user_roles_default_admin_role', 0) )  ){
+            $contents.= l('Unpublished', drupal_get_path_alias("groups/".$group_nid."/unpublished"));
+            $contents.= " ";
+        }
+    }
+    return $contents;
+}

@@ -5,6 +5,7 @@
  */
 function vojo_og_init() {
     _set_node_theme_from_group();
+    module_load_include('inc', 'vojo_og', 'includes/vojo_og.blocks');  
 }
 
 
@@ -32,6 +33,10 @@ function _set_node_theme_from_group(){
     }
 }
 
+/**
+ * Use the path info to figure out what group we're looking at
+ * WTF: Why doesn't og_get_group_context work????
+ */
 function vojo_og_get_group_nid(){
     $group_nid = null;
     if (arg(0) == 'node' && is_numeric(arg(1))) {
@@ -42,17 +47,17 @@ function vojo_og_get_group_nid(){
         $group_nid = null;
         $node_type = null;
         $group_count = 0;
-        print "check $nid = ";
         while ($object = db_fetch_object($results)) {
             $group_count++;
             $node_type = $object->node_type;
-            $group_nid = $object->group_nid;
+            $found_group_nid = $object->group_nid;
         }
-        if($group_count==0 && $node_type=="group"){
+        if($group_count==1 && $node_type=="group"){
             // we're looking at a group node, return it's ID
             $group_nid = $nid;
         } else if ($group_count==1){
-            $group_nid = $object->group_nid;
+            // it's a node in this group (and no others)
+            $group_nid = $found_group_nid;
         } else {
             // ERROR: nodes in vojo can't be part of more than one group!
         }
@@ -90,4 +95,27 @@ function _set_custom_theme($theme_name){
     if(!empty($theme_name)){
         $custom_theme = $theme_name;
     }
+}
+
+function vojo_og_menu() {
+print "menu create";
+    // http://stackoverflow.com/questions/5008532/drupal-6-make-a-menu-hook-return-a-specific-view
+    $items['groups/%vojo_og_id_from_name/unpublished'] = array(
+        'title'=>'Unpublished',
+        'page callback' => 'vojo_og_view_unpublished_page_cb',
+        'page arguments' => array(1),
+    );
+    return $items;
+}
+
+function vojo_og_id_from_name_load($group_name){
+print "translate from $group_name!";
+    return '10056';
+}
+
+function vojo_og_view_unpublished_page_cb($group_id) {
+print "render";
+    $view_name = 'vojo_group_all_stories';
+    $display_id = 'vojo_group_unpublished_stories_page';
+    return views_embed_view($view_name, $display_id, $group_id);
 }

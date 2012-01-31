@@ -20,6 +20,7 @@ function vojo_feature_views_default_views() {
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->display->display_options['title'] = 'All Stories';
+  $handler->display->display_options['css_class'] = 'vojo-story-list';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -63,6 +64,18 @@ function vojo_feature_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Vojo Group All Stories Pane', 'vojo_group_all_stories_pane');
   $handler->display->display_options['pane_title'] = 'Vojo Group All Stories Pane';
   $handler->display->display_options['pane_category']['weight'] = '0';
+
+  /* Display: Vojo Group Unpublished Stories Page */
+  $handler = $view->new_display('page', 'Vojo Group Unpublished Stories Page', 'vojo_group_unpublished_stories_page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Unpublished Stories';
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter: Node: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['path'] = 'groups/%/unpublished';
   $translatables['vojo_group_all_stories'] = array(
     t('Defaults'),
     t('All Stories'),
@@ -78,6 +91,8 @@ function vojo_feature_views_default_views() {
     t('All'),
     t('Vojo Group All Stories Pane'),
     t('View panes'),
+    t('Vojo Group Unpublished Stories Page'),
+    t('Unpublished Stories'),
   );
 
   $views[$view->name] = $view;
