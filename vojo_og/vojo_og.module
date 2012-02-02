@@ -98,7 +98,6 @@ function _set_custom_theme($theme_name){
 }
 
 function vojo_og_menu() {
-print "menu create";
     // http://stackoverflow.com/questions/5008532/drupal-6-make-a-menu-hook-return-a-specific-view
     $items['groups/%vojo_og_id_from_name/unpublished'] = array(
         'title'=>'Unpublished',
