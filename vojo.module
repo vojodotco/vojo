@@ -38,3 +38,11 @@ function vojo_group_published_story_count($group_id) {
 function _vojo_image_path($imgfile){
     return theme_image(drupal_get_path('module','vojo')."/img/".$imgfile);
 }
+
+/**
+ * Make sure the email from-address works right
+ * @depends return-path
+ */
+function vojo_mail_alter(&$message){
+    $message['headers']['Return-Path'] = "registrar@vojo.co";
+}
