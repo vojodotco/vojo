@@ -1,0 +1,108 @@
+<?php
+
+// the name of the settings variable to save the fake anonymous user id to
+define("VOJO_OG_ANON_USER_ID_VAR", 'vojo_og_anon_user_id');
+
+// the default fake user id to use
+define("VOJO_OG_ANON_USER_ID_VAR_DEFAULT", 1);
+
+// the name of the Organic Group node type
+define("VOJO_OG_ANON_GROUP_NODE_TYPE", "group");
+
+/**
+ * Implementation of hook_menu().
+ */
+function vojo_og_anon_menu() {
+  $items['admin/settings/vojo_og_anon'] = array(
+    'title' => 'Vojo Organic Groups Fake Anonymous',
+    'description' => 'Vojo Organic Groups Fake Anonymous settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vojo_og_anon_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * Return the form to change global settings for this module
+ */
+function vojo_og_anon_admin_settings_form(&$form_state) {
+  $form = _vojo_og_anon_settings_fields($form_state);
+  return system_settings_form($form);
+}
+
+/**
+ * Return the fields for the form to change global settings for this module
+ */
+function _vojo_og_anon_settings_fields(&$form_state, $field=FALSE) {
+
+  if ($field) {
+    $vojo_og_anon_user_id = !empty($field[VOJO_OG_ANON_USER_ID_VAR]) ? $field[VOJO_OG_ANON_USER_ID_VAR] : vojo_og_anon_get_user_id();
+  } else {
+    $vojo_og_anon_user_id = vojo_og_anon_get_user_id();
+  }
+
+  // user id
+  $form[VOJO_OG_ANON_USER_ID_VAR] = array(
+    '#type' => 'textfield',
+    '#default_value' => $vojo_og_anon_user_id,
+    '#title' => t('User ID'),
+    '#description' => t('Enter the user id to use as the author of otherwise anonymous posts.'),
+  );
+
+  return $form;
+
+}
+
+/**
+ * Retrieve the user id to use as the fake anonymous user, when saving anonymous posts.
+ * Public API in case other modules need this user id.
+ */
+function vojo_og_anon_get_user_id(){
+  return variable_get(VOJO_OG_ANON_USER_ID_VAR, VOJO_OG_ANON_USER_ID_VAR_DEFAULT);
+}
+
+/**
+ * Is this a type of node that we want to change the author of?
+ * TODO: move this into a global setting
+ */
+function _vojo_og_anon_is_node_type_to_anonymize($node_type){
+  return ($node_type=="blog");
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ * Modify nodes appropriately based on the settings.
+ */
+function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
+  $anon_uid = vojo_og_anon_get_user_id();
+  
+  // if fake anonymous isn't member of group, add them
+  if($node->type==VOJO_OG_ANON_GROUP_NODE_TYPE){
+    switch($op){
+    case "presave":
+      if (!og_is_group_member($node->nid, TRUE, $anon_uid) ){
+        og_save_subscription($node->nid, $anon_uid, array(
+          'is_active'=>true, 'is_admin'=>false, 'created'=>true
+        ));
+        watchdog('vojo_og_anon','Added fake anonymous user (uid=@anon_user_id) to group @group_id',
+          array('@anon_user_id'=>$anon_uid, '@group_id'=>$node->nid));
+      }
+      break;
+    }
+  }
+  
+  // if we are saving a post who's author is anonymous, change it to the fake anonymous user
+  elseif(_vojo_og_anon_is_node_type_to_anonymize($node->type)){
+    switch($op){
+    case "presave":
+      if($node->uid==0){  // if user is anonymous
+        $node->uid = vojo_og_anon_get_user_id();
+      }
+      break;
+    }
+  }
+  
+}

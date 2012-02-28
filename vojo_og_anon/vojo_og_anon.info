@@ -1,0 +1,8 @@
+
+name = Vojo OG Fake Anonymous User
+description = Designate a specific user as the one to use as author of anonymous posts
+core = 6.x
+version = "6.x-1.0"
+
+dependencies[] = "og"
+dependencies[] = "blog"
