@@ -47,6 +47,14 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= '<li class="leaf first">';
         $contents.= l('Home', drupal_get_path_alias("node/".$group_nid));
         $contents.= "</li>";
+        // group about page
+        $contents.= '<li class="leaf first">';
+        $contents.= l('About', drupal_get_path_alias("node/".$group_nid."/about"));
+        $contents.= "</li>";        
+        // group story submit page
+        $contents.= '<li class="leaf first">';
+        $contents.= l('Submit', drupal_get_path_alias("node/".$group_nid."/submit"));
+        $contents.= "</li>";        
         // group map
         $contents.= '<li class="leaf">';
         $contents.= l('Map', drupal_get_path_alias("node/".$group_nid."/map"));
