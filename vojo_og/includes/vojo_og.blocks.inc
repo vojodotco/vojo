@@ -45,24 +45,24 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= '<ul class="menu">';
         // group homepage
         $contents.= '<li class="leaf first">';
-        $contents.= l('Home', drupal_get_path_alias("node/".$group_nid));
+        $contents.= l(t('Home'), drupal_get_path_alias("node/".$group_nid));
         $contents.= "</li>";
         // group about page
         $contents.= '<li class="leaf first">';
-        $contents.= l('About', drupal_get_path_alias("node/".$group_nid."/about"));
+        $contents.= l(t('About'), drupal_get_path_alias("node/".$group_nid."/about"));
         $contents.= "</li>";        
         // group story submit page
         $contents.= '<li class="leaf first">';
-        $contents.= l('Submit', drupal_get_path_alias("node/".$group_nid."/submit"));
+        $contents.= l(t('Submit'), drupal_get_path_alias("node/".$group_nid."/submit"));
         $contents.= "</li>";        
         // group map
         $contents.= '<li class="leaf">';
-        $contents.= l('Map', drupal_get_path_alias("node/".$group_nid."/map"));
+        $contents.= l(t('Map'), drupal_get_path_alias("node/".$group_nid."/map"));
         $contents.= "</li>";
         // admin: group unpublished blog entries
         if(user_access( variable_get('og_user_roles_default_admin_role', 0) )  ){
         $contents.= '<li class="leaf">';
-            $contents.= l('Unpublished', drupal_get_path_alias("node/".$group_nid."/unpublished"));
+            $contents.= l(t('Unpublished'), drupal_get_path_alias("node/".$group_nid."/unpublished"));
             $contents.= "</li>";
         }
         $contents.= "</ul>";
