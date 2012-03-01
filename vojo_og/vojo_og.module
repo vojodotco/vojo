@@ -113,20 +113,40 @@ function vojo_form_alter(&$form, &$form_state, $form_id) {
   if (isset($form['#node']) && $form_id == $form['#node']->type .'_node_form') {
     $node = $form['#node'];
     if (og_is_group_post_type($node->type)) {
-      $form_state['og_gids'] = _vojo_get_public_group_nids(); // force add all the public groups
+      //$form_state['og_gids'] = _vojo_get_public_groups(); // force add all the public groups
+      $public_group_list = _vojo_get_public_groups(); // nid=>title
       og_form_add_og_audience($form, $form_state);
+      // SUPER HACK
+      $og_form_hack = array(
+        '#group' => 'additional_settings',
+        '#weight' => 0,
+        'visible' => array(
+          'og_groups' => array(
+            '#type'=>'checkboxes',
+            '#title'=>'Audience',
+            '#attributes'=>array(
+              'class'=>'og-audience',
+              '#options'=> $public_group_list,
+              '#required'=>0,
+              '#description'=>'Show this post in these groups.',
+              '#multiple'=>0 
+            )
+          )
+        )
+      );
+      $form['og_nodeapi'] = $og_form_hack;
     }
   }
 }
 
 /**
- * Helper function to return all published groups nids.
+ * Helper function to return all published groups (array of nids=>titles)
  */
-function _vojo_get_public_group_nids(){
+function _vojo_get_public_groups(){
   $ids = array();
-  $result = db_query('SELECT n.nid as nid FROM {node} n WHERE n.type = %s and n.status = %d', 'group', 1);
+  $result = db_query('SELECT n.nid as nid, n.title as title FROM {node} n WHERE n.type = "%s" and n.status = %d', 'group', 1);
   while ($info = db_fetch_array($result)) {
-    $ids[] = $info['nid'];
+    $ids[$info['nid']] = $info['title'];
   }
   return $ids;
 }
