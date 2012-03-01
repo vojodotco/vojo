@@ -39,8 +39,13 @@ function _set_node_theme_from_group(){
  */
 function vojo_og_get_group_nid(){
     $group_nid = null;
+    $nid = null;
     if (arg(0) == 'node' && is_numeric(arg(1))) {
         $nid = arg(1);
+    } elseif ( arg(0)=="og" && arg(1)=="users" && is_numeric(arg(2)) ){
+        $nid = arg(2);
+    }
+    if ($nid) {
         $results = db_query("SELECT n.type as node_type, oga.group_nid as group_nid
                              FROM {node} as n LEFT JOIN {og_ancestry} as oga ON oga.nid = n.nid
                              WHERE n.nid = %d", $nid);

@@ -59,11 +59,17 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= '<li class="leaf">';
         $contents.= l(t('Map'), drupal_get_path_alias("node/".$group_nid."/map"));
         $contents.= "</li>";
-        // admin: group unpublished blog entries
+        // admin links
         if(user_access( variable_get('og_user_roles_default_admin_role', 0) )  ){
-        $contents.= '<li class="leaf">';
+            // group unpublished blog entries
+            $contents.= '<li class="leaf">';
             $contents.= l(t('Unpublished'), drupal_get_path_alias("node/".$group_nid."/unpublished"));
             $contents.= "</li>";
+            // group members administration
+            $contents.= '<li class="leaf">';
+            $contents.= l(t('Members'), drupal_get_path_alias("og/users/".$group_nid));
+            $contents.= "</li>";            
+            
         }
         $contents.= "</ul>";
     }
