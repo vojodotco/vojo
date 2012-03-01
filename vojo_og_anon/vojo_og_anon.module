@@ -82,7 +82,8 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
   // if fake anonymous isn't member of group, add them
   if($node->type==VOJO_OG_ANON_GROUP_NODE_TYPE){
     switch($op){
-    case "presave":
+    case "insert":
+    case "update":
       if (!og_is_group_member($node->nid, TRUE, $anon_uid) ){
         og_save_subscription($node->nid, $anon_uid, array(
           'is_active'=>true, 'is_admin'=>false, 'created'=>true
