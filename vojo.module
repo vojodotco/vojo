@@ -9,6 +9,8 @@ $_vojo_group_published_story_counts = array();
 function vojo_init(){
     // load custom blocks
     module_load_include('inc', 'vojo', 'includes/vojo.blocks');  
+    // load costom voip-drupal scripts
+    module_load_include('inc', 'vojo', 'includes/vojo.script');
 }
 
 /**
@@ -39,3 +41,34 @@ function vojo_group_published_story_count($group_id) {
 function _vojo_image_path($imgfile){
     return theme_image(drupal_get_path('module','vojo')."/img/".$imgfile);
 }
+
+/**
+ * Implementation of hook_voipscript_load_script().
+ */
+function vojo_voipscript_load_script($script_name, $params = NULL) {
+    if ($script_name == 'vojo_group') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        $node = node_load($params['nid']);
+        return _vojo_group($node);
+    }
+    elseif ($script_name == 'vojo_record_blog') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        $node = node_load($params['nid']);
+        return _vojo_record_blog($node);
+    }
+    elseif ($script_name == 'vojo_save_blog') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_save_blog($params['nid'], $params['fid']);
+    }
+}
+
+/**
+ * Implementation of hook_voipscript_get_script_names().
+ */
+function vojo_voipscript_get_script_names() {
+  return array(
+    'vojo_group',
+    'vojo_record_blog',
+    'vojo_save_blog',
+  );
+} 
