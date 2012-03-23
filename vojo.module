@@ -17,6 +17,7 @@ function vojo_init(){
  * manages a qingle-query-duration cache for you.
  */
 function vojo_group_published_story_count($group_id) {
+    global $_vojo_group_published_story_counts;
     $story_count = 0;
     if(array_key_exists($group_id,$_vojo_group_published_story_counts)){
         $story_count = $_vojo_group_published_story_counts[$group_id];
