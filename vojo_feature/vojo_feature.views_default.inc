@@ -734,6 +734,27 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['nid']['hide_empty'] = 0;
   $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
+  /* Field: Content: Group logo (field_group_logo) */
+  $handler->display->display_options['fields']['field_group_logo_fid']['id'] = 'field_group_logo_fid';
+  $handler->display->display_options['fields']['field_group_logo_fid']['table'] = 'node_data_field_group_logo';
+  $handler->display->display_options['fields']['field_group_logo_fid']['field'] = 'field_group_logo_fid';
+  $handler->display->display_options['fields']['field_group_logo_fid']['label'] = 'Group logo';
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['hide_empty'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_group_logo_fid']['link_to_node'] = 1;
+  $handler->display->display_options['fields']['field_group_logo_fid']['format'] = 'image_nodelink';
   $handler->display->display_options['path'] = 'all-groups';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Groups';
@@ -765,6 +786,7 @@ function vojo_feature_views_default_views() {
     t('Page'),
     t(' stories'),
     t(' members'),
+    t('Group logo'),
   );
 
   $views[$view->name] = $view;
