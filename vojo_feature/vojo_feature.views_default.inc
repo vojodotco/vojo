@@ -397,6 +397,31 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'node/%/map';
+
+  /* Display: Vojo Group Stories Map Pane */
+  $handler = $view->new_display('panel_pane', 'Vojo Group Stories Map Pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'openlayers_map';
+  $handler->display->display_options['style_options']['preset'] = 'vojo_group_all_stories_preset';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Argument: Organic groups: Groups */
+  $handler->display->display_options['arguments']['group_nid']['id'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['table'] = 'og_ancestry';
+  $handler->display->display_options['arguments']['group_nid']['field'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['group_nid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_options']['argument'] = '11592';
+  $handler->display->display_options['arguments']['group_nid']['validate_type'] = 'node';
+  $handler->display->display_options['arguments']['group_nid']['validate_options']['types'] = array(
+    'group' => 'group',
+  );
+  $handler->display->display_options['arguments']['group_nid']['validate_options']['access'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['not'] = 0;
   $translatables['vojo_group_stories_map'] = array(
     t('Defaults'),
     t('more'),
@@ -411,6 +436,8 @@ function vojo_feature_views_default_views() {
     t('All'),
     t('Vojo Group Stories OL Data'),
     t('Vojo Group Stories Map Page'),
+    t('Vojo Group Stories Map Pane'),
+    t('View panes'),
   );
 
   $views[$view->name] = $view;
