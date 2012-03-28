@@ -71,4 +71,13 @@ function vojo_voipscript_get_script_names() {
     'vojo_record_blog',
     'vojo_save_blog',
   );
-} 
+}
+
+/*
+ * Detect ctools plugins.
+ */
+function vojo_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
+}
