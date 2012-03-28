@@ -413,13 +413,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['group_nid']['field'] = 'group_nid';
   $handler->display->display_options['arguments']['group_nid']['default_action'] = 'default';
   $handler->display->display_options['arguments']['group_nid']['style_plugin'] = 'default_summary';
-  $handler->display->display_options['arguments']['group_nid']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['group_nid']['default_argument_options']['argument'] = '11592';
-  $handler->display->display_options['arguments']['group_nid']['validate_type'] = 'node';
-  $handler->display->display_options['arguments']['group_nid']['validate_options']['types'] = array(
-    'group' => 'group',
-  );
-  $handler->display->display_options['arguments']['group_nid']['validate_options']['access'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['default_argument_type'] = 'node';
   $handler->display->display_options['arguments']['group_nid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['group_nid']['not'] = 0;
   $translatables['vojo_group_stories_map'] = array(
