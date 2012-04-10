@@ -90,13 +90,12 @@ function _vojo_og_generic_group_menu_block_contents(){
 function vojo_group_details_block() {
   global $user;
   $node = og_get_group_context();
-  
   // Get voip call in number, set at admin/voip/call/settings
   $vojo_voip_number = variable_get('voipcall_cid_number','');
   // Display extension.
   // TODO - need to add field in group for this.
-  if (isset($node->field_group_voip_extension[0]['value'])) {
-    $og_extenson = $node->field_group_voip_extension[0]['value'];
+  if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
+    $og_extenson = $node->voipextension_number;
   }
   if (isset($node->field_yeta[0]['value'])) {
     $og_email = $node->field_yeta[0]['value']; 
@@ -106,7 +105,7 @@ function vojo_group_details_block() {
   $message['post_story'] = '<h3>'. t('Post your story to this group!') .'</h3>';
   $message['post_story'] .= '<p>'. t('Just send an sms or mms (picture message) from your phone to <em>@email</em>', array('@email' => $og_email)) .'</p>';
   if ($vojo_voip_number && $og_extenson) {
-    $message['post_story'] .= '<p>'. t('Or, call <em>@phone</em> <em>ext</em> @ext to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
+    $message['post_story'] .= '<p>'. t('Or call @phone ext. @ext to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
   }
                                                                                                                       
   // Only display group details if we have a group context.
