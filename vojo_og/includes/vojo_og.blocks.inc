@@ -8,11 +8,12 @@ function vojo_og_block($op = 'list', $delta = 0, $edit = array()) {
          case 'list':
             $block['generic-group-menu'] = array(
                  'info'=>t('Vojo: Generic Group Menu'),
+                 'cache' => BLOCK_NO_CACHE,
                  'region'=>'navigation',
              );
             $block['vojo-group-details'] = array(
                 'info' => t('Vojo: Group Details'),
-                'cache' => BLOCK_CACHE_GLOBAL,
+                'cache' => BLOCK_NO_CACHE,
                 'status' => 1,
                 'region' => 'sidebar',
                 'visibility' => 0,
