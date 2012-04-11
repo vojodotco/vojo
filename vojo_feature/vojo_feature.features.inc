@@ -18,6 +18,6 @@ function vojo_feature_ctools_plugin_api() {
  */
 function vojo_feature_views_api() {
   return array(
-    'api' => '3.0-alpha1',
+    'api' => '3.0',
   );
 }
