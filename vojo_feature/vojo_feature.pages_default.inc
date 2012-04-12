@@ -88,7 +88,7 @@ function vojo_feature_default_page_manager_handlers() {
   $handler->task = 'node_view';
   $handler->subtask = '';
   $handler->handler = 'panel_context';
-  $handler->weight = -27;
+  $handler->weight = -29;
   $handler->conf = array(
     'title' => 'Group Homepage: Mapped Stories',
     'no_blocks' => 0,
@@ -106,6 +106,14 @@ function vojo_feature_default_page_manager_handlers() {
             'type' => array(
               'group' => 'group',
             ),
+          ),
+          'context' => 'argument_nid_1',
+          'not' => FALSE,
+        ),
+        1 => array(
+          'name' => 'group_type',
+          'settings' => array(
+            'type' => 'maps',
           ),
           'context' => 'argument_nid_1',
           'not' => FALSE,
