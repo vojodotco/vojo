@@ -14,6 +14,29 @@ function vojo_feature_ctools_plugin_api() {
 }
 
 /**
+ * Implementation of hook_imagecache_default_presets().
+ */
+function vojo_feature_imagecache_default_presets() {
+  $items = array(
+    'browse_stories' => array(
+      'presetname' => 'browse_stories',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale_and_crop',
+          'data' => array(
+            'width' => '290',
+            'height' => '290',
+          ),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implementation of hook_views_api().
  */
 function vojo_feature_views_api() {

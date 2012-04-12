@@ -55,18 +55,29 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= l(t('Home'), drupal_get_path_alias("node/".$group_nid));
         $contents.= "</li>";
         // group about page
-        $contents.= '<li class="leaf first">';
-        $contents.= l(t('About'), drupal_get_path_alias("node/".$group_nid."/about"));
-        $contents.= "</li>";        
+        if (!empty($group_node->body)) {
+            $contents.= '<li class="leaf">';
+            $contents.= l(t('About'), drupal_get_path_alias("node/".$group_nid."/about"));
+            $contents.= "</li>";
+        }    
         // group story submit page
-        $contents.= '<li class="leaf first">';
-        $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
-        // $contents.= l(t('Submit'), drupal_get_path_alias("node/".$group_nid."/submit"));
-        $contents.= "</li>";        
-        // group map
+        if (user_access('create blog entries')) {
+            $contents.= '<li class="leaf">';
+            $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
+            // $contents.= l(t('Submit'), drupal_get_path_alias("node/".$group_nid."/submit"));
+            $contents.= "</li>";               
+        }
+        // Browse stories
         $contents.= '<li class="leaf">';
-        $contents.= l(t('Map'), drupal_get_path_alias("node/".$group_nid."/map"));
-        $contents.= "</li>";
+        $contents.= l(t('Browse Stories'), drupal_get_path_alias("node/".$group_nid."/browse"));
+        $contents.= "</li>";               
+        // add map link only if group type is *not* maps. iif there's a map on the
+        // group home page there is no need to add the map again to the group menu. 
+       if ($group_node->field_group_type[0]['value'] != 'maps') {
+            $contents.= '<li class="leaf">';
+            $contents.= l(t('Map'), drupal_get_path_alias("node/".$group_nid."/map"));
+            $contents.= "</li>";            
+        }
         // admin links
         if(user_access( variable_get('og_user_roles_default_admin_role', 0) )  ){
             // group unpublished blog entries

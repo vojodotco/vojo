@@ -73,11 +73,10 @@ function vojo_voipscript_get_script_names() {
   );
 }
 
-/*
- * Detect ctools plugins.
+/**
+ * Implementation of hook_ctools_plugin_dierctory() to let the system know
+ * we implement task and task_handler plugins.
  */
 function vojo_ctools_plugin_directory($module, $plugin) {
-  if ($module == 'ctools' && !empty($plugin)) {
-    return 'plugins/' . $plugin;
-  }
+  return 'plugins/' . $plugin;
 }

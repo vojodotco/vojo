@@ -1,0 +1,16 @@
+/*  CSS for layout within Panels drag and drop UI */
+#panels-dnd-main .panel-content-area {
+  float: left;
+  margin-right: 2%;
+  width: 64%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+#panels-dnd-main .panel-sidebar {
+  float: left;
+  width: 34%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
