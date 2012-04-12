@@ -60,6 +60,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_save_blog($params['nid'], $params['fid']);
     }
+    elseif ($script_name == 'vojo_login') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_login($params['number']);
+    }
 }
 
 /**
@@ -70,6 +74,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_group',
     'vojo_record_blog',
     'vojo_save_blog',
+    'vojo_login',
   );
 }
 
