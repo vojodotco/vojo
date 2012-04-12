@@ -114,8 +114,9 @@ function vojo_feature_content_default_fields() {
     'active' => '1',
     'text_processing' => '0',
     'max_length' => '',
-    'allowed_values' => 'maps|Mapping
-news|News',
+    'allowed_values' => 'news|News
+maps|Mapping
+',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(

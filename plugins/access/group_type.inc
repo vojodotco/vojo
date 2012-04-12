@@ -16,10 +16,10 @@ $plugin = array(
   'description' => t('Control access by group_type.'),
   'callback' => 'vojo_group_type_ctools_access_check',
   'defaults' => array(
-    'type' => 'maps',
+    'type' => 'news',
   ),
   'settings form' => 'vojo_group_type_ctools_access_settings',
-  'settings form submit' => 'vojo_group_type_ctools_access_settings_submit',
+ // 'settings form submit' => 'vojo_group_type_ctools_access_settings_submit',
   'summary' => 'vojo_group_type_ctools_access_summary',
   'required context' => new ctools_context_required(t('Node'), 'node'),
 );
@@ -43,16 +43,20 @@ function vojo_group_type_ctools_access_settings(&$form, &$form_state, $conf) {
 /**
  * Compress the node_types allowed to the minimum.
  */
-function vojo_group_ype_ctools_access_settings_submit(&$form, &$form_state) {
+/* function vojo_group_ype_ctools_access_settings_submit(&$form, &$form_state) {
   $form_state['values']['settings']['type'] = array_filter($form_state['values']['settings']['type']);
-}
+} */
 
 /**
  * Check for access.
  */
 function vojo_group_type_ctools_access_check($conf, $context) {
   $node = $context->data;
-  if ($node->field_group_type[0]['value'] == $conf['type']) {
+  if (isset($node->field_group_type[0]['value']) && $node->field_group_type[0]['value'] == $conf['type']) {
+    return TRUE;
+  }
+  // If the group type field has no value, it will default to a news group. 
+  else if (!isset($node->field_group_type[0]['value'])) {
     return TRUE;
   }
 }
