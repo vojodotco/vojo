@@ -63,7 +63,7 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_all_stories-vojo_group_browse_stories_pane';
+    $pane->subtype = 'vojo_group_browse_stories-vojo_group_browse_stories_pane';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
@@ -80,7 +80,7 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-2';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_all_stories-vojo_group_all_stories_pane';
+    $pane->subtype = 'vojo_group_all_stories-vojo_group_browse_stories_pane';
     $pane->shown = FALSE;
     $pane->access = array();
     $pane->configuration = array();
@@ -93,6 +93,23 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->position = 1;
     $display->content['new-2'] = $pane;
     $display->panels['middle'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_group_all_stories-vojo_group_all_stories_pane';
+    $pane->shown = FALSE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $display->content['new-3'] = $pane;
+    $display->panels['middle'][2] = 'new-3';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -317,7 +334,7 @@ function vojo_feature_default_page_manager_handlers() {
     );
     $pane->configuration = array(
       'label' => 'normal',
-      'formatter' => '230px-sq__colorbox',
+      'formatter' => '320px_imagelink',
       'context' => 'argument_nid_1',
       'override_title' => 1,
       'override_title_text' => '',

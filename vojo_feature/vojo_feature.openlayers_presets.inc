@@ -112,7 +112,5 @@ function vojo_feature_openlayers_presets() {
   );
   $export['vojo_story_preset'] = $openlayers_presets;
 
-
   return $export;
 }
-
