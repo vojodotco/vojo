@@ -334,7 +334,7 @@ function vojo_feature_default_page_manager_handlers() {
     );
     $pane->configuration = array(
       'label' => 'normal',
-      'formatter' => '320px_imagelink',
+      'formatter' => '230px-sq_imagelink',
       'context' => 'argument_nid_1',
       'override_title' => 1,
       'override_title_text' => '',
@@ -350,6 +350,29 @@ function vojo_feature_default_page_manager_handlers() {
     $display->panels['main'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
+    $pane->panel = 'main';
+    $pane->type = 'content_field';
+    $pane->subtype = 'field_voipnode_adesc';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'inline',
+      'formatter' => 'audiofield_embedded',
+      'context' => 'argument_nid_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-2'] = $pane;
+    $display->panels['main'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
     $pane->panel = 'main';
     $pane->type = 'node_content';
     $pane->subtype = 'node_content';
@@ -373,11 +396,11 @@ function vojo_feature_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
-    $display->content['new-2'] = $pane;
-    $display->panels['main'][1] = 'new-2';
+    $pane->position = 2;
+    $display->content['new-3'] = $pane;
+    $display->panels['main'][2] = 'new-3';
     $pane = new stdClass;
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-4';
     $pane->panel = 'right';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_node_map-vojo_node_map_ol_map_pane';
@@ -397,8 +420,8 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
-    $display->content['new-3'] = $pane;
-    $display->panels['right'][0] = 'new-3';
+    $display->content['new-4'] = $pane;
+    $display->panels['right'][0] = 'new-4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
