@@ -85,3 +85,76 @@ function vojo_voipscript_get_script_names() {
 function vojo_ctools_plugin_directory($module, $plugin) {
   return 'plugins/' . $plugin;
 }
+
+/** --------- OPENLAYERS ------------------------------------------------------ **/
+
+/**
+ * Define custom styles for rendering the markers on a map.
+ * Implements hook_openlayers_styles().
+ *   http://drupal.org/node/620602
+ */
+function vojo_openlayers_styles() {
+  $styles = array();
+  
+  $style = new stdClass();
+  $style->api_version = 1;
+  $style->name = 'vojo_default';
+  $style->title = t('Vojo Default style');
+  $style->description = t('Basic default style for the vojo website.');
+  $style->data = array(
+    'pointRadius' => 6,
+    'fillColor' => '#ffffff',
+    'strokeColor' => '#890053',
+    'strokeWidth' => 4,
+    'fillOpacity' => 0.9,
+    'strokeOpacity' => 1
+  );
+  $styles[ $style->name ] = $style;
+  
+  $style = new stdClass();
+  $style->api_version = 1;
+  $style->name = 'vojo_selected';
+  $style->title = t('Vojo Selected style');
+  $style->description = t('Basic selected style for the vojo website.');
+  $style->data = array(
+    'pointRadius' => 10,
+    'fillColor' => '#ffffff',
+    'strokeColor' => '#890053',
+    'strokeWidth' => 8,
+    'fillOpacity' => 1.0,
+    'strokeOpacity' => 1.0
+  );
+  $styles[ $style->name ] = $style;
+  
+  $style = new stdClass();
+  $style->api_version = 1;
+  $style->name = 'vojo_temporary';
+  $style->title = t('Vojo Temporary style');
+  $style->description = t('Basic temporary style for the vojo website.');
+  $style->data = array(
+    'pointRadius' => 8,
+    'fillColor' => '#ffffff',
+    'strokeColor' => '#890053',
+    'strokeWidth' => 6,
+    'fillOpacity' => 0.5,
+    'strokeOpacity' => 0.5
+  );
+  $styles[ $style->name ] = $style;
+  
+  return $styles;
+}
+
+/**
+ * Tell ctools that we have custom marker styles.
+ * Implements hook_ctools_plugin_api().
+ *   http://drupal.org/node/620602
+ */
+function vojo_ctools_plugin_api($module, $api) {
+  if ($module == "openlayers") {
+    switch ($api) {
+      case 'openlayers_styles':
+        return array('version' => 1);
+
+    }
+  }
+}
