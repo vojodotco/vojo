@@ -14,17 +14,29 @@ function _vojo_group($node) {
   $script = new VoipScript('vojo_group');
 
   $script->addLabel('begin');
-  $script->addSay($node->title . '. ');
+
+  if ($name = voipnode_get_title($node)) {
+    $script->addSay($name);
+  } else {
+    $script->addSay($node->title . '.');
+  }
 
   $script->addLabel('intro');
-  $text = t('To hear blogs press 1. To make an blog press 2. To return and select another group press the pound key.') . ' ';
+  if ($greeting = voipnode_get_greeting($node)) {
+    $script->addSay($greeting);
+    $text = ".";
+  } else {
+    $text = t('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
+  }
   $script->addGetInput($text, 1, '', 6);
   $script->addGotoIf('play_blogs', "^%input_digits == '1'");
   $script->addGotoIf('record_blog', "^%input_digits == '2'");
+  $script->addGotoIf('learn_more', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
   $script->addSay(t('Input not recognized'));
 
   $script->addGoto('intro');
+  
   $script->addLabel('play_blogs');
   $params = array('view_name' => 'og_ghp_ron_voip', 'display_id' => 'voipviews_1', 'args' => json_encode(array($node->nid)));
   $script->addGosub('voipviews_read_view', $params);
@@ -32,6 +44,14 @@ function _vojo_group($node) {
 
   $script->addLabel('record_blog');
   $script->addGosub('vojo_record_blog', array('nid' => $node->nid));
+  $script->addGoto('begin');
+
+  $script->addLabel('learn_more');
+  if ($descrip = voipnode_get_description($node)) {
+    $script->addSay($descrip);  
+  } else {
+    $script->addSay($node->body . '.');
+  }
   $script->addGoto('begin');
 
   $script->addLabel('return');
@@ -69,12 +89,14 @@ function _vojo_record_blog($node) {
   $script->addLabel('accept recording');
   $script->addSay('Please wait while we save your blog post');
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
+  $script->addGoto('end record');
 
   $script->addLabel('no recording detected');
   $script->addSay("No recording detected. Please try again.");
   $script->addGoto('start');
 
   $script->addLabel('end record');
+
   return $script;
 }
 
