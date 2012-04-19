@@ -406,7 +406,14 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->subtype = 'vojo_node_map-vojo_node_map_ol_map_pane';
     $pane->shown = TRUE;
     $pane->access = array(
-      'plugins' => array(),
+      'plugins' => array(
+        0 => array(
+          'name' => 'hide_empty_map',
+          'settings' => NULL,
+          'context' => 'argument_nid_1',
+          'not' => FALSE,
+        ),
+      ),
     );
     $pane->configuration = array(
       'context' => array(
