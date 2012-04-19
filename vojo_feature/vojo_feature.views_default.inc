@@ -406,6 +406,24 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['style_options']['mission_description'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Argument: Organic groups: Groups */
+  $handler->display->display_options['arguments']['group_nid']['id'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['table'] = 'og_ancestry';
+  $handler->display->display_options['arguments']['group_nid']['field'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['group_nid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['group_nid']['title'] = 'All stories from %1';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['validate_type'] = 'node';
+  $handler->display->display_options['arguments']['group_nid']['validate_options']['types'] = array(
+    'group' => 'group',
+  );
+  $handler->display->display_options['arguments']['group_nid']['validate_options']['access'] = 1;
+  $handler->display->display_options['arguments']['group_nid']['validate_fail'] = 'empty';
+  $handler->display->display_options['arguments']['group_nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['not'] = 0;
   $handler->display->display_options['path'] = 'node/%/feed';
   $handler->display->display_options['displays'] = array(
     'page_1' => 'page_1',
@@ -503,6 +521,7 @@ function vojo_feature_views_default_views() {
 <p>[body]</p>'),
     t('All'),
     t('Group feed'),
+    t('All stories from %1'),
     t('Vojo Group Browse Stories Page'),
     t('Vojo Group Browse Stories Pane'),
     t('Vojo Browse Stories Pane'),
