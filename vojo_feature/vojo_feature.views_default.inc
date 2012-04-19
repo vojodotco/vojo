@@ -294,7 +294,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['created']['empty_zero'] = 0;
   $handler->display->display_options['fields']['created']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
-  $handler->display->display_options['fields']['created']['custom_date_format'] = 'd/m/Y';
+  $handler->display->display_options['fields']['created']['custom_date_format'] = 'n/j/Y';
   /* Field: Node: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -400,6 +400,24 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
 
+  /* Display: Group feed */
+  $handler = $view->new_display('feed', 'Group feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['style_options']['mission_description'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'node/%/feed';
+  $handler->display->display_options['displays'] = array(
+    'page_1' => 'page_1',
+    'vojo_group_browse_stories_pane' => 'vojo_group_browse_stories_pane',
+    'default' => 0,
+    'panel_pane_1' => 0,
+  );
+
+  /* Display: Vojo Group Browse Stories Page */
+  $handler = $view->new_display('page', 'Vojo Group Browse Stories Page', 'page_1');
+  $handler->display->display_options['path'] = 'node/%/browse';
+
   /* Display: Vojo Group Browse Stories Pane */
   $handler = $view->new_display('panel_pane', 'Vojo Group Browse Stories Pane', 'vojo_group_browse_stories_pane');
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -429,10 +447,6 @@ function vojo_feature_views_default_views() {
       'label' => 'Organic groups: Groups',
     ),
   );
-
-  /* Display: Vojo Group Browse Stories Page */
-  $handler = $view->new_display('page', 'Vojo Group Browse Stories Page', 'page_1');
-  $handler->display->display_options['path'] = 'node/%/browse';
 
   /* Display: Vojo Blogger Browse Stories Pane */
   $handler = $view->new_display('panel_pane', 'Vojo Blogger Browse Stories Pane', 'panel_pane_1');
@@ -488,10 +502,11 @@ function vojo_feature_views_default_views() {
     t('<h3>[title]</h3>
 <p>[body]</p>'),
     t('All'),
+    t('Group feed'),
+    t('Vojo Group Browse Stories Page'),
     t('Vojo Group Browse Stories Pane'),
     t('Vojo Browse Stories Pane'),
     t('Vojo'),
-    t('Vojo Group Browse Stories Page'),
     t('Vojo Blogger Browse Stories Pane'),
     t('Vojo Blogger User\'s Stories Pane'),
   );

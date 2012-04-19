@@ -26,8 +26,8 @@ function vojo_feature_imagecache_default_presets() {
           'module' => 'imagecache',
           'action' => 'imagecache_scale_and_crop',
           'data' => array(
-            'width' => '290',
-            'height' => '290',
+            'width' => '246',
+            'height' => '246',
           ),
         ),
       ),
