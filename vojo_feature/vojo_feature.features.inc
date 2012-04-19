@@ -18,6 +18,96 @@ function vojo_feature_ctools_plugin_api() {
  */
 function vojo_feature_imagecache_default_presets() {
   $items = array(
+    '100px' => array(
+      'presetname' => '100px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '100',
+            'height' => '100',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+    '160px' => array(
+      'presetname' => '160px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '160',
+            'height' => '160',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+    '320px' => array(
+      'presetname' => '320px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '320',
+            'height' => '320',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+    '375px' => array(
+      'presetname' => '375px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '375',
+            'height' => '375',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+    '500px' => array(
+      'presetname' => '500px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '500',
+            'height' => '500',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
+    '640px' => array(
+      'presetname' => '640px',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '640',
+            'height' => '640',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
     'browse_stories' => array(
       'presetname' => 'browse_stories',
       'actions' => array(
