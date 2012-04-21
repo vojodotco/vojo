@@ -67,12 +67,10 @@ function _vojo_og_generic_group_menu_block_contents(){
             // $contents.= l(t('Submit'), drupal_get_path_alias("node/".$group_nid."/submit"));
             $contents.= "</li>";               
         }
-        // Browse stories view is the default homepage. Only show if group type is maps. 
-        if ($group_node->field_group_type[0]['value'] == 'maps') {
-           $contents.= '<li class="leaf">';
-           $contents.= l(t('Browse Stories'), drupal_get_path_alias("node/".$group_nid."/browse"));
-           $contents.= "</li>";
-        }
+        // Browse stories  
+        $contents.= '<li class="leaf">';
+        $contents.= l(t('Browse Stories'), drupal_get_path_alias("node/".$group_nid."/browse"));
+        $contents.= "</li>";
         // add map link only if group type is *not* maps. iif there's a map on the
         // group home page there is no need to add the map again to the group menu. 
        if ($group_node->field_group_type[0]['value'] != 'maps') {
