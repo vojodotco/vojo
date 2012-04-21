@@ -18,7 +18,7 @@ function vojo_feature_openlayers_presets() {
     'image_path' => 'sites/all/libraries/openlayers/themes/dark/',
     'css_path' => 'sites/all/libraries/openlayers/themes/dark/style.css',
     'proxy_host' => '',
-    'hide_empty_map' => 0,
+    'hide_empty_map' => 1,
     'center' => array(
       'initial' => array(
         'centerpoint' => '',
@@ -36,6 +36,7 @@ function vojo_feature_openlayers_presets() {
           'vojo_group_stories_map_vojo_group_stories_map_ol_data' => 'vojo_group_stories_map_vojo_group_stories_map_ol_data',
         ),
       ),
+      'openlayers_behavior_dragpan' => array(),
       'openlayers_behavior_panzoombar' => array(),
       'openlayers_behavior_zoomtolayer' => array(
         'zoomtolayer' => 'vojo_group_stories_map_vojo_group_stories_map_ol_data',

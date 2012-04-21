@@ -553,6 +553,16 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Empty text: No mapped stories */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['ui_name'] = 'No mapped stories';
+  $handler->display->display_options['empty']['area']['label'] = '';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = '<p><?php print t("There are no stories with location info in this group. Add a location to a blog entry so it will show up here.") ?></p>';
+  $handler->display->display_options['empty']['area']['format'] = '4';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Relationship: Organic groups: Group node (post) */
   $handler->display->display_options['relationships']['group_nid']['id'] = 'group_nid';
   $handler->display->display_options['relationships']['group_nid']['table'] = 'og_ancestry';
@@ -727,6 +737,7 @@ function vojo_feature_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('<p><?php print t("There are no stories with location info in this group. Add a location to a blog entry so it will show up here.") ?></p>'),
     t('Group node (post)'),
     t('Latitude'),
     t('Longitude'),
