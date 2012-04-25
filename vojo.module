@@ -79,6 +79,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_record_blog',
     'vojo_save_blog',
     'vojo_login',
+    'vojo_welcome',
   );
 }
 
