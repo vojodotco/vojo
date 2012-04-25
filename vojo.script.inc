@@ -51,7 +51,7 @@ function _vojo_group($node) {
   if ($greeting = voipnode_get_greeting($node)) {
     $prompt = $greeting;
   }
-  $script->addGetInput($text, 1, '', 6);
+  $script->addGetInput($prompt, 1, '', 6);
   $script->addGotoIf('play_blogs', "^%input_digits == '1'");
   $script->addGotoIf('record_blog', "^%input_digits == '2'");
   $script->addGotoIf('learn_more', "^%input_digits == '3'");
