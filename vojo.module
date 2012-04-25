@@ -160,12 +160,9 @@ function vojo_ctools_plugin_api($module, $api) {
 }
 
 /**
- * Increase max length of location field on blog for https://dev.vozmob.net/issues/1072
+ * Get the url to an audio file stored with this model.
  */
-function vojo_form_blog_node_form_alter($form, &$form_state){
-  $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
-}
-function vojo_form_blog_node_form_after_build($form, &$form_state) {
-  $form['locations'][0]['name']['#maxlength'] = "128";
-  return $form;
+function _vojo_get_audio_url($filename){
+  global $base_url;
+  print $base_url."/".drupal_get_path('module','vojo')."/audio/".$filename;
 }

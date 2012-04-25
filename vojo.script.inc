@@ -1,9 +1,34 @@
 <?php
-
 /**
  * @file
  *     voipscripts for vojo hosted service.
  */
+
+/**
+ * VoIP script Callback: Welcome script
+ * @see voipextension_basic_menu
+ */
+function _vojo_welcome_script() {
+  $script = new VoipScript('vojo_welcome');
+
+  $prompt = _vojo_get_audio_url("vojo-welcome.mp3");
+
+  $script->addLabel('request_extension');
+  $script->addGetInput($prompt, 5, '#', 3);
+  $script->addGotoIf('no_input_received', "^%input_digits == ''");
+  $script->addGotoIf('go_back', "^%input_digits == '*'");
+  $script->addGosub('voipextension_play_extension', array('eid' => "%input_digits")); 
+  $script->addGoto('request_extension');
+
+  $script->addLabel('no_input_received');
+  $script->addSay(variable_get('voipextension_noinput_msg', t('No input received. Please try again.')));
+  $script->addGoto('request_extension');
+
+  $script->addLabel('go_back');
+  $script->addReturn();
+
+  return $script;
+}
 
 /**
  * VoIP Script Callback: Organic group options.
@@ -22,11 +47,9 @@ function _vojo_group($node) {
   }
 
   $script->addLabel('intro');
+  $prompt = t('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
   if ($greeting = voipnode_get_greeting($node)) {
-    $script->addSay($greeting);
-    $text = ".";
-  } else {
-    $text = t('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
+    $prompt = $greeting;
   }
   $script->addGetInput($text, 1, '', 6);
   $script->addGotoIf('play_blogs', "^%input_digits == '1'");
