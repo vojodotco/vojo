@@ -169,5 +169,5 @@ function vojo_ctools_plugin_api($module, $api) {
  */
 function _vojo_get_audio_url($filename){
   global $base_url;
-  print $base_url."/".drupal_get_path('module','vojo')."/audio/".$filename;
+  return $base_url."/".drupal_get_path('module','vojo')."/audio/".$filename;
 }
