@@ -35,7 +35,7 @@ function _vojo_welcome_script() {
  *
  * $param['nid'] = Node ID.
  */
-function _vojo_group($node) {
+function _vojo_group_script($node) {
   $script = new VoipScript('vojo_group');
 
   $script->addLabel('begin');
@@ -86,7 +86,7 @@ function _vojo_group($node) {
  *
  * $param['nid'] = Node ID.
  */
-function _vojo_record_blog($node) {
+function _vojo_record_blog_script($node) {
   $script = new VoipScript('vojo_record_blog');
  
   $script->addGosub('vojo_login', array('number' => '%caller_number'));
@@ -129,7 +129,7 @@ function _vojo_record_blog($node) {
  * $param['nid'] = Group node ID.
  * $param['fid'] = File ID (%recording_fid).
  */
-function _vojo_save_blog($nid, $fid) {
+function _vojo_save_blog_script($nid, $fid) {
   global $user;
   $script = new VoipScript('vojo_save_blog');
 
@@ -163,7 +163,7 @@ function _vojo_save_blog($nid, $fid) {
 /**
  * Log user in based on sms_user number.
  */
-function _vojo_login($number) {
+function _vojo_login_script($number) {
   global $user;
   $script = new VoipScript('vojo_login');
   $uid = sms_user_get_uid($number);
