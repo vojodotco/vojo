@@ -95,7 +95,7 @@ function _vojo_record_blog_script($node) {
 
   $script->addLabel('start');
   $script->addRecord(
-    'Start recording your message for %og_group after the tone. Press the pound key to stop recording.', 
+    v('Start recording your message for %og_group after the tone. Press the pound key to stop recording.'), 
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no recording detected','^%recording_duration == 0');
@@ -104,7 +104,7 @@ function _vojo_record_blog_script($node) {
   
   $script->addLabel('accept menu');
   $script->addGetInput(
-    'To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.',
+    v('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.'),
     10, '', 1
   );
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
@@ -155,7 +155,7 @@ function _vojo_save_blog_script($nid, $fid) {
   if ($field['list_field']) {
     $file['list'] = $field['list_default'];
   }
-  $node->field_voipnode_adesc[0] = $file;
+  $node->field_audio[0] = $file;
   
   node_save($node);
 
