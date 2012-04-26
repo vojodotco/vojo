@@ -560,7 +560,8 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['empty']['area']['ui_name'] = 'No mapped stories';
   $handler->display->display_options['empty']['area']['label'] = '';
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = '<p><?php print t("There are no stories with location info in this group. Add a location to a blog entry so it will show up here.") ?></p>';
+  $handler->display->display_options['empty']['area']['content'] = '<div class="map-overlay"><p><?php print t("This group has no stories with location information yet. If you\'re a group member, edit your stories and add location information and they\'ll appear on this map."); ?></p>
+<p> <?php print t(\'You can also post stories directly to the map from your phone: in the body of your message, use the "%" sign followed by an address or location (for example, "% 123 main st., cambridge, MA" or "%Macarthur Park, Los Angeles").\'); ?> </p></div>';
   $handler->display->display_options['empty']['area']['format'] = '4';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Relationship: Organic groups: Group node (post) */
@@ -737,7 +738,8 @@ function vojo_feature_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<p><?php print t("There are no stories with location info in this group. Add a location to a blog entry so it will show up here.") ?></p>'),
+    t('<div class="map-overlay"><p><?php print t("This group has no stories with location information yet. If you\'re a group member, edit your stories and add location information and they\'ll appear on this map."); ?></p>
+<p> <?php print t(\'You can also post stories directly to the map from your phone: in the body of your message, use the "%" sign followed by an address or location (for example, "% 123 main st., cambridge, MA" or "%Macarthur Park, Los Angeles").\'); ?> </p></div>'),
     t('Group node (post)'),
     t('Latitude'),
     t('Longitude'),
