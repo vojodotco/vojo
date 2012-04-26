@@ -12,8 +12,9 @@ function _vojo_welcome_script() {
   $script = new VoipScript('vojo_welcome');
 
   $prompt = _vojo_get_audio_url("vojo-welcome.mp3");
-
+  
   $script->addLabel('request_extension');
+  //$script->addGetInput(v('Welcome to Vojo. Please enter a group extension and then press pound.'), 5, '#', 3);
   $script->addGetInput($prompt, 5, '#', 3);
   $script->addGotoIf('no_input_received', "^%input_digits == ''");
   $script->addGotoIf('go_back', "^%input_digits == '*'");
@@ -21,7 +22,7 @@ function _vojo_welcome_script() {
   $script->addGoto('request_extension');
 
   $script->addLabel('no_input_received');
-  $script->addSay(variable_get('voipextension_noinput_msg', t('No input received. Please try again.')));
+  $script->addSay(variable_get('voipextension_noinput_msg', v('No input received. Please try again.')));
   $script->addGoto('request_extension');
 
   $script->addLabel('go_back');
@@ -47,7 +48,7 @@ function _vojo_group_script($node) {
   }
 
   $script->addLabel('intro');
-  $prompt = t('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
+  $prompt = v('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
   if ($greeting = voipnode_get_greeting($node)) {
     $prompt = $greeting;
   }
@@ -56,7 +57,7 @@ function _vojo_group_script($node) {
   $script->addGotoIf('record_blog', "^%input_digits == '2'");
   $script->addGotoIf('learn_more', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
-  $script->addSay(t('Input not recognized'));
+  $script->addSay(v('Input not recognized'));
 
   $script->addGoto('intro');
   
@@ -98,7 +99,8 @@ function _vojo_record_blog_script($node) {
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no recording detected','^%recording_duration == 0');
-  $script->addSay('You said %recording_public_url');
+  $script->addSay(v('You said ');
+  $script->addSay('%recording_public_url');
   
   $script->addLabel('accept menu');
   $script->addGetInput(
@@ -110,12 +112,12 @@ function _vojo_record_blog_script($node) {
   $script->addGotoIf('end record', "^%input_digits == '#'");
   // fall through to accept recording if no input (could be hang-up)
   $script->addLabel('accept recording');
-  $script->addSay('Please wait while we save your blog post');
+  $script->addSay(v('Please wait while we save your story');
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
   $script->addGoto('end record');
 
   $script->addLabel('no recording detected');
-  $script->addSay("No recording detected. Please try again.");
+  $script->addSay(v("No recording detected. Please try again."));
   $script->addGoto('start');
 
   $script->addLabel('end record');
@@ -144,7 +146,7 @@ function _vojo_save_blog_script($nid, $fid) {
   $file = db_fetch_object(db_query('SELECT * FROM {files} WHERE fid = %d', $fid));
   if (! file_copy($file, $target_dir,  FILE_EXISTS_RENAME)) {
     watchdog('vojo', 'Upload error. Could not move file %file to destination %destination.', array('%file' => $file->filename, '%destination' => $target_dir));
-    $script->addSay('Error saving blog.');
+    $script->addSay(v('Error saving story.'));
     return $script;
   }
   $file = (array) $file;
@@ -156,7 +158,7 @@ function _vojo_save_blog_script($nid, $fid) {
   
   node_save($node);
 
-  $script->addSay('blog saved.');
+  $script->addSay(v('Story saved.'));
   return $script; 
 }
 
