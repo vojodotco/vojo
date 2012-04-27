@@ -352,20 +352,18 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-2';
     $pane->panel = 'main';
     $pane->type = 'content_field';
-    $pane->subtype = 'field_voipnode_adesc';
+    $pane->subtype = 'field_audio';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'inline',
+      'label' => 'normal',
       'formatter' => 'audiofield_embedded',
       'context' => 'argument_nid_1',
       'override_title' => 1,
       'override_title_text' => '',
     );
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 1;
