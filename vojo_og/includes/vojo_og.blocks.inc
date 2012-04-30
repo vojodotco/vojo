@@ -104,7 +104,6 @@ function vojo_group_details_block() {
   // Get voip call in number, set at admin/voip/call/settings
   $vojo_voip_number = variable_get('voipcall_cid_number','');
   // Display extension.
-  // TODO - need to add field in group for this.
   if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
     $og_extenson = $node->voipextension_number;
   }
