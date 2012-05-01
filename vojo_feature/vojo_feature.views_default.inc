@@ -191,34 +191,31 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['field_image_fid']['multiple']['group'] = 1;
   $handler->display->display_options['fields']['field_image_fid']['multiple']['multiple_reversed'] = 0;
   /* Field: Audio icon */
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['id'] = 'field_voipnode_adesc_fid';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['table'] = 'node_data_field_voipnode_adesc';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['field'] = 'field_voipnode_adesc_fid';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['ui_name'] = 'Audio icon';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['text'] = '<span class="stories-audio-icon">Audio</span>';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['element_type'] = '0';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['element_label_type'] = '0';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['element_default_classes'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['hide_empty'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['link_to_node'] = 0;
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['label_type'] = 'none';
-  $handler->display->display_options['fields']['field_voipnode_adesc_fid']['format'] = 'path_plain';
+  $handler->display->display_options['fields']['field_audio_fid']['id'] = 'field_audio_fid';
+  $handler->display->display_options['fields']['field_audio_fid']['table'] = 'node_data_field_audio';
+  $handler->display->display_options['fields']['field_audio_fid']['field'] = 'field_audio_fid';
+  $handler->display->display_options['fields']['field_audio_fid']['ui_name'] = 'Audio icon';
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['text'] = '<span class="stories-audio-icon">Audio</span>';
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_audio_fid']['link_to_node'] = 0;
+  $handler->display->display_options['fields']['field_audio_fid']['label_type'] = 'none';
+  $handler->display->display_options['fields']['field_audio_fid']['format'] = 'path_plain';
   /* Field: Story is mapped icon */
   $handler->display->display_options['fields']['latitude']['id'] = 'latitude';
   $handler->display->display_options['fields']['latitude']['table'] = 'location';
@@ -399,6 +396,13 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter: Node: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'blog' => 'blog',
+  );
 
   /* Display: Group feed */
   $handler = $view->new_display('feed', 'Group feed', 'feed_1');
@@ -466,21 +470,28 @@ function vojo_feature_views_default_views() {
     ),
   );
 
-  /* Display: Vojo Blogger Browse Stories Pane */
-  $handler = $view->new_display('panel_pane', 'Vojo Blogger Browse Stories Pane', 'panel_pane_1');
+  /* Display: Vojo Users Browse Stories Pane */
+  $handler = $view->new_display('panel_pane', 'Vojo Users Browse Stories Pane', 'panel_pane_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Argument: User: Uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'users';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'user';
-  $handler->display->display_options['arguments']['uid']['default_argument_options']['user'] = FALSE;
-  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['uid']['not'] = 0;
+  /* Argument: User: Name */
+  $handler->display->display_options['arguments']['name']['id'] = 'name';
+  $handler->display->display_options['arguments']['name']['table'] = 'users';
+  $handler->display->display_options['arguments']['name']['field'] = 'name';
+  $handler->display->display_options['arguments']['name']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['name']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['name']['title'] = '1%\'s Blog';
+  $handler->display->display_options['arguments']['name']['default_argument_type'] = 'user';
+  $handler->display->display_options['arguments']['name']['default_argument_options']['user'] = FALSE;
+  $handler->display->display_options['arguments']['name']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['name']['validate_type'] = 'user';
+  $handler->display->display_options['arguments']['name']['validate_options']['type'] = 'either';
+  $handler->display->display_options['arguments']['name']['validate_options']['restrict_roles'] = 0;
+  $handler->display->display_options['arguments']['name']['glossary'] = 0;
+  $handler->display->display_options['arguments']['name']['ignorecase'] = 0;
+  $handler->display->display_options['arguments']['name']['limit'] = '0';
+  $handler->display->display_options['arguments']['name']['transform_dash'] = 0;
+  $handler->display->display_options['arguments']['name']['break_phrase'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter: Node: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -500,6 +511,28 @@ function vojo_feature_views_default_views() {
       'label' => 'User: Uid',
     ),
   );
+
+  /* Display: Browse Stories User Blog Page */
+  $handler = $view->new_display('page', 'Browse Stories User Blog Page', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Stories Blog';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Argument: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['title'] = '%1\'s blog';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = 'arg(1);';
+  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['uid']['validate_type'] = 'user';
+  $handler->display->display_options['arguments']['uid']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['uid']['validate_options']['restrict_roles'] = 0;
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['uid']['not'] = 0;
+  $handler->display->display_options['path'] = 'blogs/%';
   $translatables['vojo_group_browse_stories'] = array(
     t('Defaults'),
     t('All Stories'),
@@ -526,8 +559,12 @@ function vojo_feature_views_default_views() {
     t('Vojo Group Browse Stories Pane'),
     t('Vojo Browse Stories Pane'),
     t('Vojo'),
-    t('Vojo Blogger Browse Stories Pane'),
+    t('Vojo Users Browse Stories Pane'),
+    t('1%\'s Blog'),
     t('Vojo Blogger User\'s Stories Pane'),
+    t('Browse Stories User Blog Page'),
+    t('Stories Blog'),
+    t('%1\'s blog'),
   );
 
   $views[$view->name] = $view;

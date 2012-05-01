@@ -11,6 +11,35 @@ function vojo_init(){
     module_load_include('inc', 'vojo', 'includes/vojo.blocks');  
     // load costom voip-drupal scripts
     module_load_include('inc', 'vojo', 'includes/vojo.script');
+    if (arg(0) == 'blogs') {
+      drupal_set_title('somebodys blog!');
+    }
+}
+
+/**
+ * Implementation of hook_menu_alter.
+ */
+function vojo_menu_alter(&$items) {
+  // Unset default blog module's blog path (we want to use views instead). 
+  unset($items['blog/%user_uid_optional']);
+  $items['blog/%user_uid_optional']['page callback'] = FALSE;
+}
+
+/**
+ * Implementation of hook_link_alter.
+ */
+function vojo_link_alter(&$links, $node) {
+  // Change user's blog link to so it points to custom view (instead of core blog module's path)
+  if ($links['blog_usernames_blog']) {
+    $links['blog_usernames_blog']['href'] = 'blogs/'. $node->name;
+  }
+}
+/**
+ * Implementation of hook_profile_alter. 
+ */
+function vojo_profile_alter(&$account) {
+  // Override path to user's blog, /blogs points to a view instead. 
+  $account->content['summary']['blog']['#value'] = l(t('View recent blog entries'), 'blogs/'. $account->name, array('attributes' => array('title' => 'Read latest blog entries.'))); 
 }
 
 /**
