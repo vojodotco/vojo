@@ -72,8 +72,8 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= l(t('Browse Stories'), drupal_get_path_alias("node/".$group_nid."/browse"));
         $contents.= "</li>";
         // add map link only if group type is *not* maps. iif there's a map on the
-        // group home page there is no need to add the map again to the group menu. 
-       if ($group_node->field_group_type[0]['value'] != 'maps') {
+        // group home page there is no need to add the map again to the group menu.
+       if ($group_node->field_group_maps_opt_out[0]['value'] != 'off') {
             $contents.= '<li class="leaf">';
             $contents.= l(t('Map'), drupal_get_path_alias("node/".$group_nid."/map"));
             $contents.= "</li>";            

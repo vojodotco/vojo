@@ -60,22 +60,21 @@ function vojo_feature_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Header background color',
-      'weight' => '-1',
+      'weight' => '1',
       'description' => '',
       'type' => 'colorpicker_cck',
       'module' => 'colorpicker_cck',
     ),
   );
 
-  // Exported field: field_group_type
-  $fields['group-field_group_type'] = array(
-    'field_name' => 'field_group_type',
+  // Exported field: field_group_maps_opt_out
+  $fields['group-field_group_maps_opt_out'] = array(
+    'field_name' => 'field_group_maps_opt_out',
     'type_name' => 'group',
     'display_settings' => array(
-      'weight' => '-3',
-      'parent' => '',
       'label' => array(
         'format' => 'above',
+        'exclude' => 0,
       ),
       'teaser' => array(
         'format' => 'default',
@@ -108,15 +107,13 @@ function vojo_feature_content_default_fields() {
     ),
     'widget_active' => '1',
     'type' => 'text',
-    'required' => '1',
-    'multiple' => '0',
+    'required' => '0',
+    'multiple' => '1',
     'module' => 'text',
     'active' => '1',
     'text_processing' => '0',
     'max_length' => '',
-    'allowed_values' => 'news|News
-maps|Mapping
-',
+    'allowed_values' => 'Unselect this box to turn maps off.',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(
@@ -125,10 +122,10 @@ maps|Mapping
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Type of group',
-      'weight' => '-3',
-      'description' => '',
-      'type' => 'optionwidgets_select',
+      'label' => 'Maps',
+      'weight' => '-2',
+      'description' => 'By default, your group has a map view that shows stories as points on a map, if they have location information. ',
+      'type' => 'optionwidgets_buttons',
       'module' => 'optionwidgets',
     ),
   );
@@ -136,7 +133,7 @@ maps|Mapping
   // Translatables
   // Included for use with string extractors like potx.
   t('Header background color');
-  t('Type of group');
+  t('Maps');
 
   return $fields;
 }

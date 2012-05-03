@@ -49,6 +49,11 @@ function vojo_group_type_ctools_access_settings(&$form, &$form_state, $conf) {
 
 /**
  * Check for access.
+ *
+ * Note: this depends on the node having a field named field_group_type
+ * with a select list widget and the following default values:
+ * news|News
+ * maps|Mapping
  */
 function vojo_group_type_ctools_access_check($conf, $context) {
   $node = $context->data;
