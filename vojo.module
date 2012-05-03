@@ -200,3 +200,14 @@ function _vojo_get_audio_url($filename){
   global $base_url;
   return $base_url."/".drupal_get_path('module','vojo')."/audio/".$filename;
 }
+
+/**
+ * Increase max length of location field on blog for https://dev.vozmob.net/issues/1072
+ */
+function vojo_form_blog_node_form_alter($form, &$form_state){
+  $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
+}
+function vojo_form_blog_node_form_after_build($form, &$form_state) {
+  $form['locations'][0]['name']['#maxlength'] = "128";
+  return $form;
+}
