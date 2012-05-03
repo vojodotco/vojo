@@ -15,7 +15,7 @@ function vojo_feature_default_page_manager_handlers() {
   $handler->handler = 'panel_context';
   $handler->weight = -28;
   $handler->conf = array(
-    'title' => 'Group Homepage: News format',
+    'title' => 'Group Homepage',
     'no_blocks' => 0,
     'pipeline' => 'standard',
     'css_id' => '',
@@ -31,14 +31,6 @@ function vojo_feature_default_page_manager_handlers() {
             'type' => array(
               'group' => 'group',
             ),
-          ),
-          'context' => 'argument_nid_1',
-          'not' => FALSE,
-        ),
-        1 => array(
-          'name' => 'group_type',
-          'settings' => array(
-            'type' => 'news',
           ),
           'context' => 'argument_nid_1',
           'not' => FALSE,
