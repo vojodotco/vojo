@@ -37,10 +37,15 @@ function vojo_blog_photos_content_type_render($subtype, $conf, $panel_args, $con
       }
     }
     // Render field
-    $block->content = content_view_field($field, $node);
+    $block->content = '';
     if (count($node->field_image) > 1) {
-        $block->content .= '<div id="vojo-node-cycle-prev"><</div>';
-      $block->content .= '<div id="vojo-node-cycle-next">></div>'; 
+      $block->content .= '<div id="vojo-cycle-wrapper';
+    }
+    $block->content .= content_view_field($field, $node);
+    if (count($node->field_image) > 1) {
+      $block->content .= '<div id="vojo-node-cycle-prev"><</div>';
+      $block->content .= '<div id="vojo-node-cycle-next">></div>';
+      $block->content .= '</div>'; 
     }
     $block->content .= '<div id="vojo-node-cycle-pager"></div>';
   }

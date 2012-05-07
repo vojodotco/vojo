@@ -11,6 +11,7 @@ $plugin = array(
     'category' => t('Node'),
   );
 
+// A function that renders the pane
 function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_args, $context) {
   $block = new stdClass();
   // Get the node id from the url.
@@ -41,12 +42,13 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
       }
     }
   }
-
   ksort($playlist);
   $playlist = array_merge($playlist);
-    
-  $media_mover_vids = theme('flowplayer', array('clip' => array('autoPlay' => FALSE, 'autoBuffering' => TRUE), 'playlist' => $playlist, 'plugins' => array('controls' => array('fullscreen' => FALSE, 'playlist' => TRUE))), 'flowplayer-audio-' . $node->nid);
-
+ 
+  // Output 
+  if ($playlist) {
+    $media_mover_vids = theme('flowplayer', array('clip' => array('autoPlay' => FALSE, 'autoBuffering' => TRUE), 'playlist' => $playlist, 'plugins' => array('controls' => array('fullscreen' => FALSE, 'playlist' => TRUE))), 'flowplayer-audio-' . $node->nid);
+  }
   $block->content = $media_mover_vids;
 
   return $block;
