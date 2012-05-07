@@ -318,23 +318,13 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-1';
     $pane->panel = 'main';
-    $pane->type = 'content_field';
-    $pane->subtype = 'field_image';
+    $pane->type = 'blog_photos';
+    $pane->subtype = 'blog_photos';
     $pane->shown = TRUE;
-    $pane->access = array(
-      'plugins' => array(),
-    );
-    $pane->configuration = array(
-      'label' => 'normal',
-      'formatter' => '230px-sq_imagelink',
-      'context' => 'argument_nid_1',
-      'override_title' => 1,
-      'override_title_text' => '',
-    );
+    $pane->access = array();
+    $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
@@ -343,13 +333,11 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-2';
     $pane->panel = 'main';
-    $pane->type = 'content_field';
-    $pane->subtype = 'field_audio';
+    $pane->type = 'node_body';
+    $pane->subtype = 'node_body';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'normal',
-      'formatter' => 'audiofield_embedded',
       'context' => 'argument_nid_1',
       'override_title' => 1,
       'override_title_text' => '',
@@ -364,21 +352,23 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-3';
     $pane->panel = 'main';
-    $pane->type = 'node_content';
-    $pane->subtype = 'node_content';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_node_map-vojo_node_map_ol_map_pane';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'hide_empty_map',
+          'settings' => NULL,
+          'context' => 'argument_nid_1',
+          'not' => FALSE,
+        ),
+      ),
+    );
     $pane->configuration = array(
-      'links' => 1,
-      'page' => 1,
-      'no_extras' => 1,
-      'override_title' => 1,
-      'override_title_text' => '',
-      'identifier' => '',
-      'link' => 0,
-      'leave_node_title' => 0,
-      'build_mode' => 'full',
-      'context' => 'argument_nid_1',
+      'context' => array(
+        0 => 'argument_nid_1',
+      ),
     );
     $pane->cache = array();
     $pane->style = array(
@@ -415,33 +405,62 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-5';
     $pane->panel = 'right';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_node_map-vojo_node_map_ol_map_pane';
+    $pane->type = 'content_field';
+    $pane->subtype = 'field_audio';
     $pane->shown = TRUE;
-    $pane->access = array(
-      'plugins' => array(
-        0 => array(
-          'name' => 'hide_empty_map',
-          'settings' => NULL,
-          'context' => 'argument_nid_1',
-          'not' => FALSE,
-        ),
-      ),
-    );
+    $pane->access = array();
     $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_nid_1',
-      ),
+      'label' => 'normal',
+      'formatter' => 'audiofield_embedded',
+      'context' => 'argument_nid_1',
+      'override_title' => 1,
+      'override_title_text' => '',
     );
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
     $display->content['new-5'] = $pane;
     $display->panels['right'][0] = 'new-5';
+    $pane = new stdClass;
+    $pane->pid = 'new-6';
+    $pane->panel = 'right';
+    $pane->type = 'media_mover_display';
+    $pane->subtype = 'media_mover_display';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-6'] = $pane;
+    $display->panels['right'][1] = 'new-6';
+    $pane = new stdClass;
+    $pane->pid = 'new-7';
+    $pane->panel = 'right';
+    $pane->type = 'node_terms';
+    $pane->subtype = 'node_terms';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'vid' => '1',
+      'term_format' => 'inline-delimited',
+      'link' => 1,
+      'term_delimiter' => ', ',
+      'context' => 'argument_nid_1',
+      'override_title' => 1,
+      'override_title_text' => 'Tags',
+    );
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $display->content['new-7'] = $pane;
+    $display->panels['right'][2] = 'new-7';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

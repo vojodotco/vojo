@@ -92,6 +92,21 @@ function vojo_feature_imagecache_default_presets() {
         ),
       ),
     ),
+    'slideshow_window' => array(
+      'presetname' => 'slideshow_window',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '600',
+            'height' => '450',
+            'upscale' => 0,
+          ),
+        ),
+      ),
+    ),
   );
   return $items;
 }
