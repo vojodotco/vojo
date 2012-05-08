@@ -48,7 +48,7 @@ function _vojo_group_script($node) {
   }
 
   $script->addLabel('intro');
-  $prompt = v('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.') . ' ';
+  $prompt = v('To hear stories press 1. To record your own story press 2. To learn more press 3. To return and select another group press the pound key.');
   if ($greeting = voipnode_get_greeting($node)) {
     $prompt = $greeting;
   }
