@@ -6,6 +6,73 @@
 function vojo_feature_content_default_fields() {
   $fields = array();
 
+  // Exported field: field_location_string
+  $fields['blog-field_location_string'] = array(
+    'field_name' => 'field_location_string',
+    'type_name' => 'blog',
+    'display_settings' => array(
+      'weight' => '2',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 1,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 1,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '200',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_location_string][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Location',
+      'weight' => '2',
+      'description' => '',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
   // Exported field: field_group_header_bg_color
   $fields['group-field_group_header_bg_color'] = array(
     'field_name' => 'field_group_header_bg_color',
@@ -70,6 +137,7 @@ function vojo_feature_content_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Header background color');
+  t('Location');
 
   return $fields;
 }

@@ -100,8 +100,8 @@ function vojo_feature_imagecache_default_presets() {
           'module' => 'imagecache',
           'action' => 'imagecache_scale',
           'data' => array(
-            'width' => '600',
-            'height' => '450',
+            'width' => '770',
+            'height' => '500',
             'upscale' => 0,
           ),
         ),

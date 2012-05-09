@@ -30,18 +30,13 @@ function vojo_feature_openlayers_presets() {
       ),
     ),
     'behaviors' => array(
-      'openlayers_behavior_attribution' => array(),
-      'openlayers_behavior_popup' => array(
-        'layers' => array(
-          'vojo_group_stories_map_vojo_group_stories_map_ol_data' => 'vojo_group_stories_map_vojo_group_stories_map_ol_data',
-        ),
-      ),
       'openlayers_behavior_dragpan' => array(),
       'openlayers_behavior_panzoombar' => array(),
       'openlayers_behavior_zoomtolayer' => array(
         'zoomtolayer' => 'vojo_group_stories_map_vojo_group_stories_map_ol_data',
         'point_zoom_level' => '11',
       ),
+      'openlayers_plus_behavior_popup' => array(),
     ),
     'default_layer' => 'osm_mapnik',
     'layers' => array(
