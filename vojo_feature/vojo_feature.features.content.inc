@@ -73,67 +73,6 @@ function vojo_feature_content_default_fields() {
     ),
   );
 
-  // Exported field: field_group_header_bg_color
-  $fields['group-field_group_header_bg_color'] = array(
-    'field_name' => 'field_group_header_bg_color',
-    'type_name' => 'group',
-    'display_settings' => array(
-      'weight' => '-1',
-      'parent' => '',
-      'label' => array(
-        'format' => 'above',
-      ),
-      'teaser' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'full' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-    ),
-    'widget_active' => '1',
-    'type' => 'colorpicker_cck_textfield',
-    'required' => '0',
-    'multiple' => '0',
-    'module' => 'colorpicker_cck',
-    'active' => '1',
-    'widget' => array(
-      'default_value' => array(
-        '0' => array(
-          'value' => '',
-          '_error_element' => 'default_value_widget][field_group_header_bg_color][0][value',
-        ),
-      ),
-      'default_value_php' => NULL,
-      'label' => 'Header background color',
-      'weight' => '-1',
-      'description' => '',
-      'type' => 'colorpicker_cck',
-      'module' => 'colorpicker_cck',
-    ),
-  );
-
   // Exported field: field_direct_phone_number
   $fields['group-field_direct_phone_number'] = array(
     'field_name' => 'field_direct_phone_number',
@@ -202,9 +141,8 @@ function vojo_feature_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Header background color');
-  t('Location');
   t('Direct Phone Number');
+  t('Location');
 
   return $fields;
 }
