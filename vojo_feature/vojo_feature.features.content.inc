@@ -134,10 +134,77 @@ function vojo_feature_content_default_fields() {
     ),
   );
 
+  // Exported field: field_direct_phone_number
+  $fields['group-field_direct_phone_number'] = array(
+    'field_name' => 'field_direct_phone_number',
+    'type_name' => 'group',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'voipnumber',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'voipnumber',
+    'active' => '1',
+    'voipnumber_choice' => '1',
+    'voipnumber_types' => '',
+    'voipnumber_allowed_countries' => array(),
+    'voipnumber_default' => '',
+    'voipnumber_max_length' => '15',
+    'voipnumber_show_code' => 1,
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'number_prefix' => 'United States of America',
+          'phone' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Direct Phone Number',
+      'weight' => '31',
+      'description' => '',
+      'type' => 'voipphonenumber_widget',
+      'module' => 'voipnumber',
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Header background color');
   t('Location');
+  t('Direct Phone Number');
 
   return $fields;
 }
