@@ -28,7 +28,7 @@ function _vojo_welcome_script() {
   $script->addGoto('request_extension');
 
   $script->addLabel('forward_to_group');
-  $script->addGosub('_vojo_get_node_script_from_number', array('number'=>'%dest_number'));
+  $script->addGosub('vojo_redirect_to_group', array('number'=>'%dest_number'));
   $script->addGoto('request_extension');
 
   $script->addLabel('go_back');
@@ -40,7 +40,7 @@ function _vojo_welcome_script() {
 /**
  * Find the node associated with a phone number, and return it's script (or an error script if none matches)
  */
-function _vojo_get_node_script_from_number($number) {
+function _vojo_redirect_to_group_script($number) {
   $nid = _vojo_voipnumber_api_nid_from_number($number);
   $script = new VoipScript('vojo_redirect_to_group');
   if($nid==null) {

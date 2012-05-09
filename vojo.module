@@ -97,6 +97,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_welcome_script($params['number']);
     }
+    elseif ($script_name == 'vojo_redirect_to_group') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_redirect_to_group_script($params['number']);
+    }
 }
 
 /**
@@ -109,6 +113,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_save_blog',
     'vojo_login',
     'vojo_welcome',
+    'vojo_redirect_to_group',
   );
 }
 
