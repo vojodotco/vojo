@@ -211,3 +211,34 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
   $form['locations'][0]['name']['#maxlength'] = "128";
   return $form;
 }
+
+/**
+ * Find the node matching the specified phone number, checking in all voipnumber fields.
+ * Returns false if no match is found.  If multiple matches are found, this return the first
+ * one it finds.
+ */
+function _vojo_voipnumber_api_nid_from_number($number) {
+  // look in all the voipnumber fields
+  foreach( content_fields() as $field){
+    if($field['type']=='voipnumber'){
+      // determine what table to search in 
+      $table_name= "content_type_".$field['type_name'];
+      $col_name = $field['field_name']."_phone";
+      // search for any matches to the phone number
+      $sql = 'SELECT nid FROM {'.$table_name.'} WHERE '.$col_name.' = "%s"';
+      $result = db_query($sql, $number);
+      while ($noderow = db_fetch_object($result)) {
+        return $noderow->nid;
+      }
+    }
+  }
+  return false;
+}
+
+
+/**
+ * Find the extension number for a specific node id.
+ */
+function _vojo_voipextension_api_extension_for_node($nid) {
+  return db_result(db_query('SELECT eid FROM {voipextension} WHERE module_id = %d', $nid));
+}

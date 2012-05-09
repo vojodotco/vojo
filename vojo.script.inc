@@ -11,6 +11,8 @@
 function _vojo_welcome_script() {
   $script = new VoipScript('vojo_welcome');
 
+  $script->addGotoIf('forward_to_group',"^%dest_number != ".variable_get('voipcall_cid_number',''));
+
   $prompt = _vojo_get_audio_url("vojo-welcome.mp3");
   
   $script->addLabel('request_extension');
@@ -25,9 +27,38 @@ function _vojo_welcome_script() {
   $script->addSay(variable_get('voipextension_noinput_msg', v('No input received. Please try again.')));
   $script->addGoto('request_extension');
 
+  $script->addLabel('forward_to_group');
+  $script->addGosub('_vojo_get_node_script_from_number', array('number'=>'%dest_number'));
+  $script->addGoto('request_extension');
+
   $script->addLabel('go_back');
   $script->addReturn();
 
+  return $script;
+}
+
+/**
+ * Find the node associated with a phone number, and return it's script (or an error script if none matches)
+ */
+function _vojo_get_node_script_from_number($number) {
+  $nid = _vojo_voipnumber_api_nid_from_number($number);
+  $script = new VoipScript('vojo_redirect_to_group');
+  if($nid==null) {
+    // no matching node for number found, return a brief error message
+    watchdog('vojo', 'No node has direct phone number %number',array('%number'=>$number));
+    $script->addSay(v('Sorry, there is no group at that number.'));
+  } else {
+    // found a node, return its script
+    $eid = _vojo_voipextension_api_extension_for_node($nid);
+    if($eid===false){
+      watchdog('vojo', 'Direct phone number %number is node %nid, but has no extension', array('%number'=>$number, '%nid'=>$nid));
+      $script->addSay(v('Sorry, there is no extension for that number.'));
+    } else {
+      watchdog('vojo', 'Forwarding directly to group %nid / extension %eid (user called %number)', array('%nid'=>$nid, '%eid'=>$eid, '%number'=>$number));
+      $script->addGosub('voipextension_play_extension', array('eid' => $eid)); 
+    }
+  }
+  $script->addReturn();
   return $script;
 }
 
