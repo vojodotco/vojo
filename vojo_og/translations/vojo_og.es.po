@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vojo_og\n"
 "POT-Creation-Date: 2012-05-09 17:22+0000\n"
-"PO-Revision-Date: 2012-05-09 13:41-0500\n"
+"PO-Revision-Date: 2012-05-09 13:54-0500\n"
 "Last-Translator: Rahul Bhargava <rahulb@media.mit.edu>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -105,9 +105,9 @@ msgstr "eliminar su solicitatión"
 
 #: includes/vojo_og.blocks.inc:149
 msgid "To subscribe to this group, you must <a href=\"!login\">login</a>."
-msgstr ""
+msgstr "Para unirse a este group, tiene que <a href=\"!login\">iniciar sesión</a>."
 
 #: includes/vojo_og.blocks.inc:152
 msgid "To subscribe to this group, you must <a href=\"!register\">register</a> or <a href=\"!login\">login</a>."
-msgstr ""
+msgstr "Para unirse a este group, tiene que <a href=\"!register\">rigistrar</a> o <a href=\"!login\">iniciar sesión</a>."
 
