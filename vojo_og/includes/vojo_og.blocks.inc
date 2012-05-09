@@ -101,10 +101,14 @@ function _vojo_og_generic_group_menu_block_contents(){
 function vojo_group_details_block() {
   global $user;
   $node = og_get_group_context();
-  // Get voip call in number, set at admin/voip/call/settings
-  $vojo_voip_number = variable_get('voipcall_cid_number','');
-  // Display extension.
-  if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
+  // Display direct number for group if available. 
+  if (!empty($node->field_direct_phone_number[0]['phone']) && !empty($node->field_direct_phone_number[0]['number_prefix'])) {
+    $vojo_voip_number = $node->field_direct_phone_number[0]['phone'];
+    $og_extenson = $node->field_direct_phone_number[0]['number_prefix'];
+  }
+  // Otherwise get set in admin/voip/call/settings.
+  else if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
+    $vojo_voip_number = variable_get('voipcall_cid_number','');
     $og_extenson = $node->voipextension_number;
   }
   if (isset($node->field_yeta[0]['value'])) {
