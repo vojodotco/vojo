@@ -102,9 +102,8 @@ function vojo_group_details_block() {
   global $user;
   $node = og_get_group_context();
   // Display direct number for group if available. 
-  if (!empty($node->field_direct_phone_number[0]['phone']) && !empty($node->field_direct_phone_number[0]['number_prefix'])) {
+  if (!empty($node->field_direct_phone_number[0]['phone'])) {
     $vojo_voip_number = $node->field_direct_phone_number[0]['phone'];
-    $og_extenson = $node->field_direct_phone_number[0]['number_prefix'];
   }
   // Otherwise get set in admin/voip/call/settings.
   else if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
@@ -121,7 +120,9 @@ function vojo_group_details_block() {
   if ($vojo_voip_number && $og_extenson) {
     $message['post_story'] .= '<p>'. t('Or call @phone ext. @ext to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
   }
-                                                                                                                      
+  else {
+    $message['post_story'] .= '<p>'. t('Or call @phone to record your audio story', array('@phone' => $vojo_voip_number)) .'</p>';                                                                                                      
+  }
   // Only display group details if we have a group context.
   if ($node && node_access('view', $node)) {
     list($txt, $subscription) = og_subscriber_count_link($node);
