@@ -70,7 +70,7 @@ function vojo_feature_openlayers_presets() {
     'image_path' => '/sites/all/libraries/openlayers/themes/dark/',
     'css_path' => 'sites/all/libraries/openlayers/themes/dark/style.css',
     'proxy_host' => '',
-    'hide_empty_map' => 0,
+    'hide_empty_map' => 1,
     'center' => array(
       'initial' => array(
         'centerpoint' => '',
