@@ -209,14 +209,23 @@ function _vojo_get_audio_url($filename){
 /**
  * Increase max length of location field on blog for https://dev.vozmob.net/issues/1072
  */
-function vojo_form_blog_node_form_alter($form, &$form_state){
+function vojo_form_blog_node_form_alter($form, &$form_state) {
+  // Hide location field to prevent users from editing it directly. 
+  $form['field_location_string']['#theme'] = FALSE;
+  
   $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
+  
+  // Well need to set value of $form['field_location_string'] in a submit handler. 
+  $form['#submit'][] = 'vojo_form_blog_node_form_submit';
 }
 function vojo_form_blog_node_form_after_build($form, &$form_state) {
   $form['locations'][0]['name']['#maxlength'] = "128";
   return $form;
 }
-
+function vojo_form_blog_node_form_submit($form, &$form_state) {
+  // Grab user entered value from openlayers_geocoder field and save to $form['field_location_string']
+  $form_state['values']['field_location_string'][0]['value'] = $form['field_map']['openlayers_geocoder_query']['#value'];
+}
 /**
  * Find the node matching the specified phone number, checking in all voipnumber fields.
  * Returns false if no match is found.  If multiple matches are found, this return the first
