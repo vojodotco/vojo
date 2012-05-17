@@ -819,6 +819,8 @@ function vojo_feature_views_default_views() {
   /* Display: Vojo Group Stories OL Data */
   $handler = $view->new_display('openlayers', 'Vojo Group Stories OL Data', 'vojo_group_stories_map_ol_data');
   $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '0';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'openlayers_data';
   $handler->display->display_options['style_options']['data_source'] = array(
@@ -1603,10 +1605,6 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['tid']['table'] = 'term_node';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
   $handler->display->display_options['arguments']['tid']['default_action'] = 'summary desc';
-  $handler->display->display_options['arguments']['tid']['style_plugin'] = 'cloud_summary';
-  $handler->display->display_options['arguments']['tid']['style_options']['count'] = 0;
-  $handler->display->display_options['arguments']['tid']['style_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['tid']['style_options']['randomize'] = 1;
   $handler->display->display_options['arguments']['tid']['title'] = 'Posts in %1';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid']['validate_type'] = 'taxonomy_term';
@@ -1662,11 +1660,6 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['tid']['table'] = 'term_node';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
   $handler->display->display_options['arguments']['tid']['default_action'] = 'summary desc';
-  $handler->display->display_options['arguments']['tid']['style_plugin'] = 'cloud_summary';
-  $handler->display->display_options['arguments']['tid']['style_options']['count'] = 0;
-  $handler->display->display_options['arguments']['tid']['style_options']['override'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['style_options']['items_per_page'] = '';
-  $handler->display->display_options['arguments']['tid']['style_options']['randomize'] = 1;
   $handler->display->display_options['arguments']['tid']['title'] = 'Posts in %1';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid']['validate_type'] = 'taxonomy_term';
