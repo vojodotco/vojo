@@ -40,6 +40,8 @@ function vojo_og_block($op = 'list', $delta = 0, $edit = array()) {
  * Supply a generic menu for un-themed groups
  */
 function _vojo_og_generic_group_menu_block_contents(){
+    global $user;
+
     $contents = null;
     $group_node = og_get_group_context();
     $group_nid = $group_node->nid;
@@ -61,12 +63,14 @@ function _vojo_og_generic_group_menu_block_contents(){
             $contents.= "</li>";
         }    
         // group story submit page
-        if (user_access('create blog entries')) {
-            $contents.= '<li class="leaf">';
-            $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
-            // $contents.= l(t('Submit'), drupal_get_path_alias("node/".$group_nid."/submit"));
-            $contents.= "</li>";               
+        $contents.= '<li class="leaf">';
+        if (user_access('create blog entries') && $user->uid > 0) {
+          $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
         }
+        else {
+          $contents .= l(t('Submit'), 'node/'. $group_nid .'/blog-add/access-denied', array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
+        }
+        $contents.= "</li>";               
         // Browse stories  
         $contents.= '<li class="leaf">';
         $contents.= l(t('Browse Stories'), drupal_get_path_alias("node/".$group_nid."/browse"));
