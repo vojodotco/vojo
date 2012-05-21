@@ -68,7 +68,7 @@ function _vojo_og_generic_group_menu_block_contents(){
           $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
         }
         else {
-          $contents .= l(t('Submit'), 'node/'. $group_nid .'/blog-add/access-denied', array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
+          $contents .= l(t('Submit'), 'node/'. $group_nid .'/blog-add/access-denied');
         }
         $contents.= "</li>";               
         // Browse stories  
