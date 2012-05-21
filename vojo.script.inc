@@ -161,6 +161,7 @@ function _vojo_record_blog_script($node) {
  *
  * $param['nid'] = Group node ID.
  * $param['fid'] = File ID (%recording_fid).
+ * @see _vozmob_callin_record_callback()
  */
 function _vojo_save_blog_script($nid, $fid) {
   global $user;
