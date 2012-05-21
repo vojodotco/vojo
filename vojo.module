@@ -256,3 +256,23 @@ function _vojo_voipnumber_api_nid_from_number($number) {
 function _vojo_voipextension_api_extension_for_node($nid) {
   return db_result(db_query('SELECT eid FROM {voipextension} WHERE module_id = %d', $nid));
 }
+
+/**
+ * Helper function to format phone numbers. 
+ */
+function format_phone_number($number) {
+  // If 12 digits format as Mexican number: +xx xx xxx-xxxxx. 
+  if (is_numeric($number)) {
+    if (strlen($number) == 19) {
+      $formatted_number = '+'. substr($number, 0, 2) .' '. substr($number, 2, 2) .' '. substr($number, 4, 3) .'-'. substr($number, 7);
+    }
+    // If 10 digits format as US number: (xxx) xxx-xxxx.
+    else if (strlen($number) == 10) {
+      $formatted_number = '('. substr($number, 0, 3) .') '. substr($number, 3, 3) .'-'. substr($number, 6);
+    }
+  }
+  else {
+    $formatted_number = $number;
+  }   
+  return $formatted_number;
+}
