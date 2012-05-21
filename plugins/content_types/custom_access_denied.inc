@@ -7,17 +7,31 @@ $plugin = array(
     'single' => TRUE,
     'icon' => 'icon_node_form.png',
     'no title override' => TRUE,
-    'title' => t('Access Deneid Messages'),
+    'title' => t('Access denied message for Blog entries'),
+    'description' => t('An access denied message for Blog entries that retains group context. Use with panel '),
     'category' => t('Vojo'),
   );
 
 function vojo_custom_access_denied_content_type_render($subtype, $conf, $panel_args, $context) {
   $block = new stdClass();
-  
-  // Assuming the path for the panel is node/add/blog/%node/access-denied
+
+// Note: this Panels pane should to be used with a panels node variant with the following these two selection rules: 
+//  1) Node: type --	Node being viewed is type Group
+//  2) String: URL path -- node/*/blog-add/access-denied
+
+  // Get group nid from path.
+  $nid = arg(1);
+  $group_node = node_load($nid);
+
   $block->title = t('Access denied');
-  $block->content = '<p>'. t("Sorry, only members can post stories to this group.", array('@title' => $node->title)) .'</p>';
-  $block->content .= '<p>'. t("If you'd like, you can post a story to this group from your phone - just follow the directions on the right. Once you've done that, you'll also become a group member.") .'</p>';
+  // Show a different message based on group membership type.
+  if ($node->og_selective == OG_OPEN) {
+    $message = '<p>'. t("If you'd like, you can post a story to this group from your phone - just follow the directions on the right. Once you've done that, you'll also become a group member.") .'</p>';
+  }
+  else {
+    $message = '<p>'. t("Sorry, only members can post stories to this group.", array('@title' => $node->title)) .'</p>';
+  }
+  $block->content = $message;
   return $block;
 }
 
