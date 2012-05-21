@@ -9,14 +9,15 @@
  * @see voipextension_basic_menu
  */
 function _vojo_welcome_script() {
+  voipvoice_set_current_voice('vojo-english');  // TODO: allow voice user to switch language
+  
   $script = new VoipScript('vojo_welcome');
 
   $script->addGotoIf('forward_to_group',"^%dest_number != ".variable_get('voipcall_cid_number',''));
 
-  $prompt = _vojo_get_audio_url("vojo-welcome.mp3");
+  $prompt = v('Welcome to Vojo. Please enter a group extension and then press pound.');
   
   $script->addLabel('request_extension');
-  //$script->addGetInput(v('Welcome to Vojo. Please enter a group extension and then press pound.'), 5, '#', 3);
   $script->addGetInput($prompt, 5, '#', 3);
   $script->addGotoIf('no_input_received', "^%input_digits == ''");
   $script->addGotoIf('go_back', "^%input_digits == '*'");
