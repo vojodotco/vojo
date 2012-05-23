@@ -190,32 +190,6 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['field_image_fid']['format'] = 'browse_stories_linked';
   $handler->display->display_options['fields']['field_image_fid']['multiple']['group'] = 1;
   $handler->display->display_options['fields']['field_image_fid']['multiple']['multiple_reversed'] = 0;
-  /* Field: Audio icon */
-  $handler->display->display_options['fields']['field_audio_fid']['id'] = 'field_audio_fid';
-  $handler->display->display_options['fields']['field_audio_fid']['table'] = 'node_data_field_audio';
-  $handler->display->display_options['fields']['field_audio_fid']['field'] = 'field_audio_fid';
-  $handler->display->display_options['fields']['field_audio_fid']['ui_name'] = 'Audio icon';
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['text'] = '<span class="stories-audio-icon">Audio</span>';
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['element_label_colon'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['link_to_node'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['label_type'] = 'none';
-  $handler->display->display_options['fields']['field_audio_fid']['format'] = 'path_plain';
   /* Field: Story is mapped (openlayers_wkt) */
   $handler->display->display_options['fields']['field_map_openlayers_wkt']['id'] = 'field_map_openlayers_wkt';
   $handler->display->display_options['fields']['field_map_openlayers_wkt']['table'] = 'node_data_field_map';
@@ -547,7 +521,6 @@ function vojo_feature_views_default_views() {
     t('- All -'),
     t('Offset'),
     t('Nid'),
-    t('<span class="stories-audio-icon">Audio</span>'),
     t('Story is mapped'),
     t('view story'),
     t('node/[nid]'),
@@ -683,7 +656,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['view_node']['empty_zero'] = 0;
   $handler->display->display_options['fields']['view_node']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['view_node']['text'] = 'Listen to audio';
-  /* Field: Content: Voice (field_audio) */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_audio_fid']['id'] = 'field_audio_fid';
   $handler->display->display_options['fields']['field_audio_fid']['table'] = 'node_data_field_audio';
   $handler->display->display_options['fields']['field_audio_fid']['field'] = 'field_audio_fid';
@@ -706,8 +679,6 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['field_audio_fid']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_audio_fid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_audio_fid']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_audio_fid']['link_to_node'] = 0;
-  $handler->display->display_options['fields']['field_audio_fid']['format'] = 'path_plain';
   /* Field: Node: Body */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'node_revisions';
@@ -1605,6 +1576,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['tid']['table'] = 'term_node';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
   $handler->display->display_options['arguments']['tid']['default_action'] = 'summary desc';
+  $handler->display->display_options['arguments']['tid']['style_plugin'] = 'default_summary';
   $handler->display->display_options['arguments']['tid']['title'] = 'Posts in %1';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid']['validate_type'] = 'taxonomy_term';
@@ -1660,6 +1632,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['tid']['table'] = 'term_node';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
   $handler->display->display_options['arguments']['tid']['default_action'] = 'summary desc';
+  $handler->display->display_options['arguments']['tid']['style_plugin'] = 'default_summary';
   $handler->display->display_options['arguments']['tid']['title'] = 'Posts in %1';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'fixed';
   $handler->display->display_options['arguments']['tid']['validate_type'] = 'taxonomy_term';
