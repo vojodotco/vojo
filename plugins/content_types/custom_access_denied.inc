@@ -13,15 +13,21 @@ $plugin = array(
   );
 
 function vojo_custom_access_denied_content_type_render($subtype, $conf, $panel_args, $context) {
+  global $user;
   $block = new stdClass();
-
+  
 // Note: this Panels pane should to be used with a panels node variant with the following these two selection rules: 
 //  1) Node: type --	Node being viewed is type Group
 //  2) String: URL path -- node/*/blog-add/access-denied
-
+  
   // Get group nid from path.
   $nid = arg(1);
   $group_node = node_load($nid);
+
+  // If the users is logged in, redirect them to the node add form for this group. 
+  if ($user->uid > 0) {
+    drupal_goto("node/add/blog", 'gids[]='. $group_node->nid);
+  }
 
   $block->title = t('Access denied');
   // Show a different message based on group membership type.
