@@ -28,6 +28,7 @@
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 13px;
   line-height: 18px;
+  height: 30px;
 }
 #vojo-user-links,
 #vojo-user-links a {
@@ -48,6 +49,8 @@
   border-radius: 12px;
   padding: 5px 20px 5px 12px;
   background: url(../img/downarrow.png) no-repeat right 10px;
+  cursor: pointer;
+  cursor: hand;
 }
 #vojo-user-links ul {
   padding: 0;
