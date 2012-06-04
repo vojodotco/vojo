@@ -17,12 +17,40 @@ function vojo_init(){
 }
 
 /**
+ * Implementation of hook_menu.
+ */
+function vojo_menu(&$items) {
+  global $user;
+  $items['nolink'] = array(
+    'page callback'    => 'vojo_nolink',
+    'access callback'  => TRUE,
+    'type'             => MENU_CALLBACK,
+  );
+  $items['vojo_user_name'] = array(
+    'title' => t('Hello @name', array('@name' => $user->name)),
+    'page callback'    => 'vojo_nolink',
+    'access callback'  => TRUE,
+    'type'             => MENU_NORMAL_ITEM,
+    'menu_name' => 'secondary-links',
+  );
+  return $items;
+}
+
+/**
  * Implementation of hook_menu_alter.
  */
 function vojo_menu_alter(&$items) {
   // Unset default blog module's blog path (we want to use views instead). 
   unset($items['blog/%user_uid_optional']);
   $items['blog/%user_uid_optional']['page callback'] = FALSE;
+}
+
+/**
+ * Page callback
+*/
+function vojo_nolink() {
+  $output = 'This is a dummy page used for nolink menu items. You should not be able to see this page';
+  return t($output);
 }
 
 /**
@@ -288,3 +316,18 @@ function format_phone_number($number) {
   }   
   return $formatted_number;
 }
+
+function vojo_preprocess_page(&$vars) {
+  // Generate user links menu
+  $menu_tree = menu_tree_page_data('secondary-links');
+  $vars['user_links'] = '<div id="vojo-user-menu">';
+  if ($vars['logged_in'] == 1) {
+    $vars['user_links'] .= theme('dropdown_links', $menu_tree, array('id' => 'vojo-user-links'));
+  }
+   else {
+    $vars['user_links'] .= l(t('Login'), 'user/login', array('attributes' => array('id' => 'vojo-login-link'))) .' '; 
+    $vars['user_links'] .= ' | '. l(t('Signup'), 'user/register', array('attributes' => array('id' => 'vojo-login-link')));
+  }
+  $vars['user_links'] .= '</div>';
+}
+
