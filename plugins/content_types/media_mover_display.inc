@@ -47,10 +47,12 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
  
   // Output 
   if ($playlist) {
-    $media_mover_vids = theme('flowplayer', array('clip' => array('autoPlay' => FALSE, 'autoBuffering' => TRUE), 'playlist' => $playlist, 'plugins' => array('controls' => array('fullscreen' => FALSE, 'playlist' => TRUE))), 'flowplayer-audio-' . $node->nid);
+    $block->content = $media_mover_vids;
+    foreach ($playlist as $clip) {
+      $flash_vars['playlist'][] = array('file' => $clip['url']);
+    }
+    $block->content = theme('jwplayermodule_render_player', array(), $flash_vars);
   }
-  $block->content = $media_mover_vids;
-
   return $block;
 }
 
