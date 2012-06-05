@@ -155,3 +155,21 @@ function _vojo_get_public_groups(){
   }
   return $ids;
 }
+
+/**
+ * Implementation of hook_nodeapi().
+ * Modify nodes appropriately based on the settings.
+ */
+function vojo_og_nodeapi(&$node, $op, $a3=null, $a4=null) {
+  // strip non-numeric chars from direct phone line before save 
+  // (so the VoipScript to lookup direct phone numbers works)
+  if($node->type=='group'){
+    switch($op){
+    case "presave":
+      if($node->field_direct_phone_number[0]['phone']!=null){
+        $node->field_direct_phone_number[0]['phone'] = preg_replace('/[^\d]*/','', $node->field_direct_phone_number[0]['phone']);
+      }
+      break;
+    }
+  }
+}
