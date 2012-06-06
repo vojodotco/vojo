@@ -873,7 +873,7 @@ function vojo_feature_views_default_views() {
   $view = new view;
   $view->name = 'vojo_node_map';
   $view->description = '';
-  $view->tag = 'Vojo';
+  $view->tag = 'vojo';
   $view->base_table = 'node';
   $view->human_name = 'Vojo Node Map';
   $view->core = 6;
@@ -1528,7 +1528,7 @@ function vojo_feature_views_default_views() {
   $view = new view;
   $view->name = 'vojo_tag_clouds';
   $view->description = 'Provides a tag cloud for tags. ';
-  $view->tag = '';
+  $view->tag = 'vojo';
   $view->base_table = 'node';
   $view->human_name = '';
   $view->core = 6;
