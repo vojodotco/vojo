@@ -80,25 +80,25 @@ function _vojo_group_script($node) {
   }
 
   $script->addLabel('intro');
-  $prompt = v('To record your own story press 2. To learn more press 3. To return and select another group press the pound key.');
+  $prompt = v('To hear other stories, press 1.  To record your own story press 2. To learn more press 3. To return and select another group press the pound key.');
   if ($greeting = voipnode_get_greeting($node)) {
     $prompt = $greeting;
   }
   $script->addGetInput($prompt, 1, '', 6);
-  $script->addGotoIf('play_blogs', "^%input_digits == '1'");
-  $script->addGotoIf('record_blog', "^%input_digits == '2'");
+  $script->addGotoIf('hear_stories', "^%input_digits == '1'");
+  $script->addGotoIf('record_story', "^%input_digits == '2'");
   $script->addGotoIf('learn_more', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
   $script->addSay(v('Input not recognized'));
 
   $script->addGoto('intro');
   
-  $script->addLabel('play_blogs');
-  $params = array('view_name' => 'og_ghp_ron_voip', 'display_id' => 'voipviews_1', 'args' => json_encode(array($node->nid)));
+  $script->addLabel('hear_stories');
+  $params = array('view_name' => 'vojo_group_browse_stories', 'display_id' => 'vojo_group_stories_voip', 'args' => json_encode(array($node->nid)));
   $script->addGosub('voipviews_read_view', $params);
   $script->addGoto('begin');
 
-  $script->addLabel('record_blog');
+  $script->addLabel('record_story');
   $script->addGosub('vojo_record_blog', array('nid' => $node->nid));
   $script->addGoto('begin');
 
