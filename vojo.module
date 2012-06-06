@@ -293,7 +293,7 @@ function _vojo_voipextension_api_extension_for_node($nid) {
 /**
  * Helper function to format phone numbers. 
  */
-function format_phone_number($number) {
+function vojo_format_phone_number($number) {
   // If 12 digits format as Mexican number: +xx xx xxx-xxxxx. 
   if (is_numeric($number)) {
     if (strlen($number) == 19) {
@@ -346,7 +346,7 @@ function vojo_preprocess_vojo_site_header(&$vars) {
   $vars['user_links'] .= '</div>';
   
   // Get voip call in number, set at admin/voip/call/settings
-  $vars['vojo_callin_number'] = format_phone_number(variable_get('voipcall_cid_number',''));
+  $vars['vojo_callin_number'] = vojo_format_phone_number(variable_get('voipcall_cid_number',''));
 }
 
 function vojo_preprocess_page(&$vars) {

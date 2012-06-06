@@ -108,12 +108,12 @@ function vojo_group_details_block() {
   // Display direct number for group if available. 
    if (!empty($node->field_direct_phone_number[0]['phone'])) {
     $number = $node->field_direct_phone_number[0]['phone'];
-    $vojo_voip_number = format_phone_number($number);
+    $vojo_voip_number = vojo_format_phone_number($number);
   }
   // Otherwise get set in admin/voip/call/settings.
   else if (isset($node->voipextension_number) && $node->voipextension_listed == 1) {
     $number = variable_get('voipcall_cid_number','');
-    $vojo_voip_number = format_phone_number($number);
+    $vojo_voip_number = vojo_format_phone_number($number);
     $og_extenson = $node->voipextension_number;
   }
   if (isset($node->field_yeta[0]['value'])) {
