@@ -346,6 +346,11 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['nothing']['hide_empty'] = 0;
   $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
+  /* Sort criterion: Node: Sticky */
+  $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['table'] = 'node';
+  $handler->display->display_options['sorts']['sticky']['field'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['order'] = 'DESC';
   /* Sort criterion: Node: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -508,6 +513,250 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['uid']['not'] = 0;
   $handler->display->display_options['path'] = 'blogs/%';
+
+  /* Display: Vojo Group Stories VoIP */
+  $handler = $view->new_display('voipviews', 'Vojo Group Stories VoIP', 'vojo_group_stories_voip');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'voipviews_list';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'voipviews_row_ivr';
+  $handler->display->display_options['row_options']['ivr_prompt_intro'] = 'Press 1 to hear another story, or # to go back to the previous menu';
+  $handler->display->display_options['row_options']['ivr_invalid_msg'] = 'Sorry, that\'s isn\'t a valid option';
+  $handler->display->display_options['row_options']['ivr_no_input_msg'] = 'No option detected';
+  $handler->display->display_options['row_options']['ivr_options'] = array(
+    'name' => '',
+    'ivr_next_row' => '1',
+    'ivr_return' => '#',
+    'php' => '',
+  );
+  $handler->display->display_options['row_options']['ivr_prompt'] = array(
+    '\\0' => '',
+    '\\1' => '',
+    '\\2' => '',
+    '\\3' => '',
+    '\\4' => '',
+    '\\5' => '',
+    '\\6' => '',
+    '\\7' => '',
+    '\\8' => '',
+    '\\9' => '',
+    '\\*' => '',
+    '\\#' => '',
+  );
+  $handler->display->display_options['row_options']['ivr_notfirst'] = array(
+    '\\0' => 0,
+    '\\1' => 0,
+    '\\2' => 0,
+    '\\3' => 0,
+    '\\4' => 0,
+    '\\5' => 0,
+    '\\6' => 0,
+    '\\7' => 0,
+    '\\8' => 0,
+    '\\9' => 0,
+    '\\*' => 0,
+    '\\#' => 0,
+  );
+  $handler->display->display_options['row_options']['ivr_notlast'] = array(
+    '\\0' => 0,
+    '\\1' => 1,
+    '\\2' => 0,
+    '\\3' => 0,
+    '\\4' => 0,
+    '\\5' => 0,
+    '\\6' => 0,
+    '\\7' => 0,
+    '\\8' => 0,
+    '\\9' => 0,
+    '\\*' => 0,
+    '\\#' => 0,
+  );
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Cleaned Content */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'Cleaned Content';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['php']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['php']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['php']['element_type'] = '0';
+  $handler->display->display_options['fields']['php']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['php']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['php']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['php']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['php']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['php']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_setup'] = 'function get_audio_extensions(){
+  return array(\'wav\',\'mp3\');
+}';
+  $handler->display->display_options['fields']['php']['php_value'] = '// the list of allowed extensions (dictated by what Tropo supports for now)
+$audio_extensions = get_audio_extensions();
+// play any audio attached, if none then play text
+$content = $row->body;
+$result = db_query(\'SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid = %d ORDER BY r.weight, f.fid\', $row->upload_fid);
+while ($file = db_fetch_array($result)) {
+  $extension = substr($file[\'filepath\'], -3);
+  if( in_array($extension, $audio_extensions) ){
+    $content = file_create_url($file[\'filepath\']);
+  }
+}
+if(strlen($content)==0) {
+  $content = "This story has no audio or text";
+}
+return $content;
+';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = 'This story was sent by ';
+  $handler->display->display_options['fields']['name']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['name']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['name']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['name']['element_type'] = '0';
+  $handler->display->display_options['fields']['name']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['name']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['name']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['name']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['name']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['name']['link_to_user'] = 0;
+  $handler->display->display_options['fields']['name']['overwrite_anonymous'] = 0;
+  /* Field: VoIP: IVR: Goto next */
+  $handler->display->display_options['fields']['ivr_next_row']['id'] = 'ivr_next_row';
+  $handler->display->display_options['fields']['ivr_next_row']['table'] = 'voipviews';
+  $handler->display->display_options['fields']['ivr_next_row']['field'] = 'ivr_next_row';
+  $handler->display->display_options['fields']['ivr_next_row']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['ivr_next_row']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['ivr_next_row']['hide_alter_empty'] = 1;
+  /* Field: VoIP: IVR: Return */
+  $handler->display->display_options['fields']['ivr_return']['id'] = 'ivr_return';
+  $handler->display->display_options['fields']['ivr_return']['table'] = 'voipviews';
+  $handler->display->display_options['fields']['ivr_return']['field'] = 'ivr_return';
+  $handler->display->display_options['fields']['ivr_return']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['ivr_return']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['ivr_return']['hide_alter_empty'] = 1;
+  /* Field: Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Field: Node: Body */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'node_revisions';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = '';
+  $handler->display->display_options['fields']['body']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['body']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['make_link'] = 1;
+  $handler->display->display_options['fields']['body']['alter']['path'] = 'node/[nid]';
+  $handler->display->display_options['fields']['body']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '90';
+  $handler->display->display_options['fields']['body']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['body']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['body']['alter']['strip_tags'] = 1;
+  $handler->display->display_options['fields']['body']['alter']['trim'] = 1;
+  $handler->display->display_options['fields']['body']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['body']['element_type'] = '0';
+  $handler->display->display_options['fields']['body']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['body']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['body']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['body']['hide_empty'] = 1;
+  $handler->display->display_options['fields']['body']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['body']['hide_alter_empty'] = 1;
+  /* Field: Upload: Attached files */
+  $handler->display->display_options['fields']['upload_fid']['id'] = 'upload_fid';
+  $handler->display->display_options['fields']['upload_fid']['table'] = 'node';
+  $handler->display->display_options['fields']['upload_fid']['field'] = 'upload_fid';
+  $handler->display->display_options['fields']['upload_fid']['label'] = '';
+  $handler->display->display_options['fields']['upload_fid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['upload_fid']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['upload_fid']['alter']['text'] = '[upload_fid-url]';
+  $handler->display->display_options['fields']['upload_fid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['upload_fid']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['upload_fid']['alter']['strip_tags'] = 1;
+  $handler->display->display_options['fields']['upload_fid']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['element_type'] = '0';
+  $handler->display->display_options['fields']['upload_fid']['element_label_type'] = '0';
+  $handler->display->display_options['fields']['upload_fid']['element_label_colon'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['upload_fid']['element_default_classes'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['hide_alter_empty'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['link_to_file'] = 0;
+  $handler->display->display_options['fields']['upload_fid']['only_listed'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter: Node: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter: Node: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'blog' => 'blog',
+  );
   $translatables['vojo_group_browse_stories'] = array(
     t('Defaults'),
     t('All Stories'),
@@ -539,6 +788,9 @@ function vojo_feature_views_default_views() {
     t('Browse Stories User Blog Page'),
     t('Stories Blog'),
     t('%1\'s blog'),
+    t('Vojo Group Stories VoIP'),
+    t('This story was sent by '),
+    t('[upload_fid-url]'),
   );
 
   $views[$view->name] = $view;
