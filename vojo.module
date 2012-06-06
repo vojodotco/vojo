@@ -14,7 +14,7 @@ function vojo_init(){
     if (arg(0) == 'blogs') {
       drupal_set_title('somebodys blog!');
     }
-  drupal_add_css(drupal_get_path('module', 'vojo') .'/css/top-header.css');
+  drupal_add_css(drupal_get_path('module', 'vojo') .'/css/vojo-site-header.css');
 }
 
 /**
@@ -313,9 +313,9 @@ function format_phone_number($number) {
 /** THEME FUNCTIONS **/
 
 function vojo_theme() {
-  $items['top_header'] = array( 
+  $items['vojo_site_header'] = array( 
     'arguments' => array('items' => NULL),
-    'template' => 'top-header',
+    'template' => 'templates/vojo-site-header',
   );
   $items['dropdown_links'] = array( 
     'arguments' => array('links' => NULL, 'attributes' => NULL),
@@ -323,7 +323,7 @@ function vojo_theme() {
   return $items;
 }
 
-function vojo_preprocess_top_header(&$vars) {
+function vojo_preprocess_vojo_site_header(&$vars) {
   global $user;
   
   $vars['base_path'] = base_path();
@@ -350,8 +350,8 @@ function vojo_preprocess_top_header(&$vars) {
 }
 
 function vojo_preprocess_page(&$vars) {
-  // Provide header
-  $vars['top_header'] = theme('top_header');
+  // Provide persistant vojo site-wide header (for global operations like login)
+  $vars['vojo_site_header'] = theme('vojo_site_header');
 }
 
 /** 
