@@ -18,20 +18,21 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   $nid = arg(1);
   // load the node data
   $node = node_load($nid);
-
-  foreach ($node->media_mover as $cid) {
-    foreach ($cid as $mmfid) {
-      if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3') {
-        if (empty($playlist) && empty($node->field_image[0])) { 
-          $playlist[$mmfid['fid']] = base_path() . drupal_get_path('theme', 'vojo_generic') . '/images/audio_icon_large.gif';
+  if (isset($node->media_mover)) {
+    foreach ($node->media_mover as $cid) {
+      foreach ($cid as $mmfid) {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3') {
+          if (empty($playlist) && empty($node->field_image[0])) { 
+            $playlist[$mmfid['fid']] = base_path() . drupal_get_path('theme', 'vojo_generic') . '/images/audio_icon_large.gif';
+          }
+          $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
         }
-        $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
+        if (substr($mmfid['complete_file'], -4, 4) == '.flv' || substr($mmfid['complete_file'], -4, 4) == '.m4v') {
+          $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
+          $video = 'flowplayer-video ';
+        }
       }
-      if (substr($mmfid['complete_file'], -4, 4) == '.flv' || substr($mmfid['complete_file'], -4, 4) == '.m4v') {
-        $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
-        $video = 'flowplayer-video ';
-      }
-    }
+    } 
   }
 
   if (!empty($playlist)) {
@@ -41,9 +42,10 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
         unset($playlist[$fid]);
       }
     }
-  }
+
   ksort($playlist);
   $playlist = array_merge($playlist);
+  }
  
   // Output 
   if ($playlist) {
