@@ -145,6 +145,7 @@ function vojo_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function vojo_form_group_node_form_alter($form, &$form_state) {
+  $form['body_field']['body']['#description'] = t("Write a short description of your group for your about page.");
   // Add after build function. 
   $form['#after_build'][] = 'vojo_form_group_node_form_after_build';
 }
