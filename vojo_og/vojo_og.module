@@ -144,6 +144,19 @@ function vojo_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
+function vojo_form_group_node_form_alter($form, &$form_state) {
+  // Add after build function. 
+  $form['#after_build'][] = 'vojo_form_group_node_form_after_build';
+}
+
+function vojo_form_group_node_form_after_build($form, &$form_state) {
+  // Do not display og_user_roles select box if it has no selectable options.
+  if (count($form['og_user_roles_default_role']['#options']) == 1) {
+    unset($form['og_user_roles_default_role']);
+  }
+  return $form;
+}
+
 /**
  * Helper function to return all published groups (array of nids=>titles)
  */
