@@ -247,7 +247,7 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
   $form['attachments']['#group'] = '';
 
   // pre-fill the WKT search address with the existing location string
-  $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];;
+  $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];
 
   // Hide the group audience select box, if user has selected group by clicking
   // on Create Blog entry or Submit within a group.
