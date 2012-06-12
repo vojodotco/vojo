@@ -228,7 +228,7 @@ function _vojo_get_audio_url($filename){
 }
 
 /**
- * Increase max length of location field on blog for https://dev.vozmob.net/issues/1072
+ * Tweak the blog edit form and setup some callbacks for later customizations
  */
 function vojo_form_blog_node_form_alter($form, &$form_state) {
   // Hide location field to prevent users from editing it directly. 
@@ -251,6 +251,9 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
   if (!empty($_GET['gids'][0])) {
     $form['og_nodeapi']['visible']['og_groups']['#theme'] = FALSE;
   }
+
+  // force hiding of voipnode extension settings (see http://drupal.org/node/1549288)
+  unset($form['group_voipnode_settings']);
 
   return $form;
 }
