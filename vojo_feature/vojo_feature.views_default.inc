@@ -522,14 +522,14 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'voipviews_row_ivr';
-  $handler->display->display_options['row_options']['ivr_prompt_intro'] = 'Press 1 to hear another story, or # to go back to the previous menu';
+  $handler->display->display_options['row_options']['ivr_prompt_intro'] = 'Press 1 to hear another story, or # to go back to the main menu';
   $handler->display->display_options['row_options']['ivr_invalid_msg'] = 'Sorry, that\'s isn\'t a valid option';
   $handler->display->display_options['row_options']['ivr_no_input_msg'] = 'No option detected';
   $handler->display->display_options['row_options']['ivr_options'] = array(
+    'php' => '',
     'name' => '',
     'ivr_next_row' => '1',
     'ivr_return' => '#',
-    'php' => '',
   );
   $handler->display->display_options['row_options']['ivr_prompt'] = array(
     '\\0' => '',
@@ -757,6 +757,30 @@ return $content;
   $handler->display->display_options['filters']['type']['value'] = array(
     'blog' => 'blog',
   );
+  /* Filter: PHP: Attachments = Audio or text */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'PHP: Attachments = Audio or text';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_setup'] = '
+';
+  $handler->display->display_options['filters']['php']['php_filter'] = '// the list of allowed extensions (dictated by what Tropo supports for now)
+$audio_extensions =  array(\'wav\',\'mp3\');
+// return TRUE to _REMOVE_ nodes
+$content = $row->body;
+$result = db_query(\'SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid = %d ORDER BY r.weight, f.fid\', $row->upload_fid);
+while ($file = db_fetch_array($result)) {
+  $extension = substr($file[\'filepath\'], -3);
+  if( in_array($extension, $audio_extensions) ){
+    $content = file_create_url($file[\'filepath\']);
+  }
+}
+if(strlen($content)==0) {
+  return true;
+}
+return false;
+';
   $translatables['vojo_group_browse_stories'] = array(
     t('Defaults'),
     t('All Stories'),
