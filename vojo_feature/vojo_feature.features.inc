@@ -11,6 +11,9 @@ function vojo_feature_ctools_plugin_api() {
   elseif ($module == "page_manager" && $api == "pages_default") {
     return array("version" => 1);
   }
+  elseif ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => 1);
+  }
 }
 
 /**
@@ -106,6 +109,26 @@ function vojo_feature_imagecache_default_presets() {
           ),
         ),
       ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_node_info().
+ */
+function vojo_feature_node_info() {
+  $items = array(
+    'front_slideshow' => array(
+      'name' => t('Front slideshow'),
+      'module' => 'features',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'has_body' => '0',
+      'body_label' => '',
+      'min_word_count' => '0',
+      'help' => '',
     ),
   );
   return $items;

@@ -73,6 +73,227 @@ function vojo_feature_content_default_fields() {
     ),
   );
 
+  // Exported field: field_slideshow_caption
+  $fields['front_slideshow-field_slideshow_caption'] = array(
+    'field_name' => 'field_slideshow_caption',
+    'type_name' => 'front_slideshow',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'text',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'text',
+    'active' => '1',
+    'text_processing' => '0',
+    'max_length' => '',
+    'allowed_values' => '',
+    'allowed_values_php' => '',
+    'widget' => array(
+      'rows' => 5,
+      'size' => '60',
+      'default_value' => array(
+        '0' => array(
+          'value' => '',
+          '_error_element' => 'default_value_widget][field_slideshow_caption][0][value',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Caption',
+      'weight' => '-3',
+      'description' => '',
+      'type' => 'text_textfield',
+      'module' => 'text',
+    ),
+  );
+
+  // Exported field: field_slideshow_image
+  $fields['front_slideshow-field_slideshow_image'] = array(
+    'field_name' => 'field_slideshow_image',
+    'type_name' => 'front_slideshow',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'image_plain',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '1',
+    'multiple' => '0',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'png gif jpg jpeg',
+      'file_path' => '',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '',
+      'max_filesize_per_node' => '',
+      'max_resolution' => '0',
+      'min_resolution' => '0',
+      'alt' => '',
+      'custom_alt' => 0,
+      'title' => '',
+      'custom_title' => 0,
+      'title_type' => 'textfield',
+      'default_image' => NULL,
+      'use_default_image' => 0,
+      'rotate' => 1,
+      'filefield_sources' => array(
+        'remote' => 0,
+        'reference' => 0,
+        'recorder' => 0,
+        'attach' => 0,
+      ),
+      'filefield_source_attach_path' => 'file_attach',
+      'filefield_source_attach_absolute' => '0',
+      'filefield_source_attach_mode' => 'move',
+      'filefield_source_autocomplete' => '0',
+      'label' => 'Slide image',
+      'weight' => '-4',
+      'description' => '',
+      'type' => 'imagefield_widget',
+      'module' => 'imagefield',
+    ),
+  );
+
+  // Exported field: field_slideshow_link
+  $fields['front_slideshow-field_slideshow_link'] = array(
+    'field_name' => 'field_slideshow_link',
+    'type_name' => 'front_slideshow',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'link',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'link',
+    'active' => '1',
+    'attributes' => array(
+      'target' => 'default',
+      'rel' => '',
+      'class' => '',
+      'title' => '',
+    ),
+    'display' => array(
+      'url_cutoff' => '80',
+    ),
+    'url' => 'optional',
+    'title' => 'none',
+    'title_value' => '',
+    'enable_tokens' => 0,
+    'validate_url' => 0,
+    'widget' => array(
+      'default_value' => array(
+        '0' => array(
+          'title' => '',
+          'url' => '',
+        ),
+      ),
+      'default_value_php' => NULL,
+      'label' => 'Link',
+      'weight' => '-2',
+      'description' => '',
+      'type' => 'link',
+      'module' => 'link',
+    ),
+  );
+
   // Exported field: field_direct_phone_number
   $fields['group-field_direct_phone_number'] = array(
     'field_name' => 'field_direct_phone_number',
@@ -132,7 +353,7 @@ function vojo_feature_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Direct Phone Number',
-      'weight' => '31',
+      'weight' => '19',
       'description' => '',
       'type' => 'voipphonenumber_widget',
       'module' => 'voipnumber',
@@ -193,7 +414,7 @@ function vojo_feature_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Header background color',
-      'weight' => '-1',
+      'weight' => '1',
       'description' => '',
       'type' => 'colorpicker_cck',
       'module' => 'colorpicker_cck',
@@ -202,9 +423,12 @@ function vojo_feature_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Caption');
   t('Direct Phone Number');
   t('Header background color');
+  t('Link');
   t('Location');
+  t('Slide image');
 
   return $fields;
 }
