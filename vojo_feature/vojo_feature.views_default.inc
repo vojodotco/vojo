@@ -1440,6 +1440,8 @@ function vojo_feature_views_default_views() {
   $handler = $view->new_display('default', 'Defaults', 'default');
   $handler->display->display_options['title'] = 'All Groups';
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = TRUE;
+  $handler->display->display_options['use_more_text'] = 'view all groups';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -1627,6 +1629,13 @@ function vojo_feature_views_default_views() {
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: PHP */
+  $handler->display->display_options['header']['php']['id'] = 'php';
+  $handler->display->display_options['header']['php']['table'] = 'views';
+  $handler->display->display_options['header']['php']['field'] = 'php';
+  $handler->display->display_options['header']['php']['empty'] = FALSE;
+  $handler->display->display_options['header']['php']['php_output'] = '<p><?php if (user_access(\'create group content\')) { print l(t("Create new group"), \'node/add/group\', array(\'attributes\' => array(\'class\' => \'create-group-link\'))); } ?></p>';
   $handler->display->display_options['path'] = 'og/all';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Groups';
@@ -1695,7 +1704,7 @@ function vojo_feature_views_default_views() {
   $translatables['vojo_og'] = array(
     t('Defaults'),
     t('All Groups'),
-    t('more'),
+    t('view all groups'),
     t('Apply'),
     t('Restablecer'),
     t('Sort by'),
@@ -1713,7 +1722,9 @@ function vojo_feature_views_default_views() {
     t('Nid'),
     t('Group logo'),
     t('Feed'),
+    t('more'),
     t('Page'),
+    t('PHP'),
     t('Featured Groups'),
     t('Featured groups'),
     t('queue'),
