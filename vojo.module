@@ -240,18 +240,20 @@ function vojo_form_blog_node_form_alter($form, &$form_state) {
   $form['#submit'][] = 'vojo_form_blog_node_form_submit';
 }
 function vojo_form_blog_node_form_after_build($form, &$form_state) {
-  $form['attachments']['#collapsed '] = 0;
-  $form['attachments']['#collapsible'] = 0;
   // Hide field_image, since all image uploading should be done through file attachments. 
   $form['field_image']['#type'] = 'hidden';
+  // This removes attachements from vertical tabs.
   $form['attachments']['#group'] = '';
+  // Make attachments fieldset expanded and not collapsible. 
+  $form['attachments']['#collapsed '] = 0;
+  $form['attachments']['#collapsible'] = 0;
 
   // pre-fill the WKT search address with the existing location string
   $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];
 
-  // Hide the group audience select box, if user has selected group by clicking
-  // on Create Blog entry or Submit within a group.
-  if (!empty($_GET['gids'][0])) {
+  // Hide the group audience select box if user has selected group by clicking
+  // on Create Blog entry or Submit within a group. Also hide if we're editing a node. 
+  if (!empty($_GET['gids'][0]) || isset($form['nid']['#value'])) {
     $form['og_nodeapi']['visible']['og_groups']['#theme'] = FALSE;
   }
 

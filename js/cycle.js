@@ -14,6 +14,7 @@ Drupal.behaviors.nodeCycle = function() {
     $('#vojo-node-cycle-pager').html(blog_pager);
   }
 
+  // TODO - Make jquery cycle work with responsive layout, so we can use with front slideshow  
   /*  $('#front-slideshow ul').cycle({
     fx: 'fade',
     speed:   700,
@@ -22,7 +23,7 @@ Drupal.behaviors.nodeCycle = function() {
     next: '#front-slideshow #vojo-slide-next',
     slideResize: 0
   }); */
-    
+  // TODO - replace this with jquery cycle version (see comment above).
   $('#front-slideshow ul li.views-row-first').addClass("current-slide");
   $('#front-slideshow #vojo-slide-next').click(function () {
     $('#front-slideshow ul li.current-slide').not("#front-slideshow ul li.views-row-last").next().addClass("current-slide").prev().removeClass("current-slide");
