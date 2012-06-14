@@ -1637,13 +1637,14 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['header']['php']['empty'] = FALSE;
   $handler->display->display_options['header']['php']['php_output'] = '<p><?php if (user_access(\'create group content\')) { print l(t("Create new group"), \'node/add/group\', array(\'attributes\' => array(\'class\' => \'create-group-link\'))); } ?></p>';
   $handler->display->display_options['path'] = 'og/all';
-  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Groups';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'primary-links';
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Groups';
   $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'secondary-links';
 
   /* Display: Featured Groups */
   $handler = $view->new_display('panel_pane', 'Featured Groups', 'panel_pane_1');
