@@ -21,7 +21,7 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
       foreach ($cid as $mmfid) {
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3') {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4))  == '.ogg') {
           if (empty($playlist) && empty($node->field_image[0])) { 
             $playlist[$mmfid['fid']] = base_path() . drupal_get_path('theme', 'vojo_generic') . '/images/audio_icon_large.gif';
           }
