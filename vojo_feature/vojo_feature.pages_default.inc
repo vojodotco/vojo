@@ -650,10 +650,13 @@ function vojo_feature_default_page_manager_pages() {
     $pane->pid = 'new-3';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_browse_stories-panel_pane_2';
+    $pane->subtype = 'vojo_og-panel_pane_1';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array();
+    $pane->configuration = array(
+      'more_link' => 1,
+      'path' => 'og/all',
+    );
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
@@ -667,13 +670,10 @@ function vojo_feature_default_page_manager_pages() {
     $pane->pid = 'new-4';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_og-panel_pane_1';
+    $pane->subtype = 'vojo_group_browse_stories-panel_pane_2';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array(
-      'more_link' => 1,
-      'path' => 'og/all',
-    );
+    $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
