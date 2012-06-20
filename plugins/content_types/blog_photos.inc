@@ -27,12 +27,15 @@ function vojo_blog_photos_content_type_render($subtype, $conf, $panel_args, $con
     $field = content_fields('field_image', 'blog');
     $field['display_settings']['full']['format'] = 'slideshow_window_default';
     $node->build_mode = NODE_BUILD_NORMAL;
-    // If image is a derivative of a transcoded video, remove it from images
-    // displayed on full node. 
+    // If image is a preview image for a transcoded video, remove it from slideshow. 
     foreach ($node->field_image as $key => $image) {
-      $pos = strpos($image['filename'], 'mpeg');
-      $mpeg = substr($image['filename'], $pos, 4);
-      if ($mpeg == 'mpeg') {
+      if ($pos = strpos($image['filename'], 'mpeg')) {
+        $ext = substr($image['filename'], $pos, 4);
+      }
+      else if ($pos = strpos($image['filename'], '3gp')) {
+        $ext = substr($image['filename'], $pos, 3);
+      }
+      if ($ext) {
         unset($node->field_image[$key]);
       }
     }
