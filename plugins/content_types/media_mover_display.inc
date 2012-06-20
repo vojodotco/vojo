@@ -13,6 +13,8 @@ $plugin = array(
 
 // A function that renders the pane
 function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_args, $context) {
+  global $base_url;
+  
   $block = new stdClass();
   // Get the node id from the url.
   $nid = arg(1);
@@ -20,21 +22,22 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   $node = node_load($nid);
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
+      // Unset Video to OGV configuration since fwplayer does not support it.
+      if ($cid[0]['cid'] == 11) {
+        unset($cid);
+      }
       foreach ($cid as $mmfid) {
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4))  == '.ogg') {
-          if (empty($playlist) && empty($node->field_image[0])) { 
-            $playlist[$mmfid['fid']] = base_path() . drupal_get_path('theme', 'vojo_generic') . '/images/audio_icon_large.gif';
-          }
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
           $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
+          $playlist[$mmfid['fid']]['image'] = $base_url . '/' . drupal_get_path('theme', 'vojo_generic') . '/images/vojo/audio_icon_large.png';
         }
         if (substr($mmfid['complete_file'], -4, 4) == '.flv' || substr($mmfid['complete_file'], -4, 4) == '.m4v') {
           $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
-          $video = 'flowplayer-video ';
+          $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
         }
       }
     } 
   }
-
   if (!empty($playlist)) {
     foreach($playlist as $fid => $clip) {
       if (!empty($node->files[$fid]->weight) && !isset($playlist[$node->files[$fid]->weight])) {
@@ -46,12 +49,11 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   ksort($playlist);
   $playlist = array_merge($playlist);
   }
- 
   // Output 
   if ($playlist) {
     $block->content = $media_mover_vids;
     foreach ($playlist as $clip) {
-      $flash_vars['playlist'][] = array('file' => $clip['url']);
+      $flash_vars['playlist'][] = array('file' => $clip['url'], 'image' => $clip['image']);
     }
     $block->content = theme('jwplayermodule_render_player', array(), $flash_vars);
   }
