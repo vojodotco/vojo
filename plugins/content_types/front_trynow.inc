@@ -19,10 +19,8 @@ function vojo_front_trynow_content_type_render($subtype, $conf, $panel_args, $co
   drupal_add_js(drupal_get_path('module', 'vojo') . '/js/cycle.js', 'module');
 
   $view = views_embed_view('vojo_front_slideshow', 'front_slideshow');
-
-  $block->content = '<div id="front-logo"><img src="' . base_path() . drupal_get_path('theme', 'vojo_generic') . '/logo-full.png" alt="Vojo logo" /></div>';
-  $block->content .= '<div id="front-slideshow">' . $view . '<a id="vojo-slide-prev">Previous slide</a><a id="vojo-slide-next">Next slide</a></div>';
-  $block->content .= '<p id="vojo-tagline">' . t('A new way for communities to share stories') . '</p>';
+  $tagline = ($conf['vojo_tagline']) ? t($conf['vojo_tagline']) : t('A new way for communities to share stories');
+  $block->content = '<p id="vojo-tagline">' . $tagline . '</p>';
   $block->content .= '<p id="vojo-trynow">' . l(t('Try it now'), 'trynow', array('attributes' => array('class' => 'huge-button'))) . '</p>';
   return $block;
 }
@@ -35,13 +33,19 @@ function vojo_front_trynow_content_type_admin_title($subtype, $conf, $context) {
 // A function that returns a block with administration information
 function vojo_front_trynow_content_type_admin_info($subtype, $conf, $context) {
   $block = new stdClass();
-  $block->title = t('Front: tagline and try it now button');
+  $block->title = t('See pane settings for custom editing options');
   $block->content = '';
   return $block;
 }
 
-function vojo_front_trynow_content_type_edit_form($form, &$form_state) {
+function vojo_front_trynow_content_type_edit_form(&$form, &$form_state) {
   $conf = $form_state['conf'];
+  
+  $form['vojo_tagline'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text'),
+    '#default_value' => ($conf['vojo_tagline']) ? $conf['vojo_tagline'] : t('A new way for communities to share stories'),
+  );
   return $form;
 }
 
@@ -55,8 +59,8 @@ function vojo_front_trynow_content_type_edit_form($form, &$form_state) {
 /**
  * The submit form stores the data in $conf.
  */
-/* function vojo_front_trynow_content_type_edit_form_submit($form, &$form_state) {
+function vojo_front_trynow_content_type_edit_form_submit($form, &$form_state) {
   foreach($form_state['values'] as $value => $value_object) {
     $form_state['conf'][$value] = $value_object;
   }
-} */
+}
