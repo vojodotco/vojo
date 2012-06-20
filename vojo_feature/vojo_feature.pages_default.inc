@@ -55,14 +55,12 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_browse_stories-vojo_group_browse_stories_pane';
+    $pane->subtype = 'vojo_featured_stories-recent_stories_med_squares';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
@@ -72,8 +70,8 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-2';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_all_stories-vojo_group_browse_stories_pane';
-    $pane->shown = FALSE;
+    $pane->subtype = 'vojo_group_browse_stories-vojo_group_browse_stories_pane';
+    $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
@@ -89,7 +87,7 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-3';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_all_stories-vojo_group_all_stories_pane';
+    $pane->subtype = 'vojo_group_all_stories-vojo_group_browse_stories_pane';
     $pane->shown = FALSE;
     $pane->access = array();
     $pane->configuration = array();
@@ -102,6 +100,23 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->position = 2;
     $display->content['new-3'] = $pane;
     $display->panels['middle'][2] = 'new-3';
+    $pane = new stdClass;
+    $pane->pid = 'new-4';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_group_all_stories-vojo_group_all_stories_pane';
+    $pane->shown = FALSE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $display->content['new-4'] = $pane;
+    $display->panels['middle'][3] = 'new-4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -398,6 +413,21 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-5';
     $pane->panel = 'right';
+    $pane->type = 'blog_prev_next_links';
+    $pane->subtype = 'blog_prev_next_links';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $display->content['new-5'] = $pane;
+    $display->panels['right'][0] = 'new-5';
+    $pane = new stdClass;
+    $pane->pid = 'new-6';
+    $pane->panel = 'right';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_node_map-vojo_node_map_ol_map_pane';
     $pane->shown = TRUE;
@@ -413,48 +443,19 @@ function vojo_feature_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 0;
-    $display->content['new-5'] = $pane;
-    $display->panels['right'][0] = 'new-5';
-    $pane = new stdClass;
-    $pane->pid = 'new-6';
-    $pane->panel = 'right';
-    $pane->type = 'node_author';
-    $pane->subtype = 'node_author';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'link' => 1,
-      'context' => 'argument_nid_1',
-      'override_title' => 1,
-      'override_title_text' => 'Posted by',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
     $pane->position = 1;
     $display->content['new-6'] = $pane;
     $display->panels['right'][1] = 'new-6';
     $pane = new stdClass;
     $pane->pid = 'new-7';
     $pane->panel = 'right';
-    $pane->type = 'node_created';
-    $pane->subtype = 'node_created';
+    $pane->type = 'blog_links';
+    $pane->subtype = 'blog_links';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array(
-      'format' => 'small',
-      'context' => 'argument_nid_1',
-      'override_title' => 1,
-      'override_title_text' => '',
-    );
+    $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 2;
@@ -617,15 +618,13 @@ function vojo_feature_default_page_manager_pages() {
     $pane = new stdClass;
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
-    $pane->type = 'front_trynow';
-    $pane->subtype = 'front_trynow';
+    $pane->type = 'front_slideshow';
+    $pane->subtype = 'front_slideshow';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
@@ -634,11 +633,19 @@ function vojo_feature_default_page_manager_pages() {
     $pane = new stdClass;
     $pane->pid = 'new-2';
     $pane->panel = 'middle';
-    $pane->type = 'key_features';
-    $pane->subtype = 'key_features';
+    $pane->type = 'front_trynow';
+    $pane->subtype = 'front_trynow';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array();
+    $pane->configuration = array(
+      'op' => 'Finish',
+      'return' => 'Finish',
+      'cancel' => 'Cancel',
+      'vojo_tagline' => 'A new way for communities to share stories online!',
+      'form_build_id' => 'form-bb8e43f38bdb7e9e23eedb6b6c751343',
+      'form_token' => 'b0281b630a9bc8c1c454b54391656cfa',
+      'form_id' => 'vojo_front_trynow_content_type_edit_form',
+    );
     $pane->cache = array();
     $pane->style = array();
     $pane->css = array();
@@ -648,6 +655,69 @@ function vojo_feature_default_page_manager_pages() {
     $display->panels['middle'][1] = 'new-2';
     $pane = new stdClass;
     $pane->pid = 'new-3';
+    $pane->panel = 'middle';
+    $pane->type = 'key_features';
+    $pane->subtype = 'key_features';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'op' => 'Finish',
+      'return' => 'Finish',
+      'cancel' => 'Cancel',
+      'features' => array(
+        'feature_1' => array(
+          'title' => 'No data plan required',
+          'text' => 'Blog from your phone via SMS, MMS, or Voice calls.',
+        ),
+        'feature_2' => array(
+          'title' => 'SMS registration',
+          'text' => 'Create an account from your phone.',
+        ),
+        'feature_3' => array(
+          'title' => 'Geolocation',
+          'text' => 'Add your stories to a map.',
+        ),
+        'feature_4' => array(
+          'title' => 'Groups',
+          'text' => 'Create and customize your own group.',
+        ),
+        'feature_5' => array(
+          'title' => 'Broadcast',
+          'text' => 'Blast SMS to all of your Group members.',
+        ),
+        'feature_6' => array(
+          'title' => 'Audio slideshows',
+          'text' => 'Create and share slideshows with audio on your phone or in the browser.',
+        ),
+      ),
+      'form_build_id' => 'form-81a647d75c9b9cd92af61e5ba7292d2c',
+      'form_token' => '873eb12f7790b1d79a31a4c52c39fa3b',
+      'form_id' => 'vojo_key_features_content_type_edit_form',
+    );
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $display->content['new-3'] = $pane;
+    $display->panels['middle'][2] = 'new-3';
+    $pane = new stdClass;
+    $pane->pid = 'new-4';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_global_story_listings-recent_stories';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $display->content['new-4'] = $pane;
+    $display->panels['middle'][3] = 'new-4';
+    $pane = new stdClass;
+    $pane->pid = 'new-5';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_og-panel_pane_1';
@@ -663,26 +733,9 @@ function vojo_feature_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
-    $display->content['new-3'] = $pane;
-    $display->panels['middle'][2] = 'new-3';
-    $pane = new stdClass;
-    $pane->pid = 'new-4';
-    $pane->panel = 'middle';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_browse_stories-panel_pane_2';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 3;
-    $display->content['new-4'] = $pane;
-    $display->panels['middle'][3] = 'new-4';
+    $pane->position = 4;
+    $display->content['new-5'] = $pane;
+    $display->panels['middle'][4] = 'new-5';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
