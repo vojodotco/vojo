@@ -109,6 +109,20 @@ function vojo_feature_imagecache_default_presets() {
         ),
       ),
     ),
+    'global_stories_listings_thumbs' => array(
+      'presetname' => 'global_stories_listings_thumbs',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale_and_crop',
+          'data' => array(
+            'width' => '110',
+            'height' => '90',
+          ),
+        ),
+      ),
+    ),
     'slideshow_window' => array(
       'presetname' => 'slideshow_window',
       'actions' => array(

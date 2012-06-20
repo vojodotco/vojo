@@ -241,7 +241,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['field_image_fid']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_image_fid']['link_to_node'] = 0;
   $handler->display->display_options['fields']['field_image_fid']['label_type'] = 'none';
-  $handler->display->display_options['fields']['field_image_fid']['format'] = 'recent_stories_thumbs_linked';
+  $handler->display->display_options['fields']['field_image_fid']['format'] = 'global_stories_listings_thumbs_linked';
   $handler->display->display_options['fields']['field_image_fid']['multiple']['group'] = 1;
   $handler->display->display_options['fields']['field_image_fid']['multiple']['multiple_number'] = '1';
   $handler->display->display_options['fields']['field_image_fid']['multiple']['multiple_reversed'] = 0;
@@ -310,10 +310,11 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
   $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
   $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '50';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
   $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 1;
   $handler->display->display_options['fields']['title']['alter']['html'] = 0;
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
