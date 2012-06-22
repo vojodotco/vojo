@@ -20,24 +20,27 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   $nid = arg(1);
   // load the node data
   $node = node_load($nid);
+  // figure out which media to show and how to show it
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
-      // Unset Video to OGV configuration since fwplayer does not support it.
-      if ($cid[0]['cid'] == 11) {
-        unset($cid);
-      }
       foreach ($cid as $mmfid) {
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
-          $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
-          $playlist[$mmfid['fid']]['image'] = $base_url . '/' . drupal_get_path('theme', 'vojo_generic') . '/images/vojo/audio_icon_large.png';
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
+          if( !array_key_exists($mmfid['fid'], $playlist) ){
+            $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
+            $playlist[$mmfid['fid']]['image'] = $base_url . '/' . drupal_get_path('theme', 'vojo_generic') . '/images/vojo/audio_icon_large.png';
+          }
         }
-        if (substr($mmfid['complete_file'], -4, 4) == '.flv' || substr($mmfid['complete_file'], -4, 4) == '.m4v') {
-          $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
-          $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.flv' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.m4v' || 
+            strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
+          if( !array_key_exists($mmfid['fid'], $playlist) ){
+            $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
+            $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
+          }
         }
       }
     } 
   }
+  // build up a playlist of all the media
   if (!empty($playlist)) {
     foreach($playlist as $fid => $clip) {
       if (!empty($node->files[$fid]->weight) && !isset($playlist[$node->files[$fid]->weight])) {
@@ -45,11 +48,10 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
         unset($playlist[$fid]);
       }
     }
-
-  ksort($playlist);
-  $playlist = array_merge($playlist);
+    ksort($playlist);
+    $playlist = array_merge($playlist);
   }
-  // Output 
+  // Output the media player
   if ($playlist) {
     $block->content = $media_mover_vids;
     foreach ($playlist as $clip) {
