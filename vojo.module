@@ -252,9 +252,12 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
   $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];
 
   // Hide the group audience select box if user has selected group by clicking
-  // on Create Blog entry or Submit within a group. Also hide if we're editing a node. 
-  if (!empty($_GET['gids'][0]) || isset($form['nid']['#value'])) {
-    $form['og_nodeapi']['visible']['og_groups']['#theme'] = FALSE;
+  // on Create Blog entry or Submit within a group. Also hide if we're editing a node.
+
+  if (user_access('administer nodes') == FALSE) {
+    if (!empty($_GET['gids'][0])) {
+      $form['og_nodeapi']['visible']['og_groups']['#access'] = FALSE;
+    }
   }
 
   // force hiding of voipnode extension settings (see http://drupal.org/node/1549288)
