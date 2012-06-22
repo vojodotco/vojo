@@ -22,16 +22,13 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   $node = node_load($nid);
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
-      // Unset Video to OGV configuration since fwplayer does not support it.
-      if ($cid[0]['cid'] == 11) {
-        unset($cid);
-      }
       foreach ($cid as $mmfid) {
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
           $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
           $playlist[$mmfid['fid']]['image'] = $base_url . '/' . drupal_get_path('theme', 'vojo_generic') . '/images/vojo/audio_icon_large.png';
         }
-        if (substr($mmfid['complete_file'], -4, 4) == '.flv' || substr($mmfid['complete_file'], -4, 4) == '.m4v') {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.flv' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.m4v' || 
+            strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
           $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
           $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
         }
