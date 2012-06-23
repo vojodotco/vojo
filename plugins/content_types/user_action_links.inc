@@ -14,7 +14,7 @@ $plugin = array(
 function vojo_user_action_links_content_type_render($subtype, $conf, $panel_args, $context) {
   $user = user_load(arg(1));  
   $types = node_get_types('types');
-  $action_link = '<ul id="user-action-links">';
+  $action_links = '<ul id="user-action-links">';
   foreach ($types as $key => $type) {
     $access = "create " . $key . " content";
     if (user_access('create blog entries') && $key == 'blog') {
