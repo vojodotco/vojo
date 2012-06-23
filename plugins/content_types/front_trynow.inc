@@ -27,13 +27,13 @@ function vojo_front_trynow_content_type_render($subtype, $conf, $panel_args, $co
 
 // A function that returns the name of the administration pane
 function vojo_front_trynow_content_type_admin_title($subtype, $conf, $context) {
-  return t('Front Try it now button');
+  return t('Front: tagline and try it now button');
 }
 
 // A function that returns a block with administration information
 function vojo_front_trynow_content_type_admin_info($subtype, $conf, $context) {
   $block = new stdClass();
-  $block->title = t('See pane settings for custom editing options');
+  $block->title = t('Tagline is Editable. See pane settings for custom editing options');
   $block->content = '';
   return $block;
 }

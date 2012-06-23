@@ -19,7 +19,7 @@ function vojo_blog_prev_next_links_content_type_render($subtype, $conf, $panel_a
     $group_nid = $id;
     $group_name = $name;
     }
-    $block->content .= '<h3>'. $group_name .'</h3>';
+   // $block->content .= '<h3>'. $group_name .'</h3>';
   }
   // Use views to generate the Prev / Next pager.
   $view = views_get_view_result('vojo_group_browse_stories', 'prev_next_links', $group_nid);
