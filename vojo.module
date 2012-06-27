@@ -233,41 +233,76 @@ function _vojo_get_audio_url($filename){
 function vojo_form_blog_node_form_alter($form, &$form_state) {
   // Hide location field to prevent users from editing it directly. 
   $form['field_location_string']['#theme'] = FALSE;
-  
-  $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
 
+    /* <input type="hidden" name="og_groups[<?=$group->nid?>]" id="edit-og-groups-<?=$group->nid?>" value="<?=$group->nid?>"> */
+  if ($_GET['gids'][0]) {
+    $form['og_groups'][$_GET['gids'][0]]['value'] = $_GET['gids'][0];
+  }
+  $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
   // Add submit handler. 
   $form['#submit'][] = 'vojo_form_blog_node_form_submit';
 }
+
+/* After build function for blog node form */
 function vojo_form_blog_node_form_after_build($form, &$form_state) {
-  // Hide field_image, since all image uploading should be done through file attachments. 
-  $form['field_image']['#type'] = 'hidden';
-  // This removes attachements from vertical tabs.
+  global $user;
+  // Move attachments outside vertical tabs
   $form['attachments']['#group'] = '';
   // Make attachments fieldset expanded and not collapsible. 
   $form['attachments']['#collapsed '] = 0;
   $form['attachments']['#collapsible'] = 0;
 
-  // pre-fill the WKT search address with the existing location string
-  $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];
-
-  // Hide the group audience select box if user has selected group by clicking
-  // on Create Blog entry or Submit within a group. Also hide if we're editing a node.
-
+  // Hide fields from regular users (authenticaged and bloggers).
   if (user_access('administer nodes') == FALSE) {
-    if (!empty($_GET['gids'][0])) {
-      $form['og_nodeapi']['visible']['og_groups']['#access'] = FALSE;
+    $form['path']['#access'] = FALSE;
+    $form['comment_settings']['#access'] = FALSE;
+    // Hide field_image from everyone except admins, since all image uploading
+    // should normally be done through file attachments (to be handled by media mover).
+    $form['field_image']['#access'] = FALSE;
+    // Hide the audience select field if group is selected. And hide if we're
+    // editing a node. For some reasong using '#access' => false causes any values
+    // to be ereased on save.
+    if (!empty($_GET['gids'][0]) || !empty($form['nid']['#value'])) {
+      $form['og_nodeapi']['visible']['og_groups']['#prefix'] = '<div style="display: none">';
+      $form['og_nodeapi']['visible']['og_groups']['#suffix'] = '</div>';
+    }
+    else {
+      drupal_set_message('Please select group b/f posting');
     }
   }
 
+  // Hide fake promote field from those w/ "administer nodes" access or are group admins.
+  if (user_access('administer nodes') == TRUE || isset($user->roles[8]['group-admin blogger'])) {
+    $form['group_blog_publishing_options']['#access'] = FALSE;
+  }
+
+  // pre-fill the WKT search address with the existing location string
+  $form['field_map']['openlayers_geocoder_query']['#value'] = $form['#node']->field_location_string[0]['value'];
+
   // force hiding of voipnode extension settings (see http://drupal.org/node/1549288)
   unset($form['group_voipnode_settings']);
-
   return $form;
 }
+
+/* Submit handler for blog node form */
 function vojo_form_blog_node_form_submit($form, &$form_state) {
   // Grab user entered value from openlayers_geocoder field and save to $form['field_location_string']
   $form_state['values']['field_location_string'][0]['value'] = $form['field_map']['openlayers_geocoder_query']['#value'];
+
+  // If the fake promote field value has been changed by the user, update promote
+  // and status values in  core Publish options.
+  if ($form_state['values']['field_blog_promote'][0]['value'] == 1) {
+    $form_state['values']['promote'] = $form_state['values']['field_blog_promote'][0]['value'];
+    $form_state['values']['status'] = 1;
+  }
+  else if ($form_state['values']['field_blog_promote'][0]['value'] == 0) {
+    $form_state['values']['promote'] = 0;
+  }
+  // If core promote option is changed by user, then update fake promote field. 
+  else if ($form_state['values']['promote'] != $form['options']['promote']['#default_value']) {
+    $form_state['values']['field_blog_promote'][0]['value'] = $form_state['values']['promote'];
+    $form_state['values']['status'] = 1;
+  }
 }
 
 /**
@@ -462,5 +497,3 @@ function theme_dropdown_links($links, $attributes = array('class' => 'links')) {
   }
   return $output;
 }
-
-
