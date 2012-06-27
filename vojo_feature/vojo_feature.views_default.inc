@@ -2534,6 +2534,74 @@ return false;
 
   $views[$view->name] = $view;
 
+  // Exported view: vojo_submit_story
+  $view = new view;
+  $view->name = 'vojo_submit_story';
+  $view->description = 'A skeleton hack to allow posting of stories to a group by the anonymous user';
+  $view->tag = 'vojo';
+  $view->base_table = 'node';
+  $view->human_name = 'Vojo Story Submit';
+  $view->core = 6;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Submit a Story */
+  $handler = $view->new_display('default', 'Submit a Story', 'default');
+  $handler->display->display_options['title'] = 'About';
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Field: Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  /* Argument: Organic groups: Groups */
+  $handler->display->display_options['arguments']['group_nid']['id'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['table'] = 'og_ancestry';
+  $handler->display->display_options['arguments']['group_nid']['field'] = 'group_nid';
+  $handler->display->display_options['arguments']['group_nid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['group_nid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['group_nid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['validate_type'] = 'og_group_types';
+  $handler->display->display_options['arguments']['group_nid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['group_nid']['not'] = 0;
+
+  /* Display: Vojo Story Submit Page */
+  $handler = $view->new_display('page', 'Vojo Story Submit Page', 'vojo_story_submit_page');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Submit';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['path'] = 'story/add';
+  $handler->display->display_options['menu']['title'] = 'Cuéntanos';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-monterrey';
+  $translatables['vojo_submit_story'] = array(
+    t('Submit a Story'),
+    t('About'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Title'),
+    t('All'),
+    t('Vojo Story Submit Page'),
+    t('Submit'),
+  );
+
+  $views[$view->name] = $view;
+
   // Exported view: vojo_tag_clouds
   $view = new view;
   $view->name = 'vojo_tag_clouds';
