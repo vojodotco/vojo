@@ -64,14 +64,11 @@ function _vojo_og_generic_group_menu_block_contents(){
         }    
         // group story submit page
         $contents.= '<li class="leaf">';
-        //TODO: check if group allows anon submission
-        $contents.= l(t('Submit'), "story/add/".$group_nid, array('attributes' => array('title' => t('Add a new story in this group.'))));
-/*        if (user_access('create blog entries') && $user->uid > 0) {
-        }
-        else {
+        if ( vojo_og_can_submit($node->nid) ) {
+          $contents.= l(t('Submit'), "story/add/".$group_nid, array('attributes' => array('title' => t('Add a new story in this group.'))));
+        } else {
           $contents .= l(t('Submit'), 'node/'. $group_nid .'/blog-add/access-denied');
         }
-*/
         $contents.= "</li>";               
         // Browse stories  
         $contents.= '<li class="leaf">';
@@ -99,6 +96,14 @@ function _vojo_og_generic_group_menu_block_contents(){
         $contents.= "</ul>";
     }
     return $contents;
+}
+
+/** 
+ * Wrapper around flag to determine if anonymous is allowed to post to a group
+ */
+function vojo_og_can_submit($groupid){
+  $flag = flag_get_flag('member_to_post_group');
+  return !( $flag->is_flagged($node->nid) && ($user->uid==0) );
 }
 
 /**
