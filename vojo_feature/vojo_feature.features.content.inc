@@ -49,12 +49,12 @@ function vojo_feature_content_default_fields() {
     'text_processing' => '0',
     'max_length' => '',
     'allowed_values' => '0|Uncheck box to remove story to front page and featured stories
-1| Promote story',
+1|Yes, feature this story!',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(
         '0' => array(
-          'value' => 1,
+          'value' => 0,
         ),
       ),
       'default_value_php' => NULL,
