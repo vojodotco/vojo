@@ -234,10 +234,6 @@ function vojo_form_blog_node_form_alter($form, &$form_state) {
   // Hide location field to prevent users from editing it directly. 
   $form['field_location_string']['#theme'] = FALSE;
 
-    /* <input type="hidden" name="og_groups[<?=$group->nid?>]" id="edit-og-groups-<?=$group->nid?>" value="<?=$group->nid?>"> */
-  if ($_GET['gids'][0]) {
-    $form['og_groups'][$_GET['gids'][0]]['value'] = $_GET['gids'][0];
-  }
   $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
   // Add submit handler. 
   $form['#submit'][] = 'vojo_form_blog_node_form_submit';
