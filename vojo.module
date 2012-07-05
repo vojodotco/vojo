@@ -122,6 +122,14 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_redirect_to_group_script($params['number']);
     }
+    elseif ($script_name == 'vojo_pick_create_or_anon') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_pick_create_or_anon_script($params['number']);
+    }
+    elseif ($script_name == 'vojo_create_user') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_create_user_script($params['number']);
+    }
 }
 
 /**
@@ -135,6 +143,8 @@ function vojo_voipscript_get_script_names() {
     'vojo_login',
     'vojo_welcome',
     'vojo_redirect_to_group',
+    'vojo_pick_create_or_anon',
+    'vojo_create_user',
   );
 }
 
@@ -250,18 +260,21 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
 
   // Hide fields from regular users (authenticaged and bloggers).
   if (user_access('administer nodes') == FALSE) {
-    $form['path']['#access'] = FALSE;               // only admins can set custom paths for blog posts
-    $form['comment_settings']['#access'] = FALSE;   // turn off blog post comments
+    $form['path']['#access'] = FALSE;
+    $form['comment_settings']['#access'] = FALSE;
     // Hide field_image from everyone except admins, since all image uploading
     // should normally be done through file attachments (to be handled by media mover).
     $form['field_image']['#access'] = FALSE;
-  }
-
-  // Hide the audience select area if we are creating a new node
-  if( arg(0)=="story" && arg(1)=="add" && is_numeric(arg(2)) ) {
-    // For some reason using '#access' => false causes any values to be ereased on save.
-    $form['og_nodeapi']['visible']['og_groups']['#prefix'] = '<div style="display: none">';
-    $form['og_nodeapi']['visible']['og_groups']['#suffix'] = '</div>';  
+    // Hide the audience select field if group is selected. And hide if we're
+    // editing a node. For some reasong using '#access' => false causes any values
+    // to be ereased on save.
+    if (!empty($_GET['gids'][0]) || !empty($form['nid']['#value'])) {
+      $form['og_nodeapi']['visible']['og_groups']['#prefix'] = '<div style="display: none">';
+      $form['og_nodeapi']['visible']['og_groups']['#suffix'] = '</div>';
+    }
+    else {
+      drupal_set_message('Please select group b/f posting');
+    }
   }
 
   // Hide fake promote field from those w/ "administer nodes" access or are group admins.

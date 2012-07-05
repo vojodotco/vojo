@@ -125,12 +125,19 @@ function _vojo_record_blog_script($node) {
   $script->addGosub('vojo_login', array('number' => '%caller_number'));
   $script->addSet('og_group', $node->title);
 
-  $script->addLabel('start');
+  $script->addGotoIf('handle_non_user','^%user_uid == '.vojo_og_anon_get_user_id());
+  $script->addGotoIf('start_recording','^%user_uid != '.vojo_og_anon_get_user_id());
+  
+  $script->addLabel('handle_non_user');
+  $script->addGosub('vojo_pick_create_or_anon', array('number' => '%caller_number'));
+  $script->addGoto('start_recording');
+
+  $script->addLabel('start_recording');
   $script->addRecord(
     v('Start recording your message for %og_group after the tone. Press the pound key to stop recording.'), 
     5, '#', 3600, 'mp3', TRUE
   );
-  $script->addGotoIf('no recording detected','^%recording_duration == 0');
+  $script->addGotoIf('no_recording','^%recording_duration == 0');
   $script->addSay(v('You said '));
   $script->addSay('%recording_public_url');
   
@@ -140,22 +147,96 @@ function _vojo_record_blog_script($node) {
     10, '', 1
   );
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
-  $script->addGotoIf('start', "^%input_digits == '2'");
-  $script->addGotoIf('end record', "^%input_digits == '#'");
+  $script->addGotoIf('start_recording', "^%input_digits == '2'");
+  $script->addGotoIf('end_record', "^%input_digits == '#'");
   // fall through to accept recording if no input (could be hang-up)
   $script->addLabel('accept recording');
   $script->addSay(v('Please wait while we save your story'));
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
-  $script->addGoto('end record');
+  $script->addGoto('end_record');
 
-  $script->addLabel('no recording detected');
+  $script->addLabel('no_recording');
   $script->addSay(v("No recording detected. Please try again."));
-  $script->addGoto('start');
+  $script->addGoto('start_recording');
 
-  $script->addLabel('end record');
+  $script->addLabel('end_record');
 
   return $script;
 }
+
+/**
+ * A script giving the user an option to post as anonymous or create a new user.
+ */
+function _vojo_pick_create_or_anon_script($number){
+  global $user;
+  $script = new VoipScript('vojo_pick_create_or_anon');
+  $script->addLabel('pick_option');
+  $script->addGetInput('Press 1 to record an anonymous story, or press 2 to create a new account on vojo dot co', 1, '', 5);
+  $script->addGotoIf('as_anon', "^%input_digits == '1'");
+  $script->addGotoIf('create_user', "^%input_digits == '2'");
+  $script->addSay(v('Input not recognized'));
+  $script->addGoto('pick_option');
+
+  $script->addLabel('as_anon');
+  $script->addSay('Your story will be posted anonymously');
+  $script->addGoto('end');
+  
+  $script->addLabel('create_user');
+  $script->addGoSub('vojo_create_user', array('number' => '%caller_number'));
+  $script->addGoto('end');
+  
+  $script->addLabel('end');
+  return $script;
+}
+
+/**
+ * Create a new user and send them an sms.  This does not check if the user phone exists already!
+ */
+function _vojo_create_user_script($number){
+  global $user;
+  // create the user
+  $newUser = FALSE;
+  $password = user_password(8);
+  while (!$newUser) {
+    $newUser = user_save(NULL, array(
+      'name' => variable_get('sms_registration_username', 'Drupal-') . mt_rand(1, db_result(db_query('SELECT MAX(uid) FROM {users}')) * 10),
+      'pass' => $password,
+      'roles' => ($role = variable_get('sms_registration_role', NULL)) ? array($role => 1) : NULL,
+      'status' => 1,
+      'language' => $node->language,
+      'sms_user' => array('number' => sms_formatter($number), 'status' => SMS_USER_PENDING),
+      'access' => time(),
+    ));
+  }
+  // send them an sms
+  $user = $newUser;
+  $result = _vojo_send_sms($number, t('Welcome! Your username is @name and password is @pass.  You can login to @server_url with this info.',
+    array('@name'=>$user->name, '@pass'=>$password, '@server_url'=>variable_get('site_name', 'vojo.co')) ) ); 
+  watchdog('vojo', 'Created new user %name / %number - result = %res.', array('%name'=> $user->name,'%number'=>$number, '%res'=>$result));
+  // provide audio feedback
+  $script = new VoipScript('vojo_create_user');
+  $script->addSet('user_uid', $user->uid);
+  $script->addSet('user_name', $user->name);  
+  $script->addSay(v('We made a new user account for you. We have sent you an sms with your user name and password'));
+  return $script;
+}
+
+/**
+ * Internal helper to send an SMS via VoipDrupal
+ * Important to use this, and NOT sms_send because it isn't configured to work with a Tropo Application.
+ * TODO: figure out right way around hack so it doesn't send as 
+ */
+function _vojo_send_sms($number, $msg){
+  global $user;
+  $tempUserId = $user->uid;
+  $user = user_load(1);
+  $call = new VoipCall();
+  $call->setCurrentChannel('text');
+  $call->setCurrentNetwork('sms');
+  $call->setDestNumber($number);
+  $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));
+  voip_text($msg, $call);
+  $user = user_load($tempUserId);}
 
 /**
  * VoIP Script Callback: Save announcment file to node.
