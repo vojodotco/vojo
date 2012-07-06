@@ -1620,6 +1620,7 @@ return false;
 
   /* Display: Defaults */
   $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['title'] = 'Featured Stories';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -1840,8 +1841,8 @@ return false;
   $handler->display->display_options['filters']['promote']['field'] = 'promote';
   $handler->display->display_options['filters']['promote']['value'] = '1';
 
-  /* Display: Vojo Group Browse Stories Pane */
-  $handler = $view->new_display('panel_pane', 'Vojo Group Browse Stories Pane', 'vojo_group_browse_stories_pane');
+  /* Display: Vojo Group Featured Stories Pane */
+  $handler = $view->new_display('panel_pane', 'Vojo Group Featured Stories Pane', 'vojo_group_featured_stories_pane');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
@@ -1865,6 +1866,7 @@ return false;
   );
   $translatables['vojo_group_featured_stories'] = array(
     t('Defaults'),
+    t('Featured Stories'),
     t('more'),
     t('Apply'),
     t('Restablecer'),
@@ -1877,7 +1879,7 @@ return false;
     t('node/[nid]'),
     t('<h2>[title]</h2>'),
     t('All'),
-    t('Vojo Group Browse Stories Pane'),
+    t('Vojo Group Featured Stories Pane'),
     t('Vojo: Group Featured Stories Pane'),
     t('Vojo'),
   );

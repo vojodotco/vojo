@@ -55,7 +55,7 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_group_featured_stories-vojo_group_browse_stories_pane';
+    $pane->subtype = 'vojo_group_featured_stories-vojo_group_featured_stories_pane';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
