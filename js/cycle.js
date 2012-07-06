@@ -13,22 +13,17 @@ Drupal.behaviors.nodeCycle = function() {
     var blog_pager = (opts.currSlide + 1) + ' of ' + opts.slideCount;
     $('#vojo-node-cycle-pager').html(blog_pager);
   }
-
-  // TODO - Make jquery cycle work with responsive layout, so we can use with front slideshow  
-  /*  $('#front-slideshow ul').cycle({
+}
+Drupal.behaviors.frontCycle = function() {
+  // TODO - Make jquery cycle work with responsive layout 
+  $('#front-slideshow ul, .view-vojo-group-featured-stories ul').cycle({
     fx: 'fade',
+    slideExpr: '.slide',
     speed:   700,
-    timeout: 0,
-    prev: '#front-slideshow #vojo-slide-prev',
-    next: '#front-slideshow #vojo-slide-next',
-    slideResize: 0
-  }); */
-  // TODO - replace this with jquery cycle version (see comment above).
-  $('#front-slideshow ul li.views-row-first').addClass("current-slide");
-  $('#front-slideshow #vojo-slide-next').click(function () {
-    $('#front-slideshow ul li.current-slide').not("#front-slideshow ul li.views-row-last").next().addClass("current-slide").prev().removeClass("current-slide");
-  });
-  $('#front-slideshow #vojo-slide-prev').click(function () {
-    $('#front-slideshow ul li.current-slide').not("#front-slideshow ul li.views-row-first").prev().addClass("current-slide").next().removeClass("current-slide");
+    timeout: 6000,
+    prev: '#vojo-slide-prev',
+    next: '#vojo-slide-next',
+    slideResize: 0,
+    containerResize: 0
   });
 }
