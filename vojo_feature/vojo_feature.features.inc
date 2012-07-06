@@ -123,6 +123,32 @@ function vojo_feature_imagecache_default_presets() {
         ),
       ),
     ),
+    'group_featured_stories' => array(
+      'presetname' => 'group_featured_stories',
+      'actions' => array(
+        '0' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_scale',
+          'data' => array(
+            'width' => '340',
+            'height' => '',
+            'upscale' => 0,
+          ),
+        ),
+        '1' => array(
+          'weight' => '0',
+          'module' => 'imagecache',
+          'action' => 'imagecache_crop',
+          'data' => array(
+            'width' => '100%',
+            'height' => '230',
+            'xoffset' => 'center',
+            'yoffset' => 'top',
+          ),
+        ),
+      ),
+    ),
     'slideshow_window' => array(
       'presetname' => 'slideshow_window',
       'actions' => array(
