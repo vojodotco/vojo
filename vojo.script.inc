@@ -117,7 +117,7 @@ function _vojo_group_script($node) {
 /**
  * VoIP Script Callback: Record blog node in group.
  *
- * $param['nid'] = Node ID.
+ * $param['nid'] = Group node ID.
  */
 function _vojo_record_blog_script($node) {
   $script = new VoipScript('vojo_record_blog');
@@ -129,7 +129,7 @@ function _vojo_record_blog_script($node) {
   $script->addGotoIf('start_recording','^%user_uid != '.vojo_og_anon_get_user_id());
   
   $script->addLabel('handle_non_user');
-  $script->addGosub('vojo_pick_create_or_anon', array('number' => '%caller_number'));
+  $script->addGosub('vojo_pick_create_or_anon', array('number' => '%caller_number', 'nid' => $node->nid));
   $script->addGoto('start_recording');
 
   $script->addLabel('start_recording');
@@ -167,7 +167,7 @@ function _vojo_record_blog_script($node) {
 /**
  * A script giving the user an option to post as anonymous or create a new user.
  */
-function _vojo_pick_create_or_anon_script($number){
+function _vojo_pick_create_or_anon_script($number, $groupNid){
   global $user;
   $script = new VoipScript('vojo_pick_create_or_anon');
   $script->addLabel('pick_option');
@@ -182,7 +182,7 @@ function _vojo_pick_create_or_anon_script($number){
   $script->addGoto('end');
   
   $script->addLabel('create_user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number'));
+  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
   $script->addGoto('end');
   
   $script->addLabel('end');
@@ -192,7 +192,7 @@ function _vojo_pick_create_or_anon_script($number){
 /**
  * Create a new user and send them an sms.  This does not check if the user phone exists already!
  */
-function _vojo_create_user_script($number){
+function _vojo_create_user_script($number, $groupNid){
   global $user;
   // create the user
   $newUser = FALSE;
@@ -208,8 +208,10 @@ function _vojo_create_user_script($number){
       'access' => time(),
     ));
   }
-  // send them an sms
   $user = $newUser;
+  // add them to the group
+  og_save_subscription($groupNid, $user->uid, array('is_active' => 1));
+  // send them an sms
   $result = _vojo_send_sms($number, t('Welcome! Your username is @name and password is @pass.  You can login to @server_url with this info.',
     array('@name'=>$user->name, '@pass'=>$password, '@server_url'=>variable_get('site_name', 'vojo.co')) ) ); 
   watchdog('vojo', 'Created new user %name / %number - result = %res.', array('%name'=> $user->name,'%number'=>$number, '%res'=>$result));

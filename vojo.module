@@ -124,11 +124,11 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
     }
     elseif ($script_name == 'vojo_pick_create_or_anon') {
         module_load_include('inc', 'vojo', 'vojo.script');
-        return _vojo_pick_create_or_anon_script($params['number']);
+        return _vojo_pick_create_or_anon_script($params['number'], $params['nid']);
     }
     elseif ($script_name == 'vojo_create_user') {
         module_load_include('inc', 'vojo', 'vojo.script');
-        return _vojo_create_user_script($params['number']);
+        return _vojo_create_user_script($params['number'], $params['nid']);
     }
 }
 
