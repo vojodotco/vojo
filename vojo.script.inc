@@ -213,9 +213,11 @@ function _vojo_create_user_script($number, $groupNid){
   og_save_subscription($groupNid, $user->uid, array('is_active' => 1));
   // send them an sms
   // TODO: centrally locate this text in sms_registration
-  $result = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
+  $result1 = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')) ) ); 
-  watchdog('vojo', 'Created new user %name / %number - result = %res.', array('%name'=> $user->name,'%number'=>$number, '%res'=>$result));
+  $result2 = _vojo_send_sms($number, t("If you'd like to change your username, send a new one via SMS to !sms_reg.",
+    array('!sms_reg'=>sms_registration_get_address()) ) ); 
+  watchdog('vojo', 'Created new user via phone %name / %number', array('%name'=> $user->name,'%number'=>$number));
   // provide audio feedback
   $script = new VoipScript('vojo_create_user');
   $script->addSet('user_uid', $user->uid);
