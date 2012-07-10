@@ -10,18 +10,7 @@
   height: 60px;
   text-indent: -99999px;
 }
-.vojo-callin {
-  color: #fff;
-  float: left;
-  font-size: 16px;
-  margin-left: 20px;
-  margin-top: 3px;
-}
-.region-header /* Wrapper for any blocks placed in the header region */ {
-  float: right;
-  clear: none !important;
-  margin-top: 20px;
-}
+
 #vojo-site-header {
   background-color: #333;
   padding: 2px;
@@ -30,20 +19,22 @@
   line-height: 18px;
   height: 30px;
 }
-#vojo-user-links,
-#vojo-user-links a {
-  color: #eee;
-}
-#vojo-user-links a:hover {
-  color: #f1941e;
-}
-#vojo-user-menu {
+
+.vojo-header-menu {
     float: right;
 }
-#vojo-user-links {
+
+.vojo-header-links,
+.vojo-header-links a {
+  color: #eee;
+}
+.vojo-header-links a:hover {
+  color: #f1941e;
+}
+.vojo-header-links {
     margin: 0px;
 }
-#vojo-user-links span {
+.vojo-header-links span {
   text-transform: capitalize;
   box-shadow: inset 2px 2px 5px #000;
   border-radius: 12px;
@@ -52,22 +43,22 @@
   cursor: pointer;
   cursor: hand;
 }
-#vojo-user-links ul {
+.vojo-header-links ul {
   padding: 0;
   margin: 0;
 }
-#vojo-user-links li {
+.vojo-header-links li {
   list-style-type: none;
   list-style-image: none;
   margin: 0;
 }
 
 /* Style dropdown menu */
-#vojo-user-links .menu-parent {
+.vojo-header-links .menu-parent {
   position: relative;
   padding: 5px;
 }
-#vojo-user-links .menu-parent .submenu {
+.vojo-header-links .menu-parent .submenu {
   position: absolute;
   left: -9999px;
   top: 25px;
@@ -77,18 +68,18 @@
   display: block;
   background-color: #333;
 }
-#vojo-user-links .menu-parent:hover .submenu {
+.vojo-header-links .menu-parent:hover .submenu {
   top: 25px;
   right: 0;
   left: auto;
   margin: 0;
 }
-#vojo-user-links .menu-parent .submenu li {
+.vojo-header-links .menu-parent .submenu li {
   float: none;
   display: block;
   margin: 0;
 }
-#vojo-user-links .menu-parent .submenu li a {
+.vojo-header-links .menu-parent .submenu li a {
   background-image: none;
   display: block;
   text-indent: 0;
@@ -101,11 +92,11 @@
   height: auto;
   width: auto;
 }
-#vojo-user-links .menu-parent .submenu li:first-child a {
+.vojo-header-links .menu-parent .submenu li:first-child a {
   border-top: none;
 }
-#vojo-user-links .menu-parent .submenu li a:hover,
-#vojo-user-links .menu-parent .submenu li a.active {
+.vojo-header-links .menu-parent .submenu li a:hover,
+.vojo-header-links .menu-parent .submenu li a.active {
   color: #3EA9F5;
   text-decoration: none;
   width: auto;

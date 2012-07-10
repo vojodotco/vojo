@@ -379,11 +379,11 @@ function vojo_preprocess_vojo_site_header(&$vars) {
   
   // Generate user links menu
   $menu_tree = menu_tree_page_data('secondary-links');
-  $vars['user_links'] = '<div id="vojo-user-menu">';
+  $vars['user_links'] = '<div id="vojo-user-menu" class="vojo-header-menu">';
   if ($vars['logged_in'] == 1) {
     // The parent menu item showing the user name is hard coded for easier
     // rendering of the user name. Couldn't get it to work as a menu callback. 
-    $vars['user_links'] .= '<ul id="vojo-user-links"><li class="menu-parent">';
+    $vars['user_links'] .= '<ul id="vojo-user-links" class="vojo-header-links"><li class="menu-parent">';
     $vars['user_links'] .= '<span>'. $user->name .'</span>';
     $vars['user_links'] .= theme('dropdown_links', $menu_tree, array('class' => 'submenu'));
     $vars['user_links'] .= '</li></ul>';
