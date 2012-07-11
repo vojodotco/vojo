@@ -20,6 +20,11 @@
   height: 30px;
 }
 
+#vojo-site-header .block-locale {
+  float: left;
+  margin-left: 20px;
+  margin-top: 5px;
+}
 .vojo-header-menu {
     float: right;
 }

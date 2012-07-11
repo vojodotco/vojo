@@ -421,6 +421,10 @@ function vojo_preprocess_vojo_site_header(&$vars) {
   
   // Get voip call in number, set at admin/voip/call/settings
   $vars['vojo_callin_number'] = vojo_format_phone_number(variable_get('voipcall_cid_number',''));
+  
+  // Load language swicher block
+  $lang_block = module_invoke('locale', 'block', 'view', 0);
+  $vars['language_switcher'] = '<div class="block-locale">'. $lang_block['content'] .'</div>';
 }
 
 function vojo_preprocess_page(&$vars) {
