@@ -639,19 +639,96 @@ function vojo_feature_default_page_manager_handlers() {
     $display->panels['main'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
+    $pane->panel = 'main';
+    $pane->type = 'user_profile';
+    $pane->subtype = 'user_profile';
+    $pane->shown = TRUE;
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'compare_users',
+          'settings' => array(
+            'equality' => '0',
+          ),
+          'context' => array(
+            0 => 'argument_uid_1',
+            1 => 'logged-in-user',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
+    $pane->configuration = array(
+      'context' => 'argument_uid_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-2'] = $pane;
+    $display->panels['main'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
     $pane->panel = 'right';
     $pane->type = 'user_action_links';
     $pane->subtype = 'user_action_links';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'compare_users',
+          'settings' => array(
+            'equality' => '1',
+          ),
+          'context' => array(
+            0 => 'argument_uid_1',
+            1 => 'logged-in-user',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+    );
     $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
-    $display->content['new-2'] = $pane;
-    $display->panels['right'][0] = 'new-2';
+    $display->content['new-3'] = $pane;
+    $display->panels['right'][0] = 'new-3';
+    $pane = new stdClass;
+    $pane->pid = 'new-4';
+    $pane->panel = 'right';
+    $pane->type = 'views';
+    $pane->subtype = 'og_my';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 0,
+      'nodes_per_page' => '0',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'block_1',
+      'override_title' => 1,
+      'override_title_text' => 'My Groups',
+    );
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-4'] = $pane;
+    $display->panels['right'][1] = 'new-4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-1';
   $handler->conf['display'] = $display;
@@ -733,9 +810,9 @@ function vojo_feature_default_page_manager_pages() {
       'op' => 'Finish',
       'return' => 'Finish',
       'cancel' => 'Cancel',
-      'vojo_tagline' => 'A new way for communities to share stories online!',
-      'form_build_id' => 'form-bb8e43f38bdb7e9e23eedb6b6c751343',
-      'form_token' => 'b0281b630a9bc8c1c454b54391656cfa',
+      'vojo_tagline' => 'Make Mobile Media Together!',
+      'form_build_id' => 'form-24d056b2702b9480010a7213fce102e6',
+      'form_token' => '58d12adb467941c2b643730d78ee05b6',
       'form_id' => 'vojo_front_trynow_content_type_edit_form',
     );
     $pane->cache = array();
@@ -797,21 +874,6 @@ function vojo_feature_default_page_manager_pages() {
     $pane->pid = 'new-4';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_global_story_listings-recent_stories';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array();
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 3;
-    $display->content['new-4'] = $pane;
-    $display->panels['middle'][3] = 'new-4';
-    $pane = new stdClass;
-    $pane->pid = 'new-5';
-    $pane->panel = 'middle';
-    $pane->type = 'views_panes';
     $pane->subtype = 'vojo_og-panel_pane_1';
     $pane->shown = TRUE;
     $pane->access = array();
@@ -823,6 +885,21 @@ function vojo_feature_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 3;
+    $display->content['new-4'] = $pane;
+    $display->panels['middle'][3] = 'new-4';
+    $pane = new stdClass;
+    $pane->pid = 'new-5';
+    $pane->panel = 'middle';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_global_story_listings-recent_stories';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 4;
