@@ -24,6 +24,8 @@ function vojo_user_action_links_content_type_render($subtype, $conf, $panel_args
       $action_links .= '<li>'. l(t("Create @type", array('@type' => $type->name)), 'node/add/'. $key) . '</li>';
     }
   }
+
+  $action_links .= '<li>'. l(t('Edit my settings'), 'user/'. $user->uid .'/edit') .'</li>';
   $action_links .= '</ul>';
   
   $block->title = '';
