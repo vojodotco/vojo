@@ -215,7 +215,7 @@ function _vojo_create_user_script($number, $groupNid){
   // TODO: centrally locate this text in sms_registration
   $result1 = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')) ) ); 
-  $result2 = _vojo_send_sms($number, t("If you'd like to change your username, send a new one via SMS to !sms_reg.",
+  $result2 = _vojo_send_sms($number, t("To change your username, just text the name you'd like to !sms_reg",
     array('!sms_reg'=>sms_registration_get_address()) ) ); 
   watchdog('vojo', 'Created new user via phone %name / %number', array('%name'=> $user->name,'%number'=>$number));
   // provide audio feedback
