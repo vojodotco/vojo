@@ -253,6 +253,8 @@ function vojo_form_blog_node_form_alter($form, &$form_state) {
   $form['buttons']['#weight'] = 15;
   // Hide preview button
   unset($form['buttons']['preview']);
+  // Hide sticky check box
+  unset($form['options']['sticky']);
 }
 
 /* After build function for blog node form */
@@ -283,7 +285,7 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
   }
     
   // Hide fake promote field from those w/ "administer nodes" access or are group admins.
-  if (user_access('administer nodes') == TRUE || isset($user->roles[8]['group-admin blogger'])) {
+  if (user_access('administer nodes') == TRUE) {
     $form['group_blog_publishing_options']['#access'] = FALSE;
   }
 
@@ -292,6 +294,11 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
 
   // force hiding of voipnode extension settings (see http://drupal.org/node/1549288)
   unset($form['group_voipnode_settings']);
+  
+  // Make publishing options always expanded
+  $form['options']['#collapsible'] = FALSE;
+  $form['options']['#collapsed'] = FALSE;
+ 
   return $form;
 }
 
