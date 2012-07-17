@@ -247,6 +247,12 @@ function vojo_form_blog_node_form_alter($form, &$form_state) {
   $form['#after_build'][] = 'vojo_form_blog_node_form_after_build';
   // Add submit handler. 
   $form['#submit'][] = 'vojo_form_blog_node_form_submit';
+  
+  // Adjust weight of submit button
+  $form['buttons']['#type'] = 'markup';
+  $form['buttons']['#weight'] = 15;
+  // Hide preview button
+  unset($form['buttons']['preview']);
 }
 
 /* After build function for blog node form */
@@ -265,15 +271,17 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
     // Hide field_image from everyone except admins, since all image uploading
     // should normally be done through file attachments (to be handled by media mover).
     $form['field_image']['#access'] = FALSE;
-  }
 
-  // Hide the audience select area if we are creating a new node
-  if( arg(0)=="story" && arg(1)=="add" && is_numeric(arg(2)) ) {
-    // For some reason using '#access' => false causes any values to be ereased on save.
-    $form['og_nodeapi']['visible']['og_groups']['#prefix'] = '<div style="display: none">';
-    $form['og_nodeapi']['visible']['og_groups']['#suffix'] = '</div>';  
+    // Hide the audience select area if we are creating a new node.
+    if (!empty($_GET['gids'][0]) && empty($form['nid']['#value'])) {
+      // For some reason using '#access' => false causes any values to be ereased on save.
+      $form['og_nodeapi']['visible']['og_groups']['#prefix'] = '<div style="display: none">';
+      $form['og_nodeapi']['visible']['og_groups']['#suffix'] = '</div>';
+      // Unset read only version of audience field.
+      unset($form['og_nodeapi']['visible']['og_groups_visible']);
+    }
   }
-
+    
   // Hide fake promote field from those w/ "administer nodes" access or are group admins.
   if (user_access('administer nodes') == TRUE || isset($user->roles[8]['group-admin blogger'])) {
     $form['group_blog_publishing_options']['#access'] = FALSE;
