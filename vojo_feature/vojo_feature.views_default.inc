@@ -2834,7 +2834,7 @@ return false;
 
   /* Display: Submit a Story */
   $handler = $view->new_display('default', 'Submit a Story', 'default');
-  $handler->display->display_options['title'] = 'About';
+  $handler->display->display_options['title'] = 'Submit';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -2872,9 +2872,14 @@ return false;
   $handler->display->display_options['menu']['title'] = 'Cuéntanos';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-monterrey';
+
+  /* Display: Vojo Node Blog Add Page */
+  $handler = $view->new_display('page', 'Vojo Node Blog Add Page', 'page_1');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['path'] = 'node/add/blog';
   $translatables['vojo_submit_story'] = array(
     t('Submit a Story'),
-    t('About'),
+    t('Submit'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -2884,7 +2889,7 @@ return false;
     t('Title'),
     t('All'),
     t('Vojo Story Submit Page'),
-    t('Submit'),
+    t('Vojo Node Blog Add Page'),
   );
 
   $views[$view->name] = $view;
