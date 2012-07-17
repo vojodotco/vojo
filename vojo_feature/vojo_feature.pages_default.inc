@@ -56,7 +56,7 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_group_featured_stories-vojo_group_featured_stories_pane';
-    $pane->shown = TRUE;
+    $pane->shown = FALSE;
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
