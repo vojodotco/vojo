@@ -20,11 +20,6 @@
   height: 30px;
 }
 
-#vojo-site-header .block-locale {
-  float: left;
-  margin-left: 20px;
-  margin-top: 5px;
-}
 .vojo-header-menu {
     float: right;
 }
@@ -124,4 +119,54 @@ a#vojo-login-link:hover {
   padding: 0;
   vertical-align: middle;
   float: left;
+}
+
+/** language switcher **/
+
+.block-locale,
+.pane-locale-0 {
+    margin: 0em;
+    padding: 0em;
+}
+
+#vojo-site-header .block-locale {
+  float: left;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.block-locale h2,
+.pane-locale-0 h2 {
+    display: none;
+}
+.block-locale ul,
+.pane-locale-0 ul {
+    display: inline-block;
+    padding: 0.1em 0.5em 0.25em 0.5em;
+    margin: 0em;
+    margin-bottom: 0.5em;
+   /* background-color: rgb(41,128,215); 
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;    */
+    list-style-type: none;
+}
+.block-locale ul li,
+.pane-locale-0 ul li {
+    display: inline-block;
+}
+.block-locale ul li.first,
+.pane-locale-0 ul li.first {
+  /*  border-right: 1px solid rgb(1,88,175); */
+    padding-right: 0.5em;
+}
+.block-locale ul li a,
+.pane-locale-0 ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.7em;
+}
+.block-locale ul li.active a,
+.pane-locale-0 ul li.active a {
+    font-weight: bold;
 }
