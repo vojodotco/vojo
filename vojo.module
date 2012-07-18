@@ -284,9 +284,13 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
     }
   }
     
-  // Hide fake promote field from those w/ "administer nodes" access or are group admins.
-  if (user_access('administer nodes') == TRUE) {
-    $form['group_blog_publishing_options']['#access'] = FALSE;
+  // Make publishing options always expanded
+  $form['options']['#collapsible'] = FALSE;
+  $form['options']['#collapsed'] = FALSE;
+  $form['options']['promote']['#title'] = t("Yes, feature this story!");
+  // Change title from Publishing options to Promote story if not admin
+  if (user_access('administer nodes') == FALSE && user_access('override blog published option') == FALSE) {
+    $form['options']['#title'] = t("Promote story");
   }
 
   // pre-fill the WKT search address with the existing location string
@@ -294,11 +298,7 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
 
   // force hiding of voipnode extension settings (see http://drupal.org/node/1549288)
   unset($form['group_voipnode_settings']);
-  
-  // Make publishing options always expanded
-  $form['options']['#collapsible'] = FALSE;
-  $form['options']['#collapsed'] = FALSE;
- 
+
   return $form;
 }
 
