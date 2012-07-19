@@ -6,6 +6,73 @@
 function vojo_feature_content_default_fields() {
   $fields = array();
 
+  // Exported field: field_audio_recorder
+  $fields['blog-field_audio_recorder'] = array(
+    'field_name' => 'field_audio_recorder',
+    'type_name' => 'blog',
+    'display_settings' => array(
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'filefield',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'filefield',
+    'active' => '1',
+    'list_field' => '0',
+    'list_default' => 1,
+    'description_field' => '0',
+    'widget' => array(
+      'file_extensions' => 'mp3 wav',
+      'file_path' => '',
+      'progress_indicator' => 'bar',
+      'max_filesize_per_file' => '',
+      'max_filesize_per_node' => '',
+      'filefield_sources' => array(
+        'remote' => 0,
+        'reference' => 0,
+        'recorder' => 0,
+        'attach' => 0,
+      ),
+      'filefield_source_attach_path' => 'file_attach',
+      'filefield_source_attach_absolute' => '0',
+      'filefield_source_attach_mode' => 'move',
+      'filefield_source_autocomplete' => '0',
+      'label' => 'Audio recorder',
+      'weight' => '-1',
+      'description' => '',
+      'type' => 'audiorecorderfield_widget',
+      'module' => 'audiorecorderfield',
+    ),
+  );
+
   // Exported field: field_location_string
   $fields['blog-field_location_string'] = array(
     'field_name' => 'field_location_string',
@@ -423,6 +490,7 @@ function vojo_feature_content_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Audio recorder');
   t('Caption');
   t('Direct Phone Number');
   t('Header background color');
