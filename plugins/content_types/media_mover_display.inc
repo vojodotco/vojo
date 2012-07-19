@@ -24,7 +24,6 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
       foreach ($cid as $mmfid) {
-        $mmfid['complete_file'] = '';
         if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
           if( !array_key_exists($mmfid['fid'], $playlist) ){
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
