@@ -154,13 +154,18 @@ function vojo_form_alter(&$form, &$form_state, $form_id) {
     } 
   }
 }
-
 function vojo_form_group_node_form_alter($form, &$form_state) {
   $form['body_field']['body']['#description'] = t("Write a short description of your group for your about page.");
   // Add after build function. 
   $form['#after_build'][] = 'vojo_form_group_node_form_after_build';
+  // Add validate function.
+  $form['#validate'][] = 'vojo_form_group_node_form_alter_validate';
 }
-
+function vojo_form_group_node_form_alter_validate($form, &$form_state) {
+  if (stristr($form_state['values']['field_yeta'][0]['value'], '@vojo.co') == FALSE) {
+    form_set_error('email', t('E-mail address: You must use an email that ends with @vojo.co.'));
+  }
+}
 function vojo_form_group_node_form_after_build($form, &$form_state) {
   // Do not display og_user_roles select box if it has no selectable options.
   if (count($form['og_user_roles_default_role']['#options']) == 1) {
