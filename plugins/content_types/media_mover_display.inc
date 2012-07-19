@@ -24,6 +24,7 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
       foreach ($cid as $mmfid) {
+        $mmfid['complete_file'] = '';
         if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
           if( !array_key_exists($mmfid['fid'], $playlist) ){
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
@@ -36,6 +37,10 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
             $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
           }
+        }
+        if (empty($mmfid['complete_file'])) {
+          $playlist[$mmfid['fid']]['empty'] = TRUE;
+          // drupal_set_message("uploaded media will display after being processed");
         }
       }
     } 
@@ -55,9 +60,19 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   if ($playlist) {
     $block->content = $media_mover_vids;
     foreach ($playlist as $clip) {
-      $flash_vars['playlist'][] = array('file' => $clip['url'], 'image' => $clip['image']);
+      if (isset($clip['empty'])) {
+        $flash_vars['playlist']['empty'] = TRUE;
+      }
+      else {
+        $flash_vars['playlist'][] = array('file' => $clip['url'], 'image' => $clip['image']);
+      }
     }
-    $block->content = theme('jwplayermodule_render_player', array(), $flash_vars);
+    if (isset($flash_vars['playlist']['empty'])) {
+      $block->content = '<div class="messages status">'. t("This media is being converted. Please check back in a minute or two.") .'</div>';
+    }
+    else {
+      $block->content = theme('jwplayermodule_render_player', array(), $flash_vars);            
+    }
   }
   return $block;
 }
