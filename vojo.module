@@ -93,6 +93,28 @@ function _vojo_image_path($imgfile){
 }
 
 /**
+ * Return the VoipVoice id (name) for a ISO standard language code.  All calls to change
+ * the language during a voice call should query this function to return the VoipVoice
+ * for a language.
+ */
+function vojo_voice_id_for_language( $language=null ) {
+  $voice = 'vojo-en';  // default to english
+  switch($language) {
+    case 'en':
+      $voice = 'vojo-en';
+      break;
+    case 'es':
+      $voice = 'vojo-es';
+      break;
+    case 'pt':
+    case 'pt-br':
+      $voice = 'vojo-pt';
+      break;
+  }
+  return $voice;
+}
+
+/**
  * Implementation of hook_voipscript_load_script().
  */
 function vojo_voipscript_load_script($script_name, $params = NULL) {
@@ -130,6 +152,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_create_user_script($params['number'], $params['nid']);
     }
+    elseif ($script_name == 'vojo_pick_language') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_pick_language_script();
+    }
 }
 
 /**
@@ -145,6 +171,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_redirect_to_group',
     'vojo_pick_create_or_anon',
     'vojo_create_user',
+    'vojo_pick_language',
   );
 }
 
