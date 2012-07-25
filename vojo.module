@@ -98,10 +98,10 @@ function _vojo_image_path($imgfile){
  * for a language.
  */
 function vojo_voice_id_for_language( $language=null ) {
-  $voice = 'vojo-english';  // default to english
+  $voice = 'vojo-en';  // default to english
   switch($language) {
     case 'en':
-      $voice = 'vojo-english';
+      $voice = 'vojo-en';
       break;
     case 'es':
       $voice = 'vojo-es';

@@ -9,7 +9,7 @@
  * @see voipextension_basic_menu
  */
 function _vojo_welcome_script() {
-  voipvoice_set_current_voice( vojo_voipscript_load_script() );  // set default language
+  voipvoice_set_current_voice( vojo_voice_id_for_language() );  // set default language
   
   $script = new VoipScript('vojo_welcome');
 
@@ -21,7 +21,7 @@ function _vojo_welcome_script() {
   // let the user pick a language first
   $script->addLabel('intro');
   $script->addSay( v('Welcome to Vojo') );
-  $script->addGosub('vojo-pick-language');
+  $script->addGosub('vojo_pick_language');
   
   // prompt to pick a group extension
   $prompt = v('Please enter a group extension and then press pound.');
@@ -104,7 +104,7 @@ function _vojo_change_language_script($language){
   voipvoice_set_current_voice( vojo_voice_id_for_language($language) );
   // give user feedback
   $script = new VoipScript('vojo_change_language');
-  $script->addSay('Language changed');
+  $script->addSay(v('Welcome to Vojo'));  // say it again in the local language
   $script->addReturn();
   return $script;
 }
@@ -211,7 +211,7 @@ function _vojo_record_blog_script($node) {
   // record a message
   $script->addLabel('start_recording');
   $script->addRecord(
-    v('Start recording your message for %og_group after the tone. Press the pound key to stop recording.'), 
+    v('Start recording your message after the tone. Press the pound key to stop recording.'), 
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no_recording','^%recording_duration == 0');
