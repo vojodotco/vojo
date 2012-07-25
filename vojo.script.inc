@@ -9,7 +9,7 @@
  * @see voipextension_basic_menu
  */
 function _vojo_welcome_script() {
-  voipvoice_set_current_voice( _vojo_get_voice_name_for_language() );  // default to english
+  voipvoice_set_current_voice( vojo_voipscript_load_script() );  // set default language
   
   $script = new VoipScript('vojo_welcome');
 
@@ -21,7 +21,7 @@ function _vojo_welcome_script() {
   // let the user pick a language first
   $script->addLabel('intro');
   $script->addSay( v('Welcome to Vojo') );
-  $script->addGosub('vojo_redirect_to_group');
+  $script->addGosub('vojo-pick-language');
   
   // prompt to pick a group extension
   $prompt = v('Please enter a group extension and then press pound.');
@@ -66,7 +66,7 @@ function _vojo_pick_language_script(){
   $script->addGetInput($prompt, 1, '', 6);
   $script->addGotoIf('picked_en', "^%input_digits == '1'");
   $script->addGotoIf('picked_es', "^%input_digits == '2'");
-  $script->addGotoIf('picked_pr', "^%input_digits == '3'");
+  $script->addGotoIf('picked_pt', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
   $script->addSay(v('Input not recognized'));
   $script->addGoto('menu');
@@ -75,17 +75,17 @@ function _vojo_pick_language_script(){
 
   // user picked english
   $script->addLabel('picked_en');
-  voipvoice_set_current_voice( vojo_voice_id_for_language('en') );
+  $script->addGoSub('vojo_change_language', array('language'=>'en') );
   $script->addGoto('return');
 
   // user picked spanish
   $script->addLabel('picked_es');
-  voipvoice_set_current_voice( vojo_voice_id_for_language('es') );
+  $script->addGoSub('vojo_change_language', array('language'=>'es') );
   $script->addGoto('return');
   
   // user picked portuguese
-  $script->addLabel('picked_pr');
-  voipvoice_set_current_voice( vojo_voice_id_for_language('pr') );
+  $script->addLabel('picked_pt');
+  $script->addGoSub('vojo_change_language', array('language'=>'pt') );
   $script->addGoto('return');
 
   // return
@@ -94,6 +94,19 @@ function _vojo_pick_language_script(){
 
   return $script;
   
+}
+
+/**
+ * Actually change the language to whatever the userpicked
+ */
+function _vojo_change_language_script($language){
+  // change the language
+  voipvoice_set_current_voice( vojo_voice_id_for_language($language) );
+  // give user feedback
+  $script = new VoipScript('vojo_change_language');
+  $script->addSay('Language changed');
+  $script->addReturn();
+  return $script;
 }
 
 /**
@@ -309,7 +322,8 @@ function _vojo_send_sms($number, $msg){
   $call->setDestNumber($number);
   $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));
   voip_text($msg, $call);
-  $user = user_load($tempUserId);}
+  $user = user_load($tempUserId);
+}
 
 /**
  * VoIP Script Callback: Save announcment file to node.

@@ -98,10 +98,10 @@ function _vojo_image_path($imgfile){
  * for a language.
  */
 function vojo_voice_id_for_language( $language=null ) {
-  $voice = 'vojo-en';  // default to english
+  $voice = 'vojo-english';  // default to english
   switch($language) {
     case 'en':
-      $voice = 'vojo-en';
+      $voice = 'vojo-english';
       break;
     case 'es':
       $voice = 'vojo-es';
@@ -156,6 +156,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_pick_language_script();
     }
+    elseif ($script_name == 'vojo_change_language') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_change_language_script($params['language']);
+    }
 }
 
 /**
@@ -172,6 +176,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_pick_create_or_anon',
     'vojo_create_user',
     'vojo_pick_language',
+    'vojo_change_language',
   );
 }
 
