@@ -6,7 +6,7 @@
  * Since scripts are compiled and then run, the v function doesn't respect later calls to 
  * voipvoice_set_current_voice that are trying to change the voice mid-call.  Call v() 
  * like this:
- *   $script->addSay("^v('Welcome to Vojo')");  
+ *   $script->addSay("^vee('Welcome to Vojo',%vojo_voice)");  
  */
 
 /**
@@ -14,9 +14,9 @@
  * @see voipextension_basic_menu
  */
 function _vojo_welcome_script() {
-  voipvoice_set_current_voice( vojo_voice_id_for_language() );  // set default language
   
   $script = new VoipScript('vojo_welcome');
+  $script->addSet('vojo_voice', vojo_voice_id_for_language());
 
   // TODO: if it is an existing user, change the language based on their default language setting
 
@@ -25,12 +25,12 @@ function _vojo_welcome_script() {
   
   // let the user pick a language first
   $script->addLabel('intro');
-  $script->addSay( "^v('Welcome to Vojo')" );
+  $script->addSay( "^vee('Welcome to Vojo',%vojo_voice)" );
   $script->addGosub('vojo_pick_language');
   
   // prompt to pick a group extension
   $script->addLabel('request_extension');
-  $script->addGetInput("^v('Please enter a group extension and then press pound.')", 5, '#', 3);
+  $script->addGetInput("^vee('Please enter a group extension and then press pound.',%vojo_voice)", 5, '#', 3);
   $script->addGotoIf('no_input_received', "^%input_digits == ''");
   $script->addGotoIf('go_back', "^%input_digits == '*'");
   $script->addGosub('voipextension_play_extension', array('eid' => "%input_digits")); 
@@ -38,7 +38,7 @@ function _vojo_welcome_script() {
 
   //didn't get a selection
   $script->addLabel('no_input_received');
-  $script->addSay(variable_get('voipextension_noinput_msg', "^v('No input received. Please try again.')"));
+  $script->addSay(variable_get('voipextension_noinput_msg', "^vee('No input received. Please try again.',%vojo_voice)"));
   $script->addGoto('request_extension');
 
   // send to appropriate group
@@ -54,6 +54,14 @@ function _vojo_welcome_script() {
 }
 
 /**
+ * Have to pass the voice in to each call to handle async comms with 3rd party VOIP
+ * provider.
+ */
+function vee($text,$voice_id){
+  return v($text, null, null, $voice_id);
+}
+
+/**
  * Re-usable script to pick a language.  We'll need to manually edit this script each 
  * time we add more languages.  Route all language selection through the 
  * vojo_voice_id_for_language($language) method in vojo.module.  This calls 
@@ -66,12 +74,12 @@ function _vojo_pick_language_script(){
 
   // pick language menu
   $script->addLabel('menu');
-  $script->addGetInput("^v('For english, press one. Para español, marca dos. Para português, pressione três. To go back press pound.')", 1, '', 6);
+  $script->addGetInput("^vee('For english, press one. Para español, marca dos. Para português, pressione três. To go back press pound.',%vojo_voice)", 1, '', 6);
   $script->addGotoIf('picked_en', "^%input_digits == '1'");
   $script->addGotoIf('picked_es', "^%input_digits == '2'");
   $script->addGotoIf('picked_pt', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
-  $script->addSay("^v('Input not recognized')");
+  $script->addSay("^vee('Input not recognized',%vojo_voice)");
   $script->addGoto('menu');
 
   // TODO: save this as the user's default language?
@@ -107,8 +115,8 @@ function _vojo_change_language_script($language){
   voipvoice_set_current_voice( vojo_voice_id_for_language($language) );
   // give user feedback
   $script = new VoipScript('vojo_change_language');
-  $script->setVoice( vojo_voice_id_for_language($language) );
-  $script->addSay("^v('Welcome to Vojo')");  // say it again in the local language  
+  $script->addSet('vojo_voice', vojo_voice_id_for_language($language) );
+  $script->addSay("^vee('Welcome to Vojo',%vojo_voice)");  // say it again in the local language  
   $script->addReturn();
   return $script;
 }
@@ -122,13 +130,13 @@ function _vojo_redirect_to_group_script($number) {
   if($nid==null) {
     // no matching node for number found, return a brief error message
     watchdog('vojo', 'No node has direct phone number %number',array('%number'=>$number));
-    $script->addSay("^v('Sorry, there is no group at that number.')");
+    $script->addSay("^vee('Sorry, there is no group at that number.',%vojo_voice)");
   } else {
     // found a node, return its script
     $eid = _vojo_voipextension_api_extension_for_node($nid);
     if($eid===false){
       watchdog('vojo', 'Direct phone number %number is node %nid, but has no extension', array('%number'=>$number, '%nid'=>$nid));
-      $script->addSay("^v('Sorry, there is no extension for that number.')");
+      $script->addSay("^vee('Sorry, there is no extension for that number.',%vojo_voice)");
     } else {
       watchdog('vojo', 'Forwarding directly to group %nid / extension %eid (user called %number)', array('%nid'=>$nid, '%eid'=>$eid, '%number'=>$number));
       $script->addGosub('voipextension_play_extension', array('eid' => $eid)); 
@@ -158,13 +166,13 @@ function _vojo_group_script($node) {
   if ($greeting = voipnode_get_greeting($node)) {
     $script->addGetInput($greeting, 1, '', 6);
   } else {
-    $script->addGetInput("^v('To hear other stories, press 1.  To record your own story press 2. To learn more press 3. To return and select another group press the pound key.')", 1, '', 6);
+    $script->addGetInput("^vee('To hear other stories, press 1.  To record your own story press 2. To learn more press 3. To return and select another group press the pound key.',%vojo_voice)", 1, '', 6);
   }
   $script->addGotoIf('hear_stories', "^%input_digits == '1'");
   $script->addGotoIf('record_story', "^%input_digits == '2'");
   $script->addGotoIf('learn_more', "^%input_digits == '3'");
   $script->addGotoIf('return', "^%input_digits == '#'");
-  $script->addSay("^v('Input not recognized')");
+  $script->addSay("^vee('Input not recognized',%vojo_voice)");
   $script->addGoto('group_menu');
   
   // user wants to hear other stories - this delegates to a voipview
@@ -215,17 +223,17 @@ function _vojo_record_blog_script($node) {
   // record a message
   $script->addLabel('start_recording');
   $script->addRecord(
-    "^v('Start recording your message after the tone. Press the pound key to stop recording.')", 
+    "^vee('Start recording your message after the tone. Press the pound key to stop recording.',%vojo_voice)", 
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no_recording','^%recording_duration == 0');
-  $script->addSay("^v('You said ')");
+  $script->addSay("^vee('You said ',%vojo_voice)");
   $script->addSay('%recording_public_url');
   
   // review the recording (and save / re-record)
   $script->addLabel('accept menu');
   $script->addGetInput(
-    "^v('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.')",
+    "^vee('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.',%vojo_voice)",
     10, '', 1
   );
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
@@ -233,13 +241,13 @@ function _vojo_record_blog_script($node) {
   $script->addGotoIf('end_record', "^%input_digits == '#'");
   // fall through to accept recording if no input (could be hang-up)
   $script->addLabel('accept recording');
-  $script->addSay("^v('Please wait while we save your story')");
+  $script->addSay("^vee('Please wait while we save your story',%vojo_voice)");
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
   $script->addGoto('end_record');
 
   // deal with no recording
   $script->addLabel('no_recording');
-  $script->addSay("^v('No recording detected. Please try again.')");
+  $script->addSay("^vee('No recording detected. Please try again.',%vojo_voice)");
   $script->addGoto('start_recording');
 
   // return
@@ -259,7 +267,7 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
   $script->addGetInput('Press 1 to record an anonymous story, or press 2 to create a new account on vojo dot co', 1, '', 5);
   $script->addGotoIf('as_anon', "^%input_digits == '1'");
   $script->addGotoIf('create_user', "^%input_digits == '2'");
-  $script->addSay("^v('Input not recognized')");
+  $script->addSay("^vee('Input not recognized',%vojo_voice)");
   $script->addGoto('pick_option');
 
   $script->addLabel('as_anon');
@@ -307,7 +315,7 @@ function _vojo_create_user_script($number, $groupNid){
   $script = new VoipScript('vojo_create_user');
   $script->addSet('user_uid', $user->uid);
   $script->addSet('user_name', $user->name);  
-  $script->addSay("^v('We made a new user account for you. We have sent you an sms with your user name and password')");
+  $script->addSay("^vee('We made a new user account for you. We have sent you an sms with your user name and password',%vojo_voice)");
   return $script;
 }
 
@@ -354,7 +362,7 @@ function _vojo_save_blog_script($nid, $fid) {
     $node->old_vid = 1;
   }
   node_save($node);
-  $script->addSay("^v('Story saved.')");
+  $script->addSay("^vee('Story saved.',%vojo_voice)");
   return $script;
 }
 
