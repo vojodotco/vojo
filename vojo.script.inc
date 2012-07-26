@@ -29,9 +29,8 @@ function _vojo_welcome_script() {
   $script->addGosub('vojo_pick_language');
   
   // prompt to pick a group extension
-  $prompt = "^v('Please enter a group extension and then press pound.')";
   $script->addLabel('request_extension');
-  $script->addGetInput($prompt, 5, '#', 3);
+  $script->addGetInput("^v('Please enter a group extension and then press pound.')", 5, '#', 3);
   $script->addGotoIf('no_input_received', "^%input_digits == ''");
   $script->addGotoIf('go_back', "^%input_digits == '*'");
   $script->addGosub('voipextension_play_extension', array('eid' => "%input_digits")); 
@@ -67,8 +66,7 @@ function _vojo_pick_language_script(){
 
   // pick language menu
   $script->addLabel('menu');
-  $prompt = "^v('For english, press one. Para español, marca dos. Para português, pressione três. To go back press pound.')";
-  $script->addGetInput($prompt, 1, '', 6);
+  $script->addGetInput("^v('For english, press one. Para español, marca dos. Para português, pressione três. To go back press pound.')", 1, '', 6);
   $script->addGotoIf('picked_en', "^%input_digits == '1'");
   $script->addGotoIf('picked_es', "^%input_digits == '2'");
   $script->addGotoIf('picked_pt', "^%input_digits == '3'");
@@ -157,11 +155,11 @@ function _vojo_group_script($node) {
 
   // menu of group options
   $script->addLabel('group_menu');
-  $prompt = "^v('To hear other stories, press 1.  To record your own story press 2. To learn more press 3. To return and select another group press the pound key.')";
   if ($greeting = voipnode_get_greeting($node)) {
-    $prompt = $greeting;
+    $script->addGetInput($greeting, 1, '', 6);
+  } else {
+    $script->addGetInput("^v('To hear other stories, press 1.  To record your own story press 2. To learn more press 3. To return and select another group press the pound key.')", 1, '', 6);
   }
-  $script->addGetInput($prompt, 1, '', 6);
   $script->addGotoIf('hear_stories', "^%input_digits == '1'");
   $script->addGotoIf('record_story', "^%input_digits == '2'");
   $script->addGotoIf('learn_more', "^%input_digits == '3'");
