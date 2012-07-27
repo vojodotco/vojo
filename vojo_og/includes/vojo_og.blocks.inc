@@ -64,7 +64,7 @@ function _vojo_og_generic_group_menu_block_contents(){
         }    
         // group story submit page
         $contents.= '<li class="leaf">';
-        if ( vojo_og_can_submit($node->nid) ) {
+        if ( vojo_og_can_submit($group_node->nid) ) {
           $contents .= l(t('Submit'), "node/add/blog", array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
         }
         $contents.= "</li>";               
