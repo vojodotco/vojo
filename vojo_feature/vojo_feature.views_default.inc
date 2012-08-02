@@ -190,11 +190,6 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = 1;
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
-  /* Header: Global: PHP */
-  $handler->display->display_options['header']['php']['id'] = 'php';
-  $handler->display->display_options['header']['php']['table'] = 'views';
-  $handler->display->display_options['header']['php']['field'] = 'php';
-  $handler->display->display_options['header']['php']['empty'] = FALSE;
   /* Relationship: Organic groups: Group node (post) */
   $handler->display->display_options['relationships']['group_nid']['id'] = 'group_nid';
   $handler->display->display_options['relationships']['group_nid']['table'] = 'og_ancestry';
@@ -763,7 +758,6 @@ function vojo_feature_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('PHP'),
     t('Group node (post)'),
     t('Nid'),
     t('view story'),
