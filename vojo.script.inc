@@ -169,7 +169,7 @@ function _vojo_group_script($node) {
   
   // user wants to hear other stories - this delegates to a voipview
   $script->addLabel('hear_stories');
-  $params = array('view_name' => 'vojo_group_browse_stories', 'display_id' => 'vojo_group_stories_voip', 
+  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
     'args' => json_encode(array($node->nid)));
   $script->addGosub('voipviews_read_view', $params);
   $script->addGoto('begin');
