@@ -20,7 +20,8 @@ function vojo_init(){
 /**
  * Implementation of hook_menu.
  */
-function vojo_menu(&$items) {
+function vojo_menu() {
+  $items = array();
   $items['nolink'] = array(
     'page callback'    => 'vojo_nolink',
     'access callback'  => TRUE,
