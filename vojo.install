@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Do some installation hacks
+ */
+function vojo_update_6000() {
+  $ret = array();
+  
+  $ret[] = update_sql("UPDATE {system} SET weight = -5 WHERE type = 'module' AND name = 'mailsave'");
+  $ret[] = update_sql("UPDATE {system} SET weight = -2 WHERE type = 'module' AND name = 'sms_registration'");
+  $ret[] = update_sql("UPDATE {system} SET weight = 0 WHERE type = 'module' AND name = 'mail2og'");
+
+  return $ret;
+}

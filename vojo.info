@@ -3,7 +3,7 @@ name = Vojo.co Utilities
 description = Provides functionality specific to the Vojo hosted service
 core = 6.x
 package = Vojo.co
-version = "6.x-1.0-beta"
+version = "6.x-1.1"
 
 dependencies[] = "ctools"
 dependencies[] = "features"
@@ -21,3 +21,5 @@ dependencies[] = "sms_registration"
 dependencies[] = "themekey"
 dependencies[] = "views"
 dependencies[] = "views_content"
+dependencies[] = "mailsave"
+dependencies[] = "mail2og"
