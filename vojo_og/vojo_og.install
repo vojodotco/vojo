@@ -3,7 +3,7 @@
 /**
  * Do some installation hacks
  */
-function vojo_oj_install() {
+function vojo_og_install() {
     // make sure this init runs before any other so we can customize the theme correctly
     db_query("UPDATE {system} SET weight = -100 WHERE type = 'module' AND name = 'vojo_og'"); 
 }
