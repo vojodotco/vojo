@@ -275,7 +275,8 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
 }
 
 /**
- * Create a new user and send them an sms.  This does not check if the user phone exists already!
+ * Create a new user and send them an sms.  
+ * TODO: This does not check if the user phone exists already!
  */
 function _vojo_create_user_script($number, $groupNid){
   global $user;
@@ -297,6 +298,7 @@ function _vojo_create_user_script($number, $groupNid){
   // add them to the group
   og_save_subscription($groupNid, $user->uid, array('is_active' => 1));
   // send them an sms
+  sms_registration_switch_language($user);  // switch to the correct language for SMSs
   // TODO: centrally locate this text in sms_registration?
   $result1 = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')) ) ); 
