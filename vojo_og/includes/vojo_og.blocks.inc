@@ -129,10 +129,10 @@ function vojo_group_details_block() {
   $message['post_story'] = '<h3>'. t('Post your story to this group!') .'</h3>';
   $message['post_story'] .= '<p>'. t('Just send a sms or mms (picture message) from your phone to <em>@email</em>', array('@email' => $og_email)) .'</p>';
   if ($vojo_voip_number && $og_extenson) {
-    $message['post_story'] .= '<p>'. t('Or call @phone ext. @ext to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
+    $message['post_story'] .= '<p>'. t('Or call <em>@phone ext. @ext</em> to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
   }
   else {
-    $message['post_story'] .= '<p>'. t('Or call @phone to record your audio story', array('@phone' => $vojo_voip_number)) .'</p>';                                                                                                      
+    $message['post_story'] .= '<p>'. t('Or call <em>@phone</em> to record your audio story', array('@phone' => $vojo_voip_number)) .'</p>';                                                                                                      
   }
   // Only display group details if we have a group context.
   if ($node && node_access('view', $node)) {
