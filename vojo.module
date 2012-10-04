@@ -161,6 +161,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_change_language_script($params['language']);
     }
+    elseif ($script_name == 'vojo_play_extension') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_get_play_extension_script($params['eid']);
+    }
 }
 
 /**
@@ -178,6 +182,7 @@ function vojo_voipscript_get_script_names() {
     'vojo_create_user',
     'vojo_pick_language',
     'vojo_change_language',
+    'vojo_play_extension'
   );
 }
 
