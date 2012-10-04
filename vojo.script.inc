@@ -316,7 +316,7 @@ function _vojo_create_user_script($number, $groupNid){
 /**
  * Internal helper to send an SMS via VoipDrupal
  * Important to use this, and NOT sms_send because it isn't configured to work with a Tropo Application.
- * TODO: figure out right way around hack so it doesn't send as 
+ * TODO: figure out right way around hack so it doesn't send as the main vojo phone line
  */
 function _vojo_send_sms($number, $msg){
   global $user;
@@ -326,7 +326,8 @@ function _vojo_send_sms($number, $msg){
   $call->setCurrentChannel('text');
   $call->setCurrentNetwork('sms');
   $call->setDestNumber($number);
-  $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));
+  $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));  // this is not a useful phone number :-(
+  $call->setCallerName(sms_registration_get_address());   // does this work?
   voip_text($msg, $call);
   $user = user_load($tempUserId);
 }
