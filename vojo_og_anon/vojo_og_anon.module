@@ -84,12 +84,20 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
     switch($op){
     case "insert":
     case "update":
-      if (!og_is_group_member($node->nid, TRUE, $anon_uid) ){
-        og_save_subscription($node->nid, $anon_uid, array(
-          'is_active'=>true, 'is_admin'=>false, 'created'=>true
-        ));
-        watchdog('vojo_og_anon','Added fake anonymous user (uid=@anon_user_id) to group @group_id',
-          array('@anon_user_id'=>$anon_uid, '@group_id'=>$node->nid));
+      if (!$node->flag['member_to_post_group']) {
+        if (!og_is_group_member($node->nid, TRUE, $anon_uid) ){
+         og_save_subscription($node->nid, $anon_uid, array(
+           'is_active'=>true, 'is_admin'=>false, 'created'=>true
+         ));
+         watchdog('vojo_og_anon','Added fake anonymous user (uid=@anon_user_id) to group @group_id',
+           array('@anon_user_id'=>$anon_uid, '@group_id'=>$node->nid));
+        }
+      } else {
+        if (og_is_group_member($node->nid, TRUE, $anon_uid) ){
+         og_delete_subscription($node->nid, $anon_uid, array());
+         watchdog('vojo_og_anon','Removed fake anonymous user (uid=@anon_user_id) from group @group_id',
+           array('@anon_user_id'=>$anon_uid, '@group_id'=>$node->nid));
+        }
       }
       break;
     }
@@ -99,8 +107,18 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
   elseif(_vojo_og_anon_is_node_type_to_anonymize($node->type)){
     switch($op){
     case "presave":
-      if($node->uid==0){  // if user is anonymous
-        $node->uid = vojo_og_anon_get_user_id();
+      $og_nid = $_GET['gids'][0];
+      if(is_int($og_nid)){
+        $flag = flag_get_flag('member_to_post_group');
+        if (!$flag->is_flagged($og_nid)) {
+          if($node->uid==0){  // if user is anonymous
+            $node->uid = vojo_og_anon_get_user_id();
+          }
+        }
+      } else {
+        // if the og passed in isn't valid, we can't verify anything, so we should just
+        // bail quickly
+        $node = null;
       }
       break;
     }
