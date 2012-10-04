@@ -33,7 +33,7 @@ function _vojo_welcome_script() {
   $script->addGetInput("^v('Please enter a group extension and then press pound.',null,null,%vojo_voice)", 5, '#', 3);
   $script->addGotoIf('no_input_received', "^%input_digits == ''");
   $script->addGotoIf('go_back', "^%input_digits == '*'");
-  $script->addGosub('voipextension_play_extension', array('eid' => "%input_digits")); 
+  $script->addGosub('vojo_play_extension', array('eid' => "%input_digits")); 
   $script->addGoto('request_extension');
 
   //didn't get a selection
@@ -378,5 +378,34 @@ function _vojo_login_script($number) {
   $script->addSet('user_uid', $user->uid);
   $script->addSet('user_name', $user->name);
 
+  return $script;
+}
+
+/*
+ * Copied from _voipextension_get_play_extension_script().
+ * Removes message when transferring to an extension.
+ */
+function _vojo_get_play_extension_script($eid, $options=array()) {
+  // @todo load api, when in a separate file.
+
+  $script = new VoipScript('vojo_play_extension');
+  // using voipscript %number replacement
+  $script->setVar('number', $eid);
+
+  if (($extension = voipextension_load($eid)) && $extension['enabled']) {
+    $gosub = voipextension_get_script($extension);
+    $arguments = array_merge($gosub['script_arguments'], $options);
+    // include the extension in the arguments
+    $arguments['eid'] = $eid;
+    $script->addGosub($gosub['script_name'], $arguments);
+  }
+  else {
+    if (! $unknown = variable_get('voipextension_unknown_msg', FALSE)) {
+      $unknown = t('Unknown extension %number. ');
+    }
+    $script->addSay($unknown);
+  }
+  $script->addReturn();
+ 
   return $script;
 }
