@@ -131,7 +131,7 @@ function _vojo_redirect_to_group_script($number) {
       $script->addSay("^v('Sorry, there is no extension for that number.',null,null,%vojo_voice)");
     } else {
       watchdog('vojo', 'Forwarding directly to group %nid / extension %eid (user called %number)', array('%nid'=>$nid, '%eid'=>$eid, '%number'=>$number));
-      $script->addGosub('voipextension_play_extension', array('eid' => $eid)); 
+      $script->addGosub('vojo_play_extension', array('eid' => $eid)); 
     }
   }
   $script->addReturn();
