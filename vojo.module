@@ -7,13 +7,10 @@ $_vojo_group_published_story_counts = array();
  * Load up helpers
  */
 function vojo_init(){
-    // load custom blocks
-    module_load_include('inc', 'vojo', 'includes/vojo.blocks');  
-    // load costom voip-drupal scripts
-    module_load_include('inc', 'vojo', 'includes/vojo.script');
-    if (arg(0) == 'blogs') {
-      drupal_set_title('somebodys blog!');
-    }
+  // load custom blocks
+  module_load_include('inc', 'vojo', 'includes/vojo.blocks');  
+  // load costom voip-drupal scripts
+  module_load_include('inc', 'vojo', 'includes/vojo.script');
   drupal_add_css(drupal_get_path('module', 'vojo') .'/css/vojo-site-header.css');
 }
 
