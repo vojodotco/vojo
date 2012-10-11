@@ -107,7 +107,12 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
   elseif(_vojo_og_anon_is_node_type_to_anonymize($node->type)){
     switch($op){
     case "presave":
-      $og_nid = $_GET['gids'][0];
+      $og_nid = null;
+      if(property_exists($node,"og_groups") && count($node->og_groups)>0) {
+        $og_nid = current($node->og_groups);
+      } elseif(array_keys_exists('gids',$_GET)) {
+        $og_nid = $_GET['gids'][0];
+      }
       if(is_int($og_nid)){
         $flag = flag_get_flag('member_to_post_group');
         if (!$flag->is_flagged($og_nid)) {
@@ -115,11 +120,7 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
             $node->uid = vojo_og_anon_get_user_id();
           }
         }
-      } else {
-        // if the og passed in isn't valid, we can't verify anything, so we should just
-        // bail quickly
-        $node = null;
-      }
+      } 
       break;
     }
   }
