@@ -110,7 +110,7 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
       $og_nid = null;
       if(property_exists($node,"og_groups") && count($node->og_groups)>0) {
         $og_nid = current($node->og_groups);
-      } elseif(array_keys_exists('gids',$_GET)) {
+      } elseif(array_key_exists('gids',$_GET)) {
         $og_nid = $_GET['gids'][0];
       }
       if(is_int($og_nid)){
