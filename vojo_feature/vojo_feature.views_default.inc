@@ -3025,8 +3025,7 @@ return false;
   /* Display: Submit a Story */
   $handler = $view->new_display('default', 'Submit a Story', 'default');
   $handler->display->display_options['title'] = 'Submit';
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'create blog entries';
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
