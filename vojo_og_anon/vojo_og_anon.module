@@ -126,3 +126,19 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
   }
   
 }
+
+/**
+ * Return true if the user is allowed to create nodes in a group.
+ */
+function vojo_og_anon_create_access ($og_nid) {
+  global $user;
+  $flag = flag_get_flag('member_to_post_group');
+  if ($flag->is_flagged($og_nid)) {
+    // Membership required
+    return og_is_group_member($og_nid, TRUE, $user->uid);
+  } else {
+    // Membership not required
+    return true;
+  }
+  return false;
+}
