@@ -2220,26 +2220,46 @@ if($has_audio) {
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_setup'] = 'function get_audio_extensions(){
+
   return array(\'wav\',\'mp3\');
+
 }';
   $handler->display->display_options['fields']['php']['php_value'] = '// the list of allowed extensions (dictated by what Tropo supports for now)
+
 $audio_extensions = get_audio_extensions();
+
 // clean text body (fallback if no audio)
+
 $content = strip_tags($row->body);
+
 $content = str_replace("\\n"," ",$content);
+
 $content = str_replace("\\r"," ",$content);
+
 //$content = html_entity_decode($content); // this doesn\'t work for some reason
+
 // play any audio attached, if none then play text
+
 $result = db_query(\'SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid = %d ORDER BY r.weight, f.fid\', $row->upload_fid);
+
 while ($file = db_fetch_array($result)) {
+
   $extension = substr($file[\'filepath\'], -3);
+
   if( in_array($extension, $audio_extensions) ){
+
     $content = file_create_url($file[\'filepath\']);
+
   }
+
 }
+
 if(strlen($content)==0) {
+
   $content = "This story has no audio or text";
+
 }
+
 return $content;';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -2333,20 +2353,35 @@ return $content;';
   $handler->display->display_options['filters']['php']['ui_name'] = 'PHP: Attachments = Audio or text';
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = '// the list of allowed extensions (dictated by what Tropo supports for now)
+
 $audio_extensions =  array(\'wav\',\'mp3\');
+
 // return TRUE to _REMOVE_ nodes
+
 $content = $row->body;
+
 $result = db_query(\'SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid = %d ORDER BY r.weight, f.fid\', $row->upload_fid);
+
 while ($file = db_fetch_array($result)) {
+
   $extension = substr($file[\'filepath\'], -3);
+
   if( in_array($extension, $audio_extensions) ){
+
     $content = file_create_url($file[\'filepath\']);
+
   }
+
 }
+
 if(strlen($content)==0) {
+
   return true;
+
 }
+
 return false;
+
 ';
   $translatables['vojo_group_stories_voip'] = array(
     t('Defaults'),
