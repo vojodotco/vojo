@@ -102,7 +102,7 @@ function _vojo_og_generic_group_menu_block_contents(){
 function vojo_og_can_submit($groupid){
   global $user;
   $flag = flag_get_flag('member_to_post_group');
-  return !( $flag->is_flagged($groupid) && ($user->uid==0) );
+  return !( $flag->is_flagged($groupid) && !og_is_group_member($groupid, $user->uid) );
 }
 
 /**
