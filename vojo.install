@@ -12,3 +12,10 @@ function vojo_update_6000() {
 
   return $ret;
 }
+
+/**
+ * Configure the filemime module for Ubuntu by default
+ */
+function vojo_update_6001() {
+  variable_set('filemime_file',"/etc/mime.types");
+}
