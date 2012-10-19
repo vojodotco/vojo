@@ -597,7 +597,7 @@ function vojo_node_has_image($node){
 /** 
  * Return true if the node has video attached
  */
-function vojo_node_has_video(){
+function vojo_node_has_video($node){
   return vojo_node_has_file_with_extension($node,'m4v');
 }
 
