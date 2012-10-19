@@ -579,3 +579,43 @@ function theme_dropdown_links($links, $attributes = array('class' => 'links')) {
   }
   return $output;
 }
+
+/** 
+ * Return true if the node has audio attached
+ */
+function vojo_node_has_audio($node){
+  return vojo_node_has_file_with_extension($node,'mp3');
+}
+
+/** 
+ * Return true if the node has images attached
+ */
+function vojo_node_has_image($node){
+  return $node->field_image[0]!=null;
+}
+
+/** 
+ * Return true if the node has video attached
+ */
+function vojo_node_has_video(){
+  return vojo_node_has_file_with_extension($node,'m4v');
+}
+
+/** 
+ * Return true if the node has a mediamover completed file with this extension
+ */
+function vojo_node_has_file_with_extension($node,$ext){
+  if( property_exists($node, 'media_mover') ) {
+    foreach($node->media_mover as $mm_config){
+      foreach($mm_config as $mm_item){
+        $pathinfo = pathinfo($mm_item['complete_file']);
+        if(array_key_exists('extension',$pathinfo)){
+          if($pathinfo['extension']==$ext){
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

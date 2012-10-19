@@ -203,3 +203,75 @@ function vojo_og_nodeapi(&$node, $op, $a3=null, $a4=null) {
     }
   }
 }
+
+/** 
+ * 
+ */
+function vojo_og_menu(){
+  $items['node/%/stats'] = array(
+    'title' => t('Statistics'),
+    'page callback' => 'vojo_og_stats_page',
+    'page arguments' => array(1),
+    'access callback' => 'vojo_og_stats_page_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK
+  );
+  return $items;
+}
+
+/**
+ * You can only see the stats page if you're a group admin
+ */
+function vojo_og_stats_page_access($nid){
+  $node = node_load($nid);
+  if ( ($node->type == 'group') && og_is_group_admin($node) ) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+function vojo_og_group_has_direct_number($node){
+  return ($node->field_direct_phone_number[0] != null);
+}
+
+/**
+ * Show a page with some stats about the group
+ */
+function vojo_og_stats_page($gid){
+  $group_node = node_load($gid);
+  // look at voip call history
+  $direct_call_count = null;
+  if( vojo_og_group_has_direct_number($group_node) ) {
+    $result = db_query('select count( * ) as calls from {voipcall} where dest_number = "%s"', $group_node->field_direct_phone_number[0]['phone']);
+    $row = db_fetch_array($result);
+    $direct_call_count = $row['calls'];    
+  }
+  // count story types
+  $story_count = 0;
+  $audio_story_count = 0;
+  $video_story_count = 0;
+  $image_story_count = 0;
+  $result = db_query('select nid from {og_ancestry} where group_nid=%d',$gid);
+  while ($row = db_fetch_array($result)) {
+    $story_count++;
+    $node = node_load($row['nid']);
+    //print_r($node); exit();
+    if(vojo_node_has_audio($node)) $audio_story_count++;
+    if(vojo_node_has_image($node)) $image_story_count++;
+    if(vojo_node_has_video($node)) $video_story_count++;
+  }
+  // Stitch together some descriptive text
+  $html = "<h2>".t('Group Statistics')."</h2>";
+  $html.= "<p>".t('This group has @count stories.',array('@count'=>$story_count))."</p>";
+  $html.= "<h3>".t('Story Media')."</h3>";
+  $html.= "<ul>";
+  $html.= "<li>".t('@count stories with audio (@pct%)',array('@count'=>$audio_story_count,'@pct'=>round(100*$audio_story_count/$story_count)))."</li>";
+  $html.= "<li>".t('@count stories with pictures (@pct%)',array('@count'=>$image_story_count,'@pct'=>round(100*$image_story_count/$story_count)))."</li>";
+  $html.= "<li>".t('@count stories with video (@pct%)',array('@count'=>$video_story_count,'@pct'=>round(100*$video_story_count/$story_count)))."</li>";
+  $html.= "</ul>";
+  $html.= "<h3>".t('Phone Traffic')."</h3>";
+  if($direct_call_count!=null) {
+    $html.="<p>".t('The direct phone number has been called @calls times.',array('@calls'=>$direct_call_count))."</p>";
+  }
+  return $html;
+}
