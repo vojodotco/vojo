@@ -263,15 +263,21 @@ function vojo_og_stats_page($gid){
   // Stitch together some descriptive text
   $html = "<h2>".t('Group Statistics')."</h2>";
   $html.= "<p>".t('This group has @count stories.',array('@count'=>$story_count))."</p>";
-  $html.= "<h3>".t('Story Media')."</h3>";
-  $html.= "<ul>";
-  $html.= "<li>".t('@count stories with audio (@pct%)',array('@count'=>$audio_story_count,'@pct'=>round(100*$audio_story_count/$story_count)))."</li>";
-  $html.= "<li>".t('@count stories with pictures (@pct%)',array('@count'=>$image_story_count,'@pct'=>round(100*$image_story_count/$story_count)))."</li>";
-  $html.= "<li>".t('@count stories with video (@pct%)',array('@count'=>$video_story_count,'@pct'=>round(100*$video_story_count/$story_count)))."</li>";
-  $html.= "</ul>";
-  $html.= "<h3>".t('Phone Traffic')."</h3>";
-  if($direct_call_count!=null) {
-    $html.="<p>".t('The direct phone number has been called @calls times.',array('@calls'=>$direct_call_count))."</p>";
+  if($story_count > 0) {
+    $html.= "<h3>".t('Story Media')."</h3>";
+    $html.= "<ul>";
+    $html.= "<li>".t('@count stories with audio (@pct%)',array('@count'=>$audio_story_count,'@pct'=>round(100*$audio_story_count/$story_count)))."</li>";
+    $html.= "<li>".t('@count stories with pictures (@pct%)',array('@count'=>$image_story_count,'@pct'=>round(100*$image_story_count/$story_count)))."</li>";
+    $html.= "<li>".t('@count stories with video (@pct%)',array('@count'=>$video_story_count,'@pct'=>round(100*$video_story_count/$story_count)))."</li>";
+    $html.= "</ul>";
+    $html.= "<h3>".t('Phone Traffic')."</h3>";
+    if($direct_call_count!=null) {
+      $html.="<p>".t('The direct phone number has been called @calls times.',array('@calls'=>$direct_call_count))."</p>";
+    } else {
+      $html.="<p><i>".t('If your group gets a direct phone line, we will be able to show the number of calls here')."</i></p>";
+    }
+  } else {
+      $html.="<p><i>".t('When you get some posts to your group we will show some statistics about them here.')."</i></p>";
   }
   return $html;
 }
