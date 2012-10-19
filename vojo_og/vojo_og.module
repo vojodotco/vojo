@@ -241,10 +241,16 @@ function vojo_og_stats_page($gid){
   $group_node = node_load($gid);
   // look at voip call history
   $direct_call_count = null;
+  $direct_callers_count = null;
   if( vojo_og_group_has_direct_number($group_node) ) {
+    // count direct calls
     $result = db_query('select count( * ) as calls from {voipcall} where dest_number = "%s"', $group_node->field_direct_phone_number[0]['phone']);
     $row = db_fetch_array($result);
-    $direct_call_count = $row['calls'];    
+    $direct_call_count = $row['calls'];
+    // count direct callers
+    $result = db_query('select count(distinct(caller_number)) as callers from voipcall where dest_number = "%s"', $group_node->field_direct_phone_number[0]['phone']);
+    $row = db_fetch_array($result);
+    $direct_callers_count = $row['callers'];
   }
   // count story types
   $story_count = 0;
@@ -272,7 +278,8 @@ function vojo_og_stats_page($gid){
     $html.= "</ul>";
     $html.= "<h3>".t('Phone Traffic')."</h3>";
     if($direct_call_count!=null) {
-      $html.="<p>".t('The direct phone number has been called @calls times.',array('@calls'=>$direct_call_count))."</p>";
+      $html.="<p>".t('The direct phone number has been called @calls times. @callers different phones have called this group.',
+        array('@calls'=>$direct_call_count,'@callers'=>$direct_callers_count))."</p>";
     } else {
       $html.="<p><i>".t('If your group gets a direct phone line, we will be able to show the number of calls here')."</i></p>";
     }
