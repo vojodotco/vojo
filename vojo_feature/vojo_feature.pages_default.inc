@@ -518,6 +518,27 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->position = 4;
     $display->content['new-11'] = $pane;
     $display->panels['right'][4] = 'new-11';
+    $pane = new stdClass;
+    $pane->pid = 'new-12';
+    $pane->panel = 'right';
+    $pane->type = 'content_field';
+    $pane->subtype = 'field_translated_by';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'inline',
+      'formatter' => 'plain',
+      'context' => 'argument_nid_1',
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array();
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 5;
+    $display->content['new-12'] = $pane;
+    $display->panels['right'][5] = 'new-12';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
