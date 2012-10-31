@@ -19,3 +19,21 @@ function vojo_update_6000() {
 function vojo_update_6001() {
   variable_set('filemime_file',"/etc/mime.types");
 }
+
+/**
+ * Update user profile picture settings for mms-based profile pic submission
+ */
+function vojo_update_6002() {
+  variable_set('user_pictures','1');
+  variable_set('user_picture_path','user_pics');
+  variable_set('user_picture_default','');
+  variable_set('user_picture_dimensions','1000x1000');
+  variable_set('user_picture_file_size','500');
+  variable_set('user_picture_guidelines','');
+  variable_set('user_picture_imagecache_profiles','320px');
+  variable_set('user_picture_imagecache_comments','160px');
+  variable_set('user_picture_imagecache_nodes','160px');
+  variable_set('user_picture_imagecache_profiles_default','160px');
+  variable_set('user_picture_imagecache_profiles_min_width','');
+  variable_set('user_picture_imagecache_profiles_min_height','');
+}
