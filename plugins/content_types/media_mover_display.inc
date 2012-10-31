@@ -51,8 +51,10 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   // Check for unconverted wav files
   if (isset($node->field_audio_recorder)) {
     foreach ($node->field_audio_recorder as $file) {
-      if (!$harvest_files[$file['filepath']]) {
-        $incomplete = true;
+      if (is_array($file)) {
+        if (!$harvest_files[$file['filepath']]) {
+          $incomplete = true;
+        }
       }
     }
   }
