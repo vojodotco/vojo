@@ -16,14 +16,18 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
   global $base_url;
   
   $block = new stdClass();
+  $block->content = '';
   // Get the node id from the url.
   $nid = arg(1);
   // load the node data
   $node = node_load($nid);
   // figure out which media to show and how to show it
+  $incomplete = false;
+  $harvest_files = array();
   if (isset($node->media_mover)) {
     foreach ($node->media_mover as $cid) {
       foreach ($cid as $mmfid) {
+        $harvest_files[$mmfid['harvest_file']] = true;
         if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
           if( !array_key_exists($mmfid['fid'], $playlist) ){
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
@@ -44,6 +48,14 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
       }
     } 
   }
+  // Check for unconverted wav files
+  if (isset($node->field_audio_recorder)) {
+    foreach ($node->field_audio_recorder as $file) {
+      if (!$harvest_files[$file['filepath']]) {
+        $incomplete = true;
+      }
+    }
+  }
   // build up a playlist of all the media
   if (!empty($playlist)) {
     foreach($playlist as $fid => $clip) {
@@ -56,6 +68,7 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
     $playlist = array_merge($playlist);
   }
   // Output the media player
+  $media_player = '';
   if ($playlist) {
     $block->content = $media_mover_vids;
     foreach ($playlist as $clip) {
@@ -67,12 +80,16 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
       }
     }
     if (isset($flash_vars['playlist']['empty'])) {
-      $block->content = '<div class="messages status">'. t("This media is being converted. Please check back in a minute or two.") .'</div>';
+      $incomplete = true;
     }
     else {
-      $block->content = theme('jwplayermodule_render_player', array(), $flash_vars);            
+      $media_player = theme('jwplayermodule_render_player', array(), $flash_vars);            
     }
   }
+  if ($incomplete) {
+    $block->content .= '<div class="messages status">'. t("This media is being converted. Please check back in a minute or two.") .'</div>';
+  }
+  $block->content .= $media_player;
   return $block;
 }
 
