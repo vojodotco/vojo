@@ -6,7 +6,7 @@ Drupal.behaviors.nodeCycle = function() {
     prev: '#vojo-node-cycle-prev',
     next: '#vojo-node-cycle-next, div.pane-blog-photos div.field-items',
     after: onAfter,
-    height: 'auto'
+    height: 500 //WARN: this is brittle, but 'auto' doesn't work
   });
     
     // To get current slide number for see this example: http://www.malsup.com/jquery/cycle/count.html
