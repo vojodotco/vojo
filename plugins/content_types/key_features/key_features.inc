@@ -18,9 +18,10 @@ function vojo_key_features_content_type_render($subtype, $conf, $panel_args, $co
   
   $items = array();
   foreach ($conf['features'] as $feature => $conf) {
-    $output = '<img src="'. base_path() . drupal_get_path('module', 'vojo') .'/plugins/content_types/key_features/images/'. $feature .'.png" />';
-    $output .= '<h3>' . t($conf['title']) . '</h3>';
-    $output .= '<p>' . t($conf['text']) . '</p>';
+    $url = url('trynow');
+    $output = '<a href="' . $url . '"><img src="'. base_path() . drupal_get_path('module', 'vojo') .'/plugins/content_types/key_features/images/'. $feature .'.png" /></a>';
+    $output .= '<h3><a href="' . $url . '">' . t($conf['title']) . '</a></h3>';
+    $output .= '<p><a href="' . $url . '">' . t($conf['text']) . '</a></p>';
     $items[$feature] = array(
       'data' => $output,
     );

@@ -21,7 +21,7 @@ function vojo_front_trynow_content_type_render($subtype, $conf, $panel_args, $co
   $view = views_embed_view('vojo_front_slideshow', 'front_slideshow');
   $tagline = ($conf['vojo_tagline']) ? t($conf['vojo_tagline']) : t('A new way for communities to share stories');
   $block->content = '<p id="vojo-tagline">' . $tagline . '</p>';
-  $block->content .= '<p id="vojo-trynow">' . l(t('Try it now'), 'trynow', array('attributes' => array('class' => 'huge-button'))) . '</p>';
+  $block->content .= '<p id="vojo-trynow">' . l(t('Get started'), 'trynow', array('attributes' => array('class' => 'huge-button'))) . '</p>';
   return $block;
 }
 
