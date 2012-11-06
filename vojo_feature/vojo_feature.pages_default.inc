@@ -638,7 +638,13 @@ function vojo_feature_default_page_manager_handlers() {
   $display = new panels_display;
   $display->layout = 'right_col';
   $display->layout_settings = array();
-  $display->panel_settings = array();
+  $display->panel_settings = array(
+    'style_settings' => array(
+      'default' => NULL,
+      'main' => NULL,
+      'right' => NULL,
+    ),
+  );
   $display->cache = array();
   $display->title = '%user:name';
   $display->content = array();
@@ -647,12 +653,14 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->pid = 'new-1';
     $pane->panel = 'main';
     $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_global_story_listings-panel_pane_1';
+    $pane->subtype = 'vojo_global_story_listings-vojo_user_stories_list_pane';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
@@ -660,7 +668,7 @@ function vojo_feature_default_page_manager_handlers() {
     $display->panels['main'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
-    $pane->panel = 'main';
+    $pane->panel = 'right';
     $pane->type = 'user_profile';
     $pane->subtype = 'user_profile';
     $pane->shown = TRUE;
@@ -685,12 +693,14 @@ function vojo_feature_default_page_manager_handlers() {
       'override_title_text' => '',
     );
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $display->content['new-2'] = $pane;
-    $display->panels['main'][1] = 'new-2';
+    $display->panels['right'][0] = 'new-2';
     $pane = new stdClass;
     $pane->pid = 'new-3';
     $pane->panel = 'right';
@@ -714,44 +724,16 @@ function vojo_feature_default_page_manager_handlers() {
     );
     $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array();
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $display->content['new-3'] = $pane;
-    $display->panels['right'][0] = 'new-3';
-    $pane = new stdClass;
-    $pane->pid = 'new-4';
-    $pane->panel = 'right';
-    $pane->type = 'views';
-    $pane->subtype = 'og_my';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_pager_settings' => 0,
-      'use_pager' => 0,
-      'nodes_per_page' => '0',
-      'pager_id' => '0',
-      'offset' => '0',
-      'more_link' => 0,
-      'feed_icons' => 0,
-      'panel_args' => 0,
-      'link_to_view' => 0,
-      'args' => '',
-      'url' => '',
-      'display' => 'block_1',
-      'override_title' => 1,
-      'override_title_text' => 'My Groups',
+    $pane->style = array(
+      'settings' => NULL,
     );
-    $pane->cache = array();
-    $pane->style = array();
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 1;
-    $display->content['new-4'] = $pane;
-    $display->panels['right'][1] = 'new-4';
+    $display->content['new-3'] = $pane;
+    $display->panels['right'][1] = 'new-3';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-1';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $export['user_view_panel_context'] = $handler;
 

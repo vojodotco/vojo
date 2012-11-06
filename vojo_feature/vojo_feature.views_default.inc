@@ -385,6 +385,12 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Argument: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
   /* Filter: Node: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -433,10 +439,7 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['header']['php']['ui_name'] = 'User\'s Stories Title';
   $handler->display->display_options['header']['php']['label'] = '';
   $handler->display->display_options['header']['php']['empty'] = TRUE;
-  $handler->display->display_options['header']['php']['php_output'] = '<?php 
-$this_user = user_load(array(\'name\' => check_plain($view->args[0])));
-?>
-<h1><?php print l($view->args[0] . "\'s", drupal_get_path_alias(\'user/\' . $this_user->uid)); ?> <?php print t(\'stories\')?></h1>';
+  $handler->display->display_options['header']['php']['php_output'] = '<h1><?php print l($view->args[0] . "\'s", \'users/\'. $view->args[0]); ?> stories</h1>';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Argument: User: Name */
   $handler->display->display_options['arguments']['name']['id'] = 'name';
@@ -470,8 +473,8 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   );
   $handler->display->display_options['path'] = 'blogs/%';
 
-  /* Display: My stories */
-  $handler = $view->new_display('panel_pane', 'My stories', 'panel_pane_1');
+  /* Display: User stories list */
+  $handler = $view->new_display('panel_pane', 'User stories list', 'vojo_user_stories_list_pane');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'My stories';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
@@ -532,6 +535,18 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Organic groups: Group node (post) */
+  $handler->display->display_options['relationships']['group_nid']['id'] = 'group_nid';
+  $handler->display->display_options['relationships']['group_nid']['table'] = 'og_ancestry';
+  $handler->display->display_options['relationships']['group_nid']['field'] = 'group_nid';
+  $handler->display->display_options['relationships']['group_nid']['required'] = 0;
+  /* Relationship: User: Nodes authored */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'users';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['label'] = 'authored-by';
+  $handler->display->display_options['relationships']['uid']['required'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Node: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -733,6 +748,18 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   $handler->display->display_options['fields']['edit_node']['empty_zero'] = 0;
   $handler->display->display_options['fields']['edit_node']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['edit_node']['text'] = 'editar';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Argument: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'not found';
+  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['uid']['not'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter: Node: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -746,14 +773,25 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   $handler->display->display_options['filters']['type']['value'] = array(
     'blog' => 'blog',
   );
-  /* Filter: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['pane_title'] = 'User: my stories';
+  /* Filter: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['pane_title'] = 'User: stories list';
   $handler->display->display_options['pane_category']['name'] = 'Vojo';
   $handler->display->display_options['pane_category']['weight'] = '0';
+  $handler->display->display_options['argument_input'] = array(
+    'uid' => array(
+      'type' => 'panel',
+      'context' => 'node.termpath-raw',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'User: Uid',
+    ),
+  );
   $translatables['vojo_global_story_listings'] = array(
     t('Defaults'),
     t('more'),
@@ -768,6 +806,7 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
     t('node/[nid]'),
     t('in'),
     t('&nbsp;'),
+    t('All'),
     t('Recent Stories'),
     t('Front: recent stories'),
     t('Vojo'),
@@ -775,14 +814,15 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('All'),
+    t('User stories list'),
     t('My stories'),
+    t('authored-by'),
     t('Title'),
     t('Post date'),
     t('Grupo'),
     t('Editar'),
     t('editar'),
-    t('User: my stories'),
+    t('User: stories list'),
   );
 
   $views[$view->name] = $view;
@@ -1324,6 +1364,29 @@ if($has_audio) {
     ),
   );
 
+  /* Display: Browse Stories User Blog Page */
+  $handler = $view->new_display('page', 'Browse Stories User Blog Page', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Stories Blog';
+  $handler->display->display_options['enabled'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Argument: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['title'] = '%1\'s blog';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = 'arg(1);';
+  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['uid']['validate_type'] = 'user';
+  $handler->display->display_options['arguments']['uid']['validate_options']['type'] = 'name';
+  $handler->display->display_options['arguments']['uid']['validate_options']['restrict_roles'] = 0;
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['uid']['not'] = 0;
+  $handler->display->display_options['path'] = 'blogs/%';
+
   /* Display: Prev next links */
   $handler = $view->new_display('panel_pane', 'Prev next links', 'prev_next_links');
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -1357,6 +1420,9 @@ if($has_audio) {
     t('Vojo Users Browse Stories Pane'),
     t('1%\'s Blog'),
     t('Vojo Blogger User\'s Stories Pane'),
+    t('Browse Stories User Blog Page'),
+    t('Stories Blog'),
+    t('%1\'s blog'),
     t('Prev next links'),
     t('View panes'),
   );
