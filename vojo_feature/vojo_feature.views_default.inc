@@ -1209,7 +1209,7 @@ if( property_exists($node, \'media_mover\') ) {
   }
 }
 if($has_audio) {
-  print \'<div class="vojo-story-has-audio">\'.t(\'Has audio\')."</div>";
+  print \'<a href="\' . url($node->path) . \'" class="vojo-story-has-audio">\'.t(\'Has audio\')."</a>";
 }
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
