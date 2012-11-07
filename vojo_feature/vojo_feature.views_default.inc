@@ -439,7 +439,10 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['header']['php']['ui_name'] = 'User\'s Stories Title';
   $handler->display->display_options['header']['php']['label'] = '';
   $handler->display->display_options['header']['php']['empty'] = TRUE;
-  $handler->display->display_options['header']['php']['php_output'] = '<h1><?php print l($view->args[0] . "\'s", \'users/\'. $view->args[0]); ?> stories</h1>';
+  $handler->display->display_options['header']['php']['php_output'] = '<?php
+$this_user = user_load(array(\'name\' => check_plain($view->args[0])));
+?>
+<h1><?php print l($view->args[0] . "\'s", drupal_get_path_alias(\'user/\' .$this_user->uid)); ?> stories</h1>';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Argument: User: Name */
   $handler->display->display_options['arguments']['name']['id'] = 'name';
@@ -1364,29 +1367,6 @@ if($has_audio) {
     ),
   );
 
-  /* Display: Browse Stories User Blog Page */
-  $handler = $view->new_display('page', 'Browse Stories User Blog Page', 'page_2');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Stories Blog';
-  $handler->display->display_options['enabled'] = FALSE;
-  $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Argument: User: Uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'users';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['style_plugin'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['title'] = '%1\'s blog';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = 'arg(1);';
-  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['uid']['validate_type'] = 'user';
-  $handler->display->display_options['arguments']['uid']['validate_options']['type'] = 'name';
-  $handler->display->display_options['arguments']['uid']['validate_options']['restrict_roles'] = 0;
-  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['uid']['not'] = 0;
-  $handler->display->display_options['path'] = 'blogs/%';
-
   /* Display: Prev next links */
   $handler = $view->new_display('panel_pane', 'Prev next links', 'prev_next_links');
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -1420,9 +1400,6 @@ if($has_audio) {
     t('Vojo Users Browse Stories Pane'),
     t('1%\'s Blog'),
     t('Vojo Blogger User\'s Stories Pane'),
-    t('Browse Stories User Blog Page'),
-    t('Stories Blog'),
-    t('%1\'s blog'),
     t('Prev next links'),
     t('View panes'),
   );

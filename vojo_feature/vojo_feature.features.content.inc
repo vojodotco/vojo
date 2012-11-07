@@ -11,6 +11,12 @@ function vojo_feature_content_default_fields() {
     'field_name' => 'field_audio_recorder',
     'type_name' => 'blog',
     'display_settings' => array(
+      'weight' => '-1',
+      'parent' => '',
+      '4' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
       'label' => array(
         'format' => 'above',
         'exclude' => 0,
@@ -20,10 +26,6 @@ function vojo_feature_content_default_fields() {
         'exclude' => 0,
       ),
       'full' => array(
-        'format' => 'audiofield_embedded',
-        'exclude' => 0,
-      ),
-      '4' => array(
         'format' => 'audiofield_embedded',
         'exclude' => 0,
       ),
@@ -61,10 +63,10 @@ function vojo_feature_content_default_fields() {
         'recorder' => 0,
         'attach' => 0,
       ),
+      'filefield_source_autocomplete' => '0',
       'filefield_source_attach_path' => 'file_attach',
       'filefield_source_attach_absolute' => '0',
       'filefield_source_attach_mode' => 'move',
-      'filefield_source_autocomplete' => '0',
       'label' => 'Audio recorder',
       'weight' => '-1',
       'description' => '',
@@ -80,6 +82,10 @@ function vojo_feature_content_default_fields() {
     'display_settings' => array(
       'weight' => '2',
       'parent' => '',
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
       'label' => array(
         'format' => 'hidden',
       ),
@@ -90,10 +96,6 @@ function vojo_feature_content_default_fields() {
       'full' => array(
         'format' => 'hidden',
         'exclude' => 1,
-      ),
-      '4' => array(
-        'format' => 'default',
-        'exclude' => 0,
       ),
       '2' => array(
         'format' => 'default',
@@ -275,10 +277,10 @@ function vojo_feature_content_default_fields() {
         'recorder' => 0,
         'attach' => 0,
       ),
+      'filefield_source_autocomplete' => '0',
       'filefield_source_attach_path' => 'file_attach',
       'filefield_source_attach_absolute' => '0',
       'filefield_source_attach_mode' => 'move',
-      'filefield_source_autocomplete' => '0',
       'label' => 'Slide image',
       'weight' => '-4',
       'description' => '',
