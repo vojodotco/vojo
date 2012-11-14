@@ -393,6 +393,7 @@ function _vojo_voipextension_api_extension_for_node($nid) {
  * Helper function to format phone numbers. 
  */
 function vojo_format_phone_number($number) {
+  $parts = array();
   // If 12 digits format as Mexican number: +xx xx xxx-xxxxx. 
   if (is_numeric($number)) {
     if (strlen($number) == 19) {
@@ -401,6 +402,13 @@ function vojo_format_phone_number($number) {
     // If 10 digits format as US number: (xxx) xxx-xxxx.
     else if (strlen($number) == 10) {
       $formatted_number = '('. substr($number, 0, 3) .') '. substr($number, 3, 3) .'-'. substr($number, 6);
+    } else if ((strlen($number) == 12 || strlen($number) == 13) && substr($number, 0, 2) == '55') {
+      // Brazillian +55 aa nnnn nnnn or +55 aa nnnn nnnnn
+      $parts[] = '+55';
+      $parts[] = substr($number, 2, 2);
+      $parts[] = substr($number, 4, 4);
+      $parts[] = substr($number, 8);
+      $formatted_number = implode(' ', $parts);
     }
   }
   else {
