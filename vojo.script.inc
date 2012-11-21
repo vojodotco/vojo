@@ -223,6 +223,7 @@ function _vojo_record_blog_script($node) {
   $script->addSay('%recording_public_url');
   $script->addGotoIf('accept_menu', "^%recording_digits != 'hangup'");
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
+  $script->addGoto('end_record');
   
   // review the recording (and save / re-record)
   $script->addLabel('accept_menu');
