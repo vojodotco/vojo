@@ -218,12 +218,14 @@ function _vojo_record_blog_script($node) {
     "^v('Start recording your message after the tone. Press the pound key to stop recording.',null,null,%vojo_voice)", 
     5, '#', 3600, 'mp3', TRUE
   );
-  $script->addGotoIf('no_recording','^%recording_duration == 0');
+  $script->addGotoIf('no_recording','^%recording_fid == 0');
   $script->addSay("^v('You said ',null,null,%vojo_voice)");
   $script->addSay('%recording_public_url');
+  $script->addGotoIf('accept_menu', "^%recording_digits != 'hangup'");
+  $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
   
   // review the recording (and save / re-record)
-  $script->addLabel('accept menu');
+  $script->addLabel('accept_menu');
   $script->addGetInput(
     "^v('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.',null,null,%vojo_voice)",
     10, '', 1
@@ -341,6 +343,7 @@ function _vojo_send_sms($number, $msg){
  */
 function _vojo_save_blog_script($nid, $fid) {
   global $user;
+  watchdog('vojo', 'in vojo_save_blog');
   $script = new VoipScript('vojo_save_blog');
 
   $node = new StdClass();
@@ -357,6 +360,7 @@ function _vojo_save_blog_script($nid, $fid) {
     $node->old_vid = 1;
   }
   node_save($node);
+  watchdog('vojo', 'blog node saved');
   $script->addSay("^v('Story saved.',null,null,%vojo_voice)");
   return $script;
 }
