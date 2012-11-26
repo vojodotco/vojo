@@ -221,7 +221,12 @@ function _vojo_record_blog_script($node) {
   $script->addGotoIf('no_recording','^%recording_fid == 0');
   $script->addSay("^v('You said ',null,null,%vojo_voice)");
   $script->addSay('%recording_public_url');
-  $script->addGotoIf('accept_menu', "^%recording_digits != 'hangup'");
+  
+  // This is a workaround for a viopdrupal bug
+  // %recording_digits always contains 'hangup' so we can't use it to tell if the user
+  // hung up.  However, %recording_duration is 0 only when the user hangs up, which is a bug.
+  // For now, we can use that to detect if the user hung up
+  $script->addGotoIf('accept_menu', "^%recording_duration != 0");
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
   $script->addGoto('end_record');
   
