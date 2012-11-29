@@ -16,6 +16,7 @@
 function _vojo_welcome_script() {
   
   $script = new VoipScript('vojo_welcome');
+  $script->addSet('vojo_language', '');
   $script->addSet('vojo_voice', vojo_voice_id_for_language());
 
   // TODO: if it is an existing user, change the language based on their default language setting
@@ -74,8 +75,6 @@ function _vojo_pick_language_script(){
   $script->addSay("^v('Input not recognized',null,null,%vojo_voice)");
   $script->addGoto('menu');
 
-  // TODO: save this as the user's default language?
-
   // user picked english
   $script->addLabel('picked_en');
   $script->addGoSub('vojo_change_language', array('language'=>'en') );
@@ -108,6 +107,7 @@ function _vojo_change_language_script($language){
   // give user feedback
   $script = new VoipScript('vojo_change_language');
   $script->addSet('vojo_voice', vojo_voice_id_for_language($language) );
+  $script->addSet('vojo_language', $language);
   $script->addSay("^v('Welcome to Vojo',null,null,%vojo_voice)");  // say it again in the local language  
   $script->addReturn();
   return $script;
@@ -147,6 +147,14 @@ function _vojo_group_script($node) {
   $script = new VoipScript('vojo_group');
 
   $script->addLabel('begin');
+  
+  // Change to group's language if no language is already set
+  $script->addGotoIf('group_name', "^%vojo_language != ''");
+  if (!empty($node->language)) {
+    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+  }
+  
+  $script->addLabel('group_name');
   if ($name = voipnode_get_title($node)) {
     $script->addSay($name);
   } else {

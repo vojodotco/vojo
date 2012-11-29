@@ -99,6 +99,7 @@ function vojo_voice_id_for_language( $language=null ) {
   $voice = 'vojo-en';  // default to english
   switch($language) {
     case 'en':
+    case 'en-us':
       $voice = 'vojo-en';
       break;
     case 'es':
