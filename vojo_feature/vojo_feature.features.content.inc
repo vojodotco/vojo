@@ -11,9 +11,21 @@ function vojo_feature_content_default_fields() {
     'field_name' => 'field_audio_recorder',
     'type_name' => 'blog',
     'display_settings' => array(
-      'weight' => '1',
+      'weight' => '-1',
       'parent' => '',
-      'token' => array(
+      '4' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      'label' => array(
+        'format' => 'above',
+        'exclude' => 0,
+      ),
+      'teaser' => array(
+        'format' => 'audiofield_embedded',
+        'exclude' => 0,
+      ),
+      'full' => array(
         'format' => 'audiofield_embedded',
         'exclude' => 0,
       ),
@@ -25,18 +37,7 @@ function vojo_feature_content_default_fields() {
         'format' => 'audiofield_embedded',
         'exclude' => 0,
       ),
-      '4' => array(
-        'format' => 'audiofield_embedded',
-        'exclude' => 0,
-      ),
-      'label' => array(
-        'format' => 'above',
-      ),
-      'teaser' => array(
-        'format' => 'audiofield_embedded',
-        'exclude' => 0,
-      ),
-      'full' => array(
+      'token' => array(
         'format' => 'audiofield_embedded',
         'exclude' => 0,
       ),
@@ -67,7 +68,7 @@ function vojo_feature_content_default_fields() {
       'filefield_source_attach_mode' => 'move',
       'filefield_source_autocomplete' => '0',
       'label' => 'Audio recorder',
-      'weight' => '2',
+      'weight' => '-1',
       'description' => '',
       'type' => 'audiorecorderfield_widget',
       'module' => 'audiorecorderfield',
@@ -79,20 +80,8 @@ function vojo_feature_content_default_fields() {
     'field_name' => 'field_location_string',
     'type_name' => 'blog',
     'display_settings' => array(
-      'weight' => '5',
+      'weight' => '2',
       'parent' => '',
-      'token' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '2' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
-      '3' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
       '4' => array(
         'format' => 'default',
         'exclude' => 0,
@@ -108,7 +97,19 @@ function vojo_feature_content_default_fields() {
         'format' => 'hidden',
         'exclude' => 1,
       ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
       '5' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
@@ -134,7 +135,7 @@ function vojo_feature_content_default_fields() {
       ),
       'default_value_php' => NULL,
       'label' => 'Location',
-      'weight' => '5',
+      'weight' => '2',
       'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
