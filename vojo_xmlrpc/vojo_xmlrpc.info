@@ -1,0 +1,5 @@
+name = Vojo.co XML RPC Interface
+description = Provides an interface for external applications to interact with Vojo.co.
+core = 6.x
+package = Vojo.co
+version = "6.x-1.0"

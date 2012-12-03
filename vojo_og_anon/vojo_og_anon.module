@@ -132,6 +132,13 @@ function vojo_og_anon_nodeapi(&$node, $op, $a3=null, $a4=null) {
  */
 function vojo_og_anon_create_access ($og_nid) {
   global $user;
+
+  // Make sure this is a real group
+  $og = node_load($og_nid);
+  if (empty($og) || $og->type != 'group') {
+    return false;
+  }
+  
   $flag = flag_get_flag('member_to_post_group');
   if ($flag->is_flagged($og_nid)) {
     // Membership required

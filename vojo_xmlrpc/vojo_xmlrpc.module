@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * Implements hook_xmlrpc().
+ *
+ * Provides Drupal with an array to map XML-RPC callbacks to the
+ * functions implemented by this module.
+ *
+ * @see hook_xmlrpc()
+ */
+function vojo_xmlrpc_xmlrpc () {
+    $methods = array();
+    $methods[] =  array(
+        'vojo.newStory',
+        '_vojo_xmlrpc_new_story',
+        array(
+            'string', // Returns nid of the new story
+            'string', // username
+            'string', // password
+            'string', // group node id
+            'string', // title
+            'string'  // body
+        ),
+        t('Adds a new story.')
+    );
+    return $methods;
+}
+
+/**
+ * Creates a new story in the specified group.
+ */
+function _vojo_xmlrpc_new_story ($user, $pass, $gid, $title, $body) {
+    
+    // Validate the user
+    $login = array('name'=>$user, 'pass'=>$pass);
+    $account = user_authenticate($login);
+    if (empty($account)) {
+        return xmlrpc_error(0, t('Invalid user/password'));
+    }
+    
+    // Construct the node
+    $node->type = 'blog';
+    $node->title = $title;
+    $node->body = $body;
+    $node->uid = $account->uid;
+    
+    // Check permissions
+    if (!node_access('create', 'blog')) {
+        return xmlrpc_error(0, t('User does not have permission to create a blog node'));
+    }
+    if (!vojo_og_anon_create_access($gid)) {
+        return xmlrpc_error(0, t('User does not have permission to post to the specified group'));
+    }
+    
+    // Invoke nodeapi hooks
+    //node_invoke_nodepai($node, 'create');
+    
+    // Generate node metadata and save
+    $node = node_submit($node);
+    node_save($node);
+    $node->og_groups[$gid] = $gid;
+    node_save($node);
+    
+    if ($node->nid) {
+        return $node->nid;
+    }
+    
+    return xmlrpc_erro(0, t('Unable to save story'));
+}
