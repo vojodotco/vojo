@@ -2460,6 +2460,20 @@ while ($file = db_fetch_array($result)) {
 
 }
 
+$result = db_query(\'SELECT * FROM {files} f INNER JOIN {content_type_blog} r ON f.fid = r.field_audio_recorder_fid WHERE r.vid = %d ORDER BY f.fid\', $row->upload_fid);
+
+while ($file = db_fetch_array($result)) {
+
+  $extension = substr($file[\'filepath\'], -3);
+
+  if( in_array($extension, $audio_extensions) ){
+
+    $content = file_create_url($file[\'filepath\']);
+
+  }
+
+}
+
 if(strlen($content)==0) {
 
   $content = "This story has no audio or text";
@@ -2574,20 +2588,27 @@ while ($file = db_fetch_array($result)) {
 
   if( in_array($extension, $audio_extensions) ){
 
-    $content = file_create_url($file[\'filepath\']);
+    return false;
 
   }
 
 }
 
-if(strlen($content)==0) {
+$result = db_query(\'SELECT * FROM {files} f INNER JOIN {content_type_blog} r ON f.fid = r.field_audio_recorder_fid WHERE r.vid = %d ORDER BY f.fid\', $row->upload_fid);
 
-  return true;
+while ($file = db_fetch_array($result)) {
+
+  $extension = substr($file[\'filepath\'], -3);
+
+  if( in_array($extension, $audio_extensions) ){
+
+    return false;
+
+  }
 
 }
 
-return false;
-
+return true;
 ';
   $translatables['vojo_group_stories_voip'] = array(
     t('Defaults'),
