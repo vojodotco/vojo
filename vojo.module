@@ -448,8 +448,11 @@ function vojo_preprocess_vojo_site_header(&$vars) {
     $vars['user_links'] .= '</li></ul>';
   }
    else {
-    $vars['user_links'] .= l(t('Login'), 'user/login', array('attributes' => array('id' => 'vojo-login-link'))) .' '; 
-    $vars['user_links'] .= ' | '. l(t('Signup'), 'user/register', array('attributes' => array('id' => 'vojo-login-link')));
+    $vars['user_links'] .= l(t('Login'), 'user/login', array('attributes' => array('id' => 'vojo-login-link'))) .' ';
+    if (variable_get('user_register', '0')) {
+      // Include signup link if users are allowed to register online
+      $vars['user_links'] .= ' | '. l(t('Signup'), 'user/register', array('attributes' => array('id' => 'vojo-login-link')));
+    }
   }
   $vars['user_links'] .= '</div>';
   
