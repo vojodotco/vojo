@@ -126,13 +126,18 @@ function vojo_group_details_block() {
     $og_email = $node->field_yeta[0]['value']; 
   }
   $message = array();
-  $message['post_story'] = '<h3>'. t('Post your story to this group!') .'</h3>';
-  $message['post_story'] .= '<p>'. t('Just send a sms or mms (picture message) from your phone to <em>@email</em>', array('@email' => $og_email)) .'</p>';
-  if ($vojo_voip_number && $og_extenson) {
-    $message['post_story'] .= '<p>'. t('Or call <em>@phone ext. @ext</em> to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
-  }
-  else {
-    $message['post_story'] .= '<p>'. t('Or call <em>@phone</em> to record your audio story', array('@phone' => $vojo_voip_number)) .'</p>';                                                                                                      
+  // Use custom field if present
+  if (!empty($node->field_submission_info)) {
+    $message['post_story'] = $node->field_submission_info[0]['value'];
+  } else {
+    $message['post_story'] = '<h3>'. t('Post your story to this group!') .'</h3>';
+    $message['post_story'] .= '<p>'. t('Just send a sms or mms (picture message) from your phone to <em>@email</em>', array('@email' => $og_email)) .'</p>';
+    if ($vojo_voip_number && $og_extenson) {
+      $message['post_story'] .= '<p>'. t('Or call <em>@phone ext. @ext</em> to record your audio story', array('@phone' => $vojo_voip_number, '@ext' => $og_extenson)) .'</p>';
+    }
+    else {
+      $message['post_story'] .= '<p>'. t('Or call <em>@phone</em> to record your audio story', array('@phone' => $vojo_voip_number)) .'</p>';                                                                                                      
+    }
   }
   // Only display group details if we have a group context.
   if ($node && node_access('view', $node)) {
