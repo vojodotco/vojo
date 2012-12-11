@@ -127,7 +127,7 @@ function vojo_group_details_block() {
   }
   $message = array();
   // Use custom field if present
-  if (!empty($node->field_submission_info)) {
+  if (!empty($node->field_submission_info) && !empty($node->field_submission_info[0]['value'])) {
     $message['post_story'] = $node->field_submission_info[0]['value'];
   } else {
     $message['post_story'] = '<h3>'. t('Post your story to this group!') .'</h3>';
