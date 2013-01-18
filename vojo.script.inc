@@ -242,7 +242,7 @@ function _vojo_record_blog_script($node) {
   $script->addLabel('accept_menu');
   $script->addGetInput(
     "^v('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.',null,null,%vojo_voice)",
-    10, '', 1
+    1, '', 10
   );
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
   $script->addGotoIf('start_recording', "^%input_digits == '2'");
