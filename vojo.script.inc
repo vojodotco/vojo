@@ -272,14 +272,14 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
   $script = new VoipScript('vojo_pick_create_or_anon');
   
   $script->addLabel('pick_option');
-  $script->addGetInput('Press 1 to record an anonymous story, or press 2 to create a new account on vojo dot co', 1, '', 5);
+  $script->addGetInput("^v('Press 1 to record an anonymous story, or press 2 to create a new account on vojo dot co',null,null,%vojo_voice)", 1, '', 5);
   $script->addGotoIf('as_anon', "^%input_digits == '1'");
   $script->addGotoIf('create_user', "^%input_digits == '2'");
   $script->addSay("^v('Input not recognized',null,null,%vojo_voice)");
   $script->addGoto('pick_option');
 
   $script->addLabel('as_anon');
-  $script->addSay('Your story will be posted anonymously');
+  $script->addSay("^v('Your story will be posted anonymously',null,null,%vojo_voice)");
   $script->addGoto('end');
   
   $script->addLabel('create_user');
