@@ -191,6 +191,11 @@ function vojo_feature_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['hide_empty'] = 1;
   $handler->display->display_options['row_options']['default_field_elements'] = 1;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['empty'] = FALSE;
   /* Relationship: Organic groups: Group node (post) */
   $handler->display->display_options['relationships']['group_nid']['id'] = 'group_nid';
   $handler->display->display_options['relationships']['group_nid']['table'] = 'og_ancestry';
@@ -418,6 +423,17 @@ function vojo_feature_views_default_views() {
   $handler = $view->new_display('panel_pane', 'Recent Stories', 'recent_stories');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Recent Stories';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: View More Stories Link */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['ui_name'] = 'View More Stories Link';
+  $handler->display->display_options['footer']['area']['label'] = 'View More Stories Link';
+  $handler->display->display_options['footer']['area']['empty'] = FALSE;
+  $handler->display->display_options['footer']['area']['content'] = '<div class="more-link"><a href="http://www.vojo.co/en/blogs/all">View More Stories</a></div>';
+  $handler->display->display_options['footer']['area']['format'] = '2';
+  $handler->display->display_options['footer']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['pane_title'] = 'Front: recent stories';
   $handler->display->display_options['pane_category']['name'] = 'Vojo';
@@ -803,6 +819,7 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('Text area'),
     t('Group node (post)'),
     t('Nid'),
     t('view story'),
@@ -811,6 +828,8 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
     t('&nbsp;'),
     t('All'),
     t('Recent Stories'),
+    t('View More Stories Link'),
+    t('<div class="more-link"><a href="http://www.vojo.co/en/blogs/all">View More Stories</a></div>'),
     t('Front: recent stories'),
     t('Vojo'),
     t('Bloggers stories page'),
@@ -2799,7 +2818,7 @@ return true;
   $handler->display->display_options['title'] = 'All Groups';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['use_more_always'] = TRUE;
-  $handler->display->display_options['use_more_text'] = 'view all groups';
+  $handler->display->display_options['use_more_text'] = 'View All Groups';
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -3063,7 +3082,7 @@ return true;
   $translatables['vojo_og'] = array(
     t('Defaults'),
     t('All Groups'),
-    t('view all groups'),
+    t('View All Groups'),
     t('Apply'),
     t('Restablecer'),
     t('Sort by'),
