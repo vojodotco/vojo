@@ -342,21 +342,6 @@ function vojo_form_blog_node_form_after_build($form, &$form_state) {
 function vojo_form_blog_node_form_submit($form, &$form_state) {
   // Grab user entered value from openlayers_geocoder field and save to $form['field_location_string']
   $form_state['values']['field_location_string'][0]['value'] = $form['field_map']['openlayers_geocoder_query']['#value'];
-
-  // If the fake promote field value has been changed by the user, update promote
-  // and status values in  core Publish options.
-  if ($form_state['values']['field_blog_promote'][0]['value'] == 1) {
-    $form_state['values']['promote'] = $form_state['values']['field_blog_promote'][0]['value'];
-    $form_state['values']['status'] = 1;
-  }
-  else if ($form_state['values']['field_blog_promote'][0]['value'] == 0) {
-    $form_state['values']['promote'] = 0;
-  }
-  // If core promote option is changed by user, then update fake promote field. 
-  else if ($form_state['values']['promote'] != $form['options']['promote']['#default_value']) {
-    $form_state['values']['field_blog_promote'][0]['value'] = $form_state['values']['promote'];
-    $form_state['values']['status'] = 1;
-  }
 }
 
 /**
