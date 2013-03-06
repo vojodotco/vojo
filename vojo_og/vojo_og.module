@@ -162,8 +162,16 @@ function vojo_form_group_node_form_alter($form, &$form_state) {
   $form['#validate'][] = 'vojo_form_group_node_form_alter_validate';
 }
 function vojo_form_group_node_form_alter_validate($form, &$form_state) {
-  if (stristr($form_state['values']['field_yeta'][0]['value'], '@vojo.co') == FALSE) {
+  $nid = $form['nid']['#value'];
+  $desiredEmail = $form_state['values']['field_yeta'][0]['value'];
+  // verify email address ends with @vojo.co
+  if (stristr($desiredEmail, '@vojo.co') == FALSE) {
     form_set_error('email', t('E-mail address: You must use an email that ends with @vojo.co.'));
+  }
+  // verify unique email address
+  if (_vojo_group_email_exists($desiredEmail,$nid)) {
+    form_set_error('email', t('Sorry, !email is already being used by another group.  Please try a different email.', 
+      array('!email'=>$desiredEmail))); 
   }
 }
 function vojo_form_group_node_form_after_build($form, &$form_state) {
@@ -172,6 +180,16 @@ function vojo_form_group_node_form_after_build($form, &$form_state) {
     unset($form['og_user_roles_default_role']);
   }
   return $form;
+}
+
+/**
+ * Verify an email address is unique among all the groups
+ */
+function _vojo_group_email_exists($email,$ignoreThisNid){
+  $result = db_query('SELECT count(field_yeta_value) as existing FROM {content_type_group} ctg WHERE ctg.field_yeta_value = "%s" and ctg.nid!=%d', 
+    $email,$ignoreThisNid);
+  $info = db_fetch_array($result);
+  return $info['existing']!=0;
 }
 
 /**
