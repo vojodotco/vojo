@@ -423,7 +423,7 @@ function vojo_feature_content_default_fields() {
       'default_value_php' => NULL,
       'label' => 'Direct Phone Number',
       'weight' => '15',
-      'description' => '',
+      'description' => 'Make sure to include the country-code if the number is not in the US.',
       'type' => 'voipphonenumber_widget',
       'module' => 'voipnumber',
     ),
@@ -499,6 +499,7 @@ function vojo_feature_content_default_fields() {
   t('Link');
   t('Location');
   t('Slide image');
+  t('Make sure to include the country-code if the number is not in the US.');
 
   return $fields;
 }
