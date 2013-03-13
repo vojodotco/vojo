@@ -227,8 +227,6 @@ function _vojo_record_blog_script($node) {
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no_recording','^%recording_fid == 0');
-  $script->addSay("^v('You said ',null,null,%vojo_voice)");
-  $script->addSay('%recording_public_url');
   
   // This is a workaround for a viopdrupal bug
   // %recording_digits always contains 'hangup' so we can't use it to tell if the user
@@ -241,17 +239,23 @@ function _vojo_record_blog_script($node) {
   // review the recording (and save / re-record)
   $script->addLabel('accept_menu');
   $script->addGetInput(
-    "^v('To accept this recording, press 1. To record it once again, press 2. To return, press the pound key.',null,null,%vojo_voice)",
+    "^v('To save this recording, press 1. To record it once again, press 2. To listen to wat you said, press 3. To return, press the pound key.',null,null,%vojo_voice)",
     1, '', 10
   );
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
   $script->addGotoIf('start_recording', "^%input_digits == '2'");
+  $script->addGotoIf('review_recording', "^%input_digits == '3'");
   $script->addGotoIf('end_record', "^%input_digits == '#'");
   // fall through to accept recording if no input (could be hang-up)
   $script->addLabel('accept recording');
-  $script->addSay("^v('Please wait while we save your story',null,null,%vojo_voice)");
   $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
   $script->addGoto('end_record');
+
+  // playback for user
+  $script->addLabel('review_recording');
+  $script->addSay("^v('You said ',null,null,%vojo_voice)");
+  $script->addSay('%recording_public_url');
+  $script->addGoto('accept_menu');
 
   // deal with no recording
   $script->addLabel('no_recording');
