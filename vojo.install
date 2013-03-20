@@ -37,3 +37,11 @@ function vojo_update_6002() {
   variable_set('user_picture_imagecache_profiles_min_width','');
   variable_set('user_picture_imagecache_profiles_min_height','');
 }
+
+/**
+ * Change the password reset text to be mobile-friendly
+ */
+function vojo_update_6003(){
+  variable_set('user_mail_password_reset_subject','[!site] password reset requested');
+  variable_set('user_mail_password_reset_body','!username, visit !login_url to reset your password');
+}
