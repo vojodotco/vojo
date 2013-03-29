@@ -431,3 +431,21 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
  
   return $script;
 }
+
+/*
+ * Receive a text message.  Update the user's name if they have an existing account.
+ */
+function _vojo_default_incoming_text() {
+  $script = new VoipScript('vojo_default_incoming_text');
+  $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => $script->getText()));
+  return $script;
+}
+
+/*
+ * Update a username.
+ */
+function _vojo_update_username($number, $text) {
+  $script = new VoipScript('vojo_update_username');
+  watchdog('vojo', "Received text from $number: $text");
+  return $script;
+}
