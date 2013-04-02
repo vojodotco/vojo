@@ -486,7 +486,7 @@ function _vojo_update_username($number, $text) {
     $message = sms_registration_name_changed_msg( $info, variable_get('site_name', 'the site'), $user_language );
   }
   // Send confirmation
-  $script->addSendText($message);
+  $script->addSendText($message, '', 'SMS', variable_get('voipcall_cid_number', NULL));
   $user = $old_user;
   return $script;
 }
