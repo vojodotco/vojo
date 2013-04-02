@@ -442,10 +442,51 @@ function _vojo_default_incoming_text() {
 }
 
 /*
- * Update a username.
+ * Update a username.  Eventually, this should be combined with the
+ * sms_registration code.
  */
 function _vojo_update_username($number, $text) {
+  global $user;
   $script = new VoipScript('vojo_update_username');
-  watchdog('vojo', "Received text from $number: $text");
+  // Skip if text is too long
+  if (strlen($text) > 32) {
+    watchdog('vojo', "Requested name too long: $number: $name");
+  }
+  // Authenticate
+  $uid = sms_user_get_uid($number);
+  if (!$uid) {
+    watchdog('vojo', "Unable to authenticate voipdrupal sms from $number");
+    return $script;
+  }
+  $old_user = $user;
+  $user = user_load($uid);
+  if (empty($user)) {
+    watchdog('vojo', "Unable to authenticate voipdrupal sms from $number");
+    $user = $old_user;
+    return $script;
+  }
+  // Get language
+  $user_language = sms_registration_get_user_language($user);
+  // Try to change username
+  $info = trim($text);
+  $save = array('sms_user' => array('number' => sms_formatter($number), 'status' => SMS_USER_CONFIRMED, 'gateway' => array('carrier' => $user->sms_user[0]['gateway']['carrier'])));
+  // Figure out if this is username or email (based on admin setting)
+  if (variable_get('sms_registration_request_user', 'name') == 'name') {
+    $save['name'] = $info;
+  } else if (variable_get('sms_registration_request_user', 'name') == 'mail') {
+    if (valid_email_address($info)) {
+      $save['mail'] = $info;
+    }
+  }
+  // Save changes
+  $user = user_save($user, $save);
+  if (empty($user)) {
+    $message = sms_registration_failed_msg( $user->name, $user_language );
+  } else {
+    $message = sms_registration_name_changed_msg( $info, variable_get('site_name', 'the site'), $user_language );
+  }
+  // Send confirmation
+  $script->addSendText($message);
+  $user = $old_user;
   return $script;
 }
