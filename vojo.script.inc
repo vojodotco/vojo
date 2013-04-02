@@ -437,7 +437,7 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
  */
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
-  $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => $script->getText()));
+  $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
 
