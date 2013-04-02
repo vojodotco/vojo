@@ -455,7 +455,7 @@ function _vojo_update_username($number, $text) {
   // Authenticate
   $uid = sms_user_get_uid($number);
   if (!$uid) {
-    watchdog('vojo', "Unable to authenticate voipdrupal sms from $number");
+    $script->addReturn();
     return $script;
   }
   $old_user = $user;
@@ -463,6 +463,7 @@ function _vojo_update_username($number, $text) {
   if (empty($user)) {
     watchdog('vojo', "Unable to authenticate voipdrupal sms from $number");
     $user = $old_user;
+    $script->addReturn();
     return $script;
   }
   // Get language
@@ -487,8 +488,9 @@ function _vojo_update_username($number, $text) {
   }
   // Send confirmation
   // This is a workaround because addSendText ignores the "from" number
-  messaging_vozmob_send_voip_sms($user, $message, array());
-  //$script->addSendText($message, '', 'SMS', variable_get('voipcall_cid_number', NULL));
+  watchdog('vojo', 'Sending username change confirmation to user : ' . $user->name);
+  $script->addSendText($message);
   $user = $old_user;
+  $script->addReturn();
   return $script;
 }
