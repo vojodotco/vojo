@@ -486,7 +486,9 @@ function _vojo_update_username($number, $text) {
     $message = sms_registration_name_changed_msg( $info, variable_get('site_name', 'the site'), $user_language );
   }
   // Send confirmation
-  $script->addSendText($message, '', 'SMS', variable_get('voipcall_cid_number', NULL));
+  // This is a workaround because addSendText ignores the "from" number
+  messaging_vozmob_send_voip_sms($user, $message, array());
+  //$script->addSendText($message, '', 'SMS', variable_get('voipcall_cid_number', NULL));
   $user = $old_user;
   return $script;
 }
