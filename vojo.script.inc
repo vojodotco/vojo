@@ -390,13 +390,11 @@ function _vojo_login_script($number) {
   global $user;
   $script = new VoipScript('vojo_login');
   $uid = sms_user_get_uid($number);
-  if ($uid) {
-    $user = user_load($uid);
+  if ($uid==0) {
+    $uid = vojo_og_anon_get_user_id(); // DO NOT use user_load(0); - anonymous cannot post to og groups :-(
   }
-  else {
-    $user = user_load(vojo_og_anon_get_user_id()); // DO NOT use user_load(0); - anonymous cannot post to og groups :-(
-  }
-  watchdog('vojo', 'Voip call associated with user %name.', array('%name' => $user->name));
+  $user = user_load($uid);
+  watchdog('vojo', 'Voip login user %uid ( %name ).', array('%uid'=>$uid, '%name' => $user->name));
   $script->addSet('user_uid', $user->uid);
   $script->addSet('user_name', $user->name);
 
