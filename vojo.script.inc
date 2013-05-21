@@ -22,6 +22,8 @@ function _vojo_welcome_script() {
   // TODO: if it is an existing user, change the language based on their default language setting
 
   // forward directly to a group if they called a direct phone number
+  $script->addLog('dest_number: %dest_number');
+  $script->addLog('voipcall_cid_number: ' . variable_get('voipcall_cid_number'));
   $script->addGotoIf('forward_to_group',"^%dest_number != ".variable_get('voipcall_cid_number',''));
   
   // let the user pick a language first

@@ -361,13 +361,22 @@ function vojo_form_blog_node_form_submit($form, &$form_state) {
  */
 function _vojo_voipnumber_api_nid_from_number($number) {
   // look in all the voipnumber fields
+  watchdog('vojo', 'Looking up nid for number: ' . $number);
   foreach( content_fields() as $field){
-    if($field['type']=='voipnumber'){
+    if($field['type']=='voipnumberfield'){
+      watchdog('vojo', 'Looking in field: ' . print_r($field, true));
       // determine what table to search in 
       $table_name= "content_type_".$field['type_name'];
-      $col_name = $field['field_name']."_phone";
-      // search for any matches to the phone number
-      $sql = 'SELECT nid FROM {'.$table_name.'} WHERE '.$col_name.' = "%s"';
+      $col_name = $field['field_name']."_vnid";
+      $sql = "
+        SELECT num.nid
+        FROM {".$table_name."} AS g
+        LEFT JOIN {voipnumber} AS num
+        ON g.".$col_name."=num.vnid
+        LEFT JOIN {voipnumber_dialing_codes} AS code
+        ON num.country_name = code.country
+        WHERE CONCAT('+', code.code, num.phone_number) = %s";
+      watchdog('vojo', $sql);
       $result = db_query($sql, $number);
       while ($noderow = db_fetch_object($result)) {
         return $noderow->nid;
