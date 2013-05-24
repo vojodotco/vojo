@@ -361,10 +361,8 @@ function vojo_form_blog_node_form_submit($form, &$form_state) {
  */
 function _vojo_voipnumber_api_nid_from_number($number) {
   // look in all the voipnumber fields
-  watchdog('vojo', 'Looking up nid for number: ' . $number);
   foreach( content_fields() as $field){
     if($field['type']=='voipnumberfield'){
-      watchdog('vojo', 'Looking in field: ' . print_r($field, true));
       // determine what table to search in 
       $table_name= "content_type_".$field['type_name'];
       $col_name = $field['field_name']."_vnid";
@@ -376,7 +374,6 @@ function _vojo_voipnumber_api_nid_from_number($number) {
         LEFT JOIN {voipnumber_dialing_codes} AS code
         ON num.country_name = code.country
         WHERE CONCAT('+', code.code, num.phone_number) = %s";
-      watchdog('vojo', $sql);
       $result = db_query($sql, $number);
       while ($noderow = db_fetch_object($result)) {
         return $noderow->nid;
@@ -404,6 +401,10 @@ function vojo_format_phone_number($number) {
     if (strlen($number) == 19) {
       $formatted_number = '+'. substr($number, 0, 2) .' '. substr($number, 2, 2) .' '. substr($number, 4, 3) .'-'. substr($number, 7);
     }
+    else if (strlen($number) == 12 && substr($number, 0, 2) == '+1') {
+      // 10 digit with US country code: +1 (xxx) xxx-xxxx.
+      $formatted_number = '+1 ('. substr($number, 2, 3) .') '. substr($number, 5, 3) .'-'. substr($number, 8);
+    }
     // If 10 digits format as US number: (xxx) xxx-xxxx.
     else if (strlen($number) == 10) {
       $formatted_number = '('. substr($number, 0, 3) .') '. substr($number, 3, 3) .'-'. substr($number, 6);
@@ -414,6 +415,8 @@ function vojo_format_phone_number($number) {
       $parts[] = substr($number, 4, 4);
       $parts[] = substr($number, 8);
       $formatted_number = implode(' ', $parts);
+    } else {
+      watchdog('vojo', "Unrecognized phone number format: $number");
     }
   }
   else {

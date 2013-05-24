@@ -112,8 +112,20 @@ function vojo_group_details_block() {
   global $user;
   $node = og_get_group_context();
   // Display direct number for group if available. 
-   if (!empty($node->field_direct_phone_number[0]['phone'])) {
-    $number = $node->field_direct_phone_number[0]['phone'];
+  if (!empty($node->field_direct_phone_number[0]['vnid'])) {
+    $sql = "
+      SELECT CONCAT('+', code.code, num.phone_number) AS `number`
+      FROM {content_type_group} AS g
+      LEFT JOIN {voipnumber} AS num
+      ON g.field_direct_phone_number_vnid=num.vnid
+      LEFT JOIN {voipnumber_dialing_codes} AS code
+      ON num.country_name = code.country
+      WHERE g.nid=".$node->nid;
+    $result = db_query($sql);
+    while ($noderow = db_fetch_object($result)) {
+      $number = $noderow->number;
+      break;
+    }
     $vojo_voip_number = vojo_format_phone_number($number);
   }
   // Otherwise get set in admin/voip/call/settings.
