@@ -667,10 +667,25 @@ function vojo_feature_default_page_manager_handlers() {
     $pane = new stdClass;
     $pane->pid = 'new-1';
     $pane->panel = 'main';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'vojo_global_story_listings-vojo_user_stories_list_pane';
+    $pane->type = 'user_action_links';
+    $pane->subtype = 'user_action_links';
     $pane->shown = TRUE;
-    $pane->access = array();
+    $pane->access = array(
+      'plugins' => array(
+        0 => array(
+          'name' => 'compare_users',
+          'settings' => array(
+            'equality' => '1',
+          ),
+          'context' => array(
+            0 => 'argument_uid_1',
+            1 => 'logged-in-user',
+          ),
+          'not' => FALSE,
+        ),
+      ),
+      'logic' => 'and',
+    );
     $pane->configuration = array();
     $pane->cache = array();
     $pane->style = array(
@@ -683,6 +698,23 @@ function vojo_feature_default_page_manager_handlers() {
     $display->panels['main'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
+    $pane->panel = 'main';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_global_story_listings-vojo_user_stories_list_pane';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-2'] = $pane;
+    $display->panels['main'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
     $pane->panel = 'right';
     $pane->type = 'user_profile';
     $pane->subtype = 'user_profile';
@@ -714,13 +746,13 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
-    $display->content['new-2'] = $pane;
-    $display->panels['right'][0] = 'new-2';
+    $display->content['new-3'] = $pane;
+    $display->panels['right'][0] = 'new-3';
     $pane = new stdClass;
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-4';
     $pane->panel = 'right';
-    $pane->type = 'user_action_links';
-    $pane->subtype = 'user_action_links';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'vojo_og_my-panel_pane_1';
     $pane->shown = TRUE;
     $pane->access = array(
       'plugins' => array(
@@ -745,8 +777,8 @@ function vojo_feature_default_page_manager_handlers() {
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 1;
-    $display->content['new-3'] = $pane;
-    $display->panels['right'][1] = 'new-3';
+    $display->content['new-4'] = $pane;
+    $display->panels['right'][1] = 'new-4';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

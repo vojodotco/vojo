@@ -495,7 +495,6 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   /* Display: User stories list */
   $handler = $view->new_display('panel_pane', 'User stories list', 'vojo_user_stories_list_pane');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My stories';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -748,7 +747,7 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'Editar';
+  $handler->display->display_options['fields']['edit_node']['label'] = '';
   $handler->display->display_options['fields']['edit_node']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['edit_node']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['edit_node']['alter']['absolute'] = 0;
@@ -837,12 +836,10 @@ $this_user = user_load(array(\'name\' => check_plain($view->args[0])));
     t('- All -'),
     t('Offset'),
     t('User stories list'),
-    t('My stories'),
     t('authored-by'),
     t('Title'),
     t('Post date'),
     t('Grupo'),
-    t('Editar'),
     t('editar'),
     t('User: stories list'),
   );
@@ -3107,6 +3104,109 @@ return true;
     t('Featured groups'),
     t('queue'),
     t('Front featured groups'),
+    t('Vojo'),
+  );
+
+  $views[$view->name] = $view;
+
+  // Exported view: vojo_og_my
+  $view = new view;
+  $view->name = 'vojo_og_my';
+  $view->description = 'List user\'s subscribed groups and provide link to manage subscription';
+  $view->tag = 'Vojo';
+  $view->base_table = 'node';
+  $view->human_name = '';
+  $view->core = 6;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Defaults */
+  $handler = $view->new_display('default', 'Defaults', 'default');
+  $handler->display->display_options['title'] = 'My groups';
+  $handler->display->display_options['use_more'] = TRUE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => 2,
+    1 => 0,
+  );
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  /* Empty text: Global: Text area */
+  $handler->display->display_options['empty']['text']['id'] = 'area';
+  $handler->display->display_options['empty']['text']['table'] = 'views';
+  $handler->display->display_options['empty']['text']['field'] = 'area';
+  $handler->display->display_options['empty']['text']['label'] = '';
+  $handler->display->display_options['empty']['text']['empty'] = FALSE;
+  $handler->display->display_options['empty']['text']['content'] = 'Not a member of any groups.';
+  $handler->display->display_options['empty']['text']['format'] = '1';
+  /* Field: Node: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = 1;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Sort criterion: Node: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  /* Filter: Node: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter: Organic groups: Group types (all) */
+  $handler->display->display_options['filters']['type_groups_all']['id'] = 'type_groups_all';
+  $handler->display->display_options['filters']['type_groups_all']['table'] = 'og';
+  $handler->display->display_options['filters']['type_groups_all']['field'] = 'type_groups_all';
+  $handler->display->display_options['filters']['type_groups_all']['group'] = 0;
+  $handler->display->display_options['filters']['type_groups_all']['expose']['operator'] = FALSE;
+  /* Filter: Organic groups: Group member */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'og_uid';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '1';
+  $handler->display->display_options['filters']['uid']['group'] = 0;
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = FALSE;
+
+  /* Display: My Groups */
+  $handler = $view->new_display('panel_pane', 'My Groups', 'panel_pane_1');
+  $handler->display->display_options['pane_title'] = 'My Groups';
+  $handler->display->display_options['pane_category']['name'] = 'Vojo';
+  $handler->display->display_options['pane_category']['weight'] = '0';
+  $translatables['vojo_og_my'] = array(
+    t('Defaults'),
+    t('My groups'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Not a member of any groups.'),
+    t('My Groups'),
     t('Vojo'),
   );
 
