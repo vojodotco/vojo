@@ -24,7 +24,53 @@ function vojo_menu() {
     'access callback'  => TRUE,
     'type'             => MENU_CALLBACK,
   );
+  $items['story'] = array(
+     'title' => 'Create story',
+     'page callback' => 'vojo_create_story',
+     'access arguments' => array('access content'),
+   );
+   $items['story/%ctools_js/go'] = array(
+     'page callback' => 'vojo_create_story_ajax_callback',
+     'page arguments' => array(1),
+     'access arguments' => array('access content'),
+   );   
   return $items;
+}
+
+function vojo_create_story() {
+  // Load the modal library and add the modal javascript.
+  ctools_include('modal');
+  ctools_modal_add_js();
+
+  $output = l('Load modal content', 'story/nojs/go', array(
+    'attributes' => array('class' => 'ctools-use-modal')));
+
+  return $output;
+}
+
+function vojo_create_story_ajax_callback($js = FALSE) {
+  global $user; 
+  
+  $links = array();
+  foreach ($user->og_groups as $group) {
+    $group_nid = $group['nid'];
+    $links[] = l($group['title'], 'node/add/blog', array('attributes' => array('title' => t('Add a new story in this group.')),'query' => "gids[]=$group_nid"));
+  }
+  
+  $title = t('Create story');
+  $output = theme('item_list', $links);
+  
+  if ($js) {
+    ctools_include('ajax');
+    ctools_include('modal');
+    ctools_modal_render($title, $output);
+    // above command will exit().
+  }
+  else {
+    drupal_set_title($title);
+    return $output;
+  }
+    
 }
 
 /**
@@ -59,6 +105,8 @@ function vojo_link_alter(&$links, $node) {
 function vojo_profile_alter(&$account) {
   // Override path to user's blog, /blogs points to a view instead. 
   $account->content['summary']['blog']['#value'] = l(t('View recent blog entries'), 'blogs/'. $account->name, array('attributes' => array('title' => 'Read latest blog entries.'))); 
+  // Unset groups since we want to add them in a separate block/pane. 
+  unset($account->content['summary']['groups']);
 }
 
 /**
