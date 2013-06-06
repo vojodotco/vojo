@@ -170,10 +170,15 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         $node = node_load($params['nid']);
         return _vojo_group_script($node);
     }
+    elseif ($script_name == 'vojo_simple_group') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        $node = node_load($params['nid']);
+        return _vojo_simple_group_script($node);
+    }
     elseif ($script_name == 'vojo_record_blog') {
         module_load_include('inc', 'vojo', 'vojo.script');
         $node = node_load($params['nid']);
-        return _vojo_record_blog_script($node);
+        return _vojo_record_blog_script($node, $params['simple']);
     }
     elseif ($script_name == 'vojo_save_blog') {
         module_load_include('inc', 'vojo', 'vojo.script');
@@ -227,6 +232,7 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
 function vojo_voipscript_get_script_names() {
   return array(
     'vojo_group',
+    'vojo_simple_group',
     'vojo_record_blog',
     'vojo_save_blog',
     'vojo_login',

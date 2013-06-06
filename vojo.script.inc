@@ -22,8 +22,6 @@ function _vojo_welcome_script() {
   // TODO: if it is an existing user, change the language based on their default language setting
 
   // forward directly to a group if they called a direct phone number
-  $script->addLog('dest_number: %dest_number');
-  $script->addLog('voipcall_cid_number: ' . variable_get('voipcall_cid_number'));
   $script->addGotoIf('forward_to_group',"^%dest_number != ".variable_get('voipcall_cid_number',''));
   
   // let the user pick a language first
@@ -204,11 +202,74 @@ function _vojo_group_script($node) {
 }
 
 /**
+ * Script to use when a group extension is selected
+ *
+ * $param['nid'] = Node ID.
+ */
+function _vojo_simple_group_script($node) {
+  $script = new VoipScript('vojo_simple_group');
+  $script->addLabel('begin');
+  
+  // Change to group's language if no language is already set
+  $script->addSet('vojo_language', '');
+  $script->addSet('vojo_voice', vojo_voice_id_for_language());
+  $script->addGotoIf('group_name', "^%vojo_language != ''");
+  if (!empty($node->language)) {
+    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+  }
+  
+  $script->addLabel('group_name');
+  if ($name = voipnode_get_title($node)) {
+    $script->addSay($name);
+  } else {
+    $script->addSay($node->title . '.');
+  }
+
+  // menu of group options
+  $script->addLabel('group_menu');
+  if ($greeting = voipnode_get_greeting($node)) {
+    $script->addGetInput($greeting, 1, '', 6);
+  } else {
+    $script->addGetInput("^v('To record a new story, press 1, or just wait for the tone.  To listen to stories, press 2.  To hear more about the group, press 3.  Thanks!',null,null,%vojo_voice)", 1, '', 1);
+  }
+  $script->addGotoIf('record_story', "^%input_digits == '1'");
+  $script->addGotoIf('hear_stories', "^%input_digits == '2'");
+  $script->addGotoIf('learn_more', "^%input_digits == '3'");
+  $script->addGotoIf('return', "^%input_digits == '#'");
+  $script->addGoto('record_story');
+  
+  // user wants to hear other stories - this delegates to a voipview
+  $script->addLabel('hear_stories');
+  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
+    'args' => json_encode(array($node->nid)));
+  $script->addGosub('voipviews_read_view', $params);
+  $script->addGoto('begin');
+
+  // user wants to record a story
+  $script->addLabel('record_story');
+  $script->addGosub('vojo_record_blog', array('nid' => $node->nid, 'simple' => true));
+  $script->addGoto('begin');
+
+  // user wants to hear more about the group
+  $script->addLabel('learn_more');
+  if ($descrip = voipnode_get_description($node)) {
+    $script->addSay($descrip);  
+  } else {
+    $script->addSay($node->body . '.');
+  }
+  $script->addGoto('begin');
+
+  // return
+  $script->addLabel('return');
+  return $script;
+}
+
+/**
  * VoIP Script Callback: Record blog node in group.
  *
  * $param['nid'] = Group node ID.
  */
-function _vojo_record_blog_script($node) {
+function _vojo_record_blog_script($node, $simple = false) {
   $script = new VoipScript('vojo_record_blog');
  
   // login the user based on their phone number
@@ -219,7 +280,11 @@ function _vojo_record_blog_script($node) {
   
   // if new user, let them choose to create an account or post as anon
   $script->addLabel('handle_non_user');
+  $script->addGotoIf('record_create_user', '^' . ($simple ? 'true' : 'false'));
   $script->addGosub('vojo_pick_create_or_anon', array('number' => '%caller_number', 'nid' => $node->nid));
+  $script->addGoto('start_recording');
+  $script->addLabel('record_create_user');
+  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
   $script->addGoto('start_recording');
 
   // record a message
