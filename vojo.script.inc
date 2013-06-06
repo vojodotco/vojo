@@ -289,8 +289,9 @@ function _vojo_record_blog_script($node, $simple = false) {
 
   // record a message
   $script->addLabel('start_recording');
+  $prompt = $simple ? '' : 'Start recording your message after the tone. Press the pound key to stop recording.';
   $script->addRecord(
-    "^v('Start recording your message after the tone. Press the pound key to stop recording.',null,null,%vojo_voice)", 
+    "^v($prompt,null,null,%vojo_voice)", 
     5, '#', 3600, 'mp3', TRUE
   );
   $script->addGotoIf('no_recording','^%recording_fid == 0');
