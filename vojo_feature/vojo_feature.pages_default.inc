@@ -837,13 +837,22 @@ function vojo_feature_default_page_manager_pages() {
     $pane = new stdClass;
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
-    $pane->type = 'front_slideshow';
-    $pane->subtype = 'front_slideshow';
+    $pane->type = 'front_callin_now';
+    $pane->subtype = 'front_callin_now';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array();
+    $pane->configuration = array(
+      'op' => 'Finish',
+      'return' => 'Finish',
+      'cancel' => 'Cancel',
+      'form_build_id' => 'form-f27b2c59072d8f8a1e8328a91dd7cb66',
+      'form_token' => '7ceb4306ab1007927d02d220ff130903',
+      'form_id' => 'vojo_front_callin_now_content_type_edit_form',
+    );
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
@@ -851,6 +860,48 @@ function vojo_feature_default_page_manager_pages() {
     $display->panels['middle'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
+    $pane->panel = 'middle';
+    $pane->type = 'front_slideshow';
+    $pane->subtype = 'front_slideshow';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array();
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-2'] = $pane;
+    $display->panels['middle'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
+    $pane->panel = 'middle';
+    $pane->type = 'front_start_using_now';
+    $pane->subtype = 'front_start_using_now';
+    $pane->shown = FALSE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'op' => 'Finish',
+      'return' => 'Finish',
+      'cancel' => 'Cancel',
+      'vojo_tagline' => '',
+      'form_build_id' => 'form-7fcb6ad25ad8e8cfc935786189c58586',
+      'form_token' => '61ca0fc9f70b3a3b7f6a5f3657cd58ad',
+      'form_id' => 'vojo_front_start_using_now_content_type_edit_form',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 2;
+    $display->content['new-3'] = $pane;
+    $display->panels['middle'][2] = 'new-3';
+    $pane = new stdClass;
+    $pane->pid = 'new-4';
     $pane->panel = 'middle';
     $pane->type = 'front_trynow';
     $pane->subtype = 'front_trynow';
@@ -860,24 +911,26 @@ function vojo_feature_default_page_manager_pages() {
       'op' => 'Finish',
       'return' => 'Finish',
       'cancel' => 'Cancel',
-      'vojo_tagline' => 'Make Mobile Media Together!',
-      'form_build_id' => 'form-24d056b2702b9480010a7213fce102e6',
-      'form_token' => '58d12adb467941c2b643730d78ee05b6',
+      'vojo_tagline' => 'Start using Vojo now!',
+      'form_build_id' => 'form-527f3c45e55fe12f4b8fa9c9647814f6',
+      'form_token' => 'c168f957e60de498f0daeda3e709057c',
       'form_id' => 'vojo_front_trynow_content_type_edit_form',
     );
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
-    $display->content['new-2'] = $pane;
-    $display->panels['middle'][1] = 'new-2';
+    $pane->position = 3;
+    $display->content['new-4'] = $pane;
+    $display->panels['middle'][3] = 'new-4';
     $pane = new stdClass;
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-5';
     $pane->panel = 'middle';
     $pane->type = 'key_features';
     $pane->subtype = 'key_features';
-    $pane->shown = TRUE;
+    $pane->shown = FALSE;
     $pane->access = array();
     $pane->configuration = array(
       'op' => 'Finish',
@@ -914,14 +967,16 @@ function vojo_feature_default_page_manager_pages() {
       'form_id' => 'vojo_key_features_content_type_edit_form',
     );
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
-    $display->content['new-3'] = $pane;
-    $display->panels['middle'][2] = 'new-3';
+    $pane->position = 4;
+    $display->content['new-5'] = $pane;
+    $display->panels['middle'][4] = 'new-5';
     $pane = new stdClass;
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-6';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_og-panel_pane_1';
@@ -937,11 +992,11 @@ function vojo_feature_default_page_manager_pages() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 3;
-    $display->content['new-4'] = $pane;
-    $display->panels['middle'][3] = 'new-4';
+    $pane->position = 5;
+    $display->content['new-6'] = $pane;
+    $display->panels['middle'][5] = 'new-6';
     $pane = new stdClass;
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-7';
     $pane->panel = 'middle';
     $pane->type = 'views_panes';
     $pane->subtype = 'vojo_global_story_listings-recent_stories';
@@ -949,12 +1004,14 @@ function vojo_feature_default_page_manager_pages() {
     $pane->access = array();
     $pane->configuration = array();
     $pane->cache = array();
-    $pane->style = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 4;
-    $display->content['new-5'] = $pane;
-    $display->panels['middle'][4] = 'new-5';
+    $pane->position = 6;
+    $display->content['new-7'] = $pane;
+    $display->panels['middle'][6] = 'new-7';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -992,7 +1049,7 @@ function vojo_feature_default_page_manager_pages() {
     'relationships' => array(),
   );
   $display = new panels_display;
-  $display->layout = 'right_col';
+  $display->layout = 'onecol';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -1003,12 +1060,12 @@ function vojo_feature_default_page_manager_pages() {
     ),
   );
   $display->cache = array();
-  $display->title = '';
+  $display->title = 'Getting Started';
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass;
     $pane->pid = 'new-1';
-    $pane->panel = 'main';
+    $pane->panel = 'middle';
     $pane->type = 'node';
     $pane->subtype = 'node';
     $pane->shown = TRUE;
@@ -1020,7 +1077,7 @@ function vojo_feature_default_page_manager_pages() {
       'identifier' => '',
       'build_mode' => 'full',
       'link_node_title' => 0,
-      'override_title' => 0,
+      'override_title' => 1,
       'override_title_text' => '',
     );
     $pane->cache = array();
@@ -1031,8 +1088,8 @@ function vojo_feature_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $display->content['new-1'] = $pane;
-    $display->panels['main'][0] = 'new-1';
-  $display->hide_title = PANELS_TITLE_NONE;
+    $display->panels['middle'][0] = 'new-1';
+  $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
