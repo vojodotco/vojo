@@ -19,9 +19,9 @@ function vojo_front_trynow_content_type_render($subtype, $conf, $panel_args, $co
   drupal_add_js(drupal_get_path('module', 'vojo') . '/js/cycle.js', 'module');
 
   $view = views_embed_view('vojo_front_slideshow', 'front_slideshow');
-  $tagline = ($conf['vojo_tagline']) ? t($conf['vojo_tagline']) : t('A new way for communities to share stories');
+  $tagline = ($conf['vojo_tagline']) ? t($conf['vojo_tagline']) : '';
   $block->content = '<p id="vojo-tagline">' . $tagline . '</p>';
-  $block->content .= '<p id="vojo-trynow">' . l(t('Get started'), 'trynow', array('attributes' => array('class' => 'huge-button'))) . '</p>';
+  $block->content .= '<p id="vojo-trynow">' . l(t('Learn more'), 'trynow', array('attributes' => array('class' => 'huge-button'))) . '</p>';
   return $block;
 }
 
@@ -44,7 +44,7 @@ function vojo_front_trynow_content_type_edit_form(&$form, &$form_state) {
   $form['vojo_tagline'] = array(
     '#type' => 'textfield',
     '#title' => t('Text'),
-    '#default_value' => ($conf['vojo_tagline']) ? $conf['vojo_tagline'] : t('A new way for communities to share stories'),
+    '#default_value' => $tagline,
   );
   return $form;
 }

@@ -20,7 +20,6 @@ function vojo_front_slideshow_content_type_render($subtype, $conf, $panel_args, 
 
   $view = views_embed_view('vojo_front_slideshow', 'front_slideshow');
 
-  $block->content = '<div id="front-logo"><img src="' . base_path() . drupal_get_path('theme', 'vojo_generic') . '/logo-full.png" alt="Vojo logo" /></div>';
   $block->content .= '<div id="front-slideshow">' . $view . '<a id="vojo-slide-prev">Previous slide</a><a id="vojo-slide-next">Next slide</a></div>';
   return $block;
 }

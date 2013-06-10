@@ -511,6 +511,8 @@ function vojo_preprocess_vojo_site_header(&$vars) {
   }
   $vars['user_links'] .= '</div>';
   
+  $vars['primary_links'] = theme_get_setting('toggle_primary_links') ? menu_primary_links() : array();
+  
   // Generate language links menu
   $q = $_GET['q']; 
   $translations = translation_path_get_translations($q); 
