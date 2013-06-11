@@ -18,7 +18,7 @@ function vojo_front_callin_now_content_type_render($subtype, $conf, $panel_args,
   $number = $conf['number'] ? '<span>'. $conf['number'] .'</span>': '617-286-5017';
 
   $block->content = '<div id="front-logo"><img src="' . base_path() . drupal_get_path('theme', 'vojo_generic') . '/logo-full.png" alt="Vojo logo" /></div>';
-  $block->content .= '<h1 class="welcome">'. t('Welcome to Vojo.oc!') .'</h1>';
+  $block->content .= '<h1 class="welcome">'. t('Welcome to Vojo.co!') .'</h1>';
   $block->content .= '<h2>'. $text .' '. $number. '</h2>';
   return $block;
 }
