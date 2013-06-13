@@ -182,7 +182,7 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
     }
     elseif ($script_name == 'vojo_save_blog') {
         module_load_include('inc', 'vojo', 'vojo.script');
-        return _vojo_save_blog_script($params['nid'], $params['fid']);
+        return _vojo_save_blog_script($params['nid'], $params['fid'], $params['uid']);
     }
     elseif ($script_name == 'vojo_login') {
         module_load_include('inc', 'vojo', 'vojo.script');

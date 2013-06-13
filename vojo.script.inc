@@ -270,6 +270,8 @@ function _vojo_simple_group_script($node) {
  * $param['nid'] = Group node ID.
  */
 function _vojo_record_blog_script($node, $simple = false) {
+  global $user;
+  
   $script = new VoipScript('vojo_record_blog');
  
   // login the user based on their phone number
@@ -284,6 +286,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGosub('vojo_pick_create_or_anon', array('number' => '%caller_number', 'nid' => $node->nid));
   $script->addGoto('start_recording');
   $script->addLabel('record_create_user');
+  $script->addLabel('creating user');
   $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
   $script->addGoto('start_recording');
 
@@ -301,7 +304,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   // hung up.  However, %recording_duration is 0 only when the user hangs up, which is a bug.
   // For now, we can use that to detect if the user hung up
   $script->addGotoIf('accept_menu', "^%recording_duration != 0");
-  $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
+  $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'), '%user_uid');
   $script->addGoto('end_record');
   
   // review the recording (and save / re-record)
@@ -316,7 +319,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGotoIf('end_record', "^%input_digits == '#'");
   // fall through to accept recording if no input (could be hang-up)
   $script->addLabel('accept recording');
-  $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid'));
+  $script->addGosub('vojo_save_blog', array('nid' => $node->nid, 'fid' => '%recording_fid', 'uid' => '%user_uid'));
   $script->addGoto('end_record');
 
   // playback for user
@@ -427,11 +430,16 @@ function _vojo_send_sms($number, $msg){
  * $param['fid'] = File ID (%recording_fid).
  * @see _vozmob_callin_record_callback()
  */
-function _vojo_save_blog_script($nid, $fid) {
+function _vojo_save_blog_script($nid, $fid, $uid) {
   global $user;
-  watchdog('vojo', 'in vojo_save_blog');
   $script = new VoipScript('vojo_save_blog');
 
+  // Log the user in
+  if ($uid==0) {
+    $uid = vojo_og_anon_get_user_id(); // DO NOT use user_load(0); - anonymous cannot post to og groups :-(
+  }
+  $user = user_load($uid);
+  
   $node = new StdClass();
   $node->type = 'blog';
   $node->status = 1;                    // TODO: this should check the og group settings
@@ -446,7 +454,6 @@ function _vojo_save_blog_script($nid, $fid) {
     $node->old_vid = 1;
   }
   node_save($node);
-  watchdog('vojo', 'blog node saved');
   $script->addSay("^v('Story saved.',null,null,%vojo_voice)");
   return $script;
 }
