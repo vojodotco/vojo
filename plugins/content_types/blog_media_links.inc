@@ -17,14 +17,16 @@ function vojo_blog_media_links_content_type_render($subtype, $conf, $panel_args,
   $paths = array();
   $filepaths = '';
 
-  foreach ($node->media_mover as $media_mover){
-    foreach ($media_mover as $complete_array){
-      if (strpos($complete_array['complete_file'], 'mp3') !== FALSE) {
-        if ($filepaths == '') {
-          $filepaths .= '<h3>Download Attached Media</h3><ul>';
-        }
-        $paths[] = $complete_array['complete_file'];
-      } else {}
+  if(property_exists($node, 'media_mover')) {
+    foreach ($node->media_mover as $media_mover){
+      foreach ($media_mover as $complete_array){
+        if (strpos($complete_array['complete_file'], 'mp3') !== FALSE) {
+          if ($filepaths == '') {
+            $filepaths .= '<h3>Download Attached Media</h3><ul>';
+          }
+          $paths[] = $complete_array['complete_file'];
+        } else {}
+      }
     }
   }
   foreach ($node->field_image as $field_image){
