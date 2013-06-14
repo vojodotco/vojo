@@ -408,8 +408,8 @@ function _vojo_send_sms($number, $msg){
   $tempUserId = $user->uid;
   $user = user_load(1);
   $call = new VoipCall();
-  $call->setCurrentChannel('text');
-  $call->setCurrentNetwork('sms');
+  $call->setCallChannel('text');
+  $call->setCallNetwork('sms');
   $call->setDestNumber($number);
   $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));  // this is not a useful phone number :-(
   $call->setCallerName(sms_registration_get_address());   // does this work?
