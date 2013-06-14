@@ -63,10 +63,10 @@ function vojo_feature_content_default_fields() {
         'recorder' => 0,
         'attach' => 0,
       ),
+      'filefield_source_autocomplete' => '0',
       'filefield_source_attach_path' => 'file_attach',
       'filefield_source_attach_absolute' => '0',
       'filefield_source_attach_mode' => 'move',
-      'filefield_source_autocomplete' => '0',
       'label' => 'Audio recorder',
       'weight' => '-1',
       'description' => '',
@@ -277,10 +277,10 @@ function vojo_feature_content_default_fields() {
         'recorder' => 0,
         'attach' => 0,
       ),
+      'filefield_source_autocomplete' => '0',
       'filefield_source_attach_path' => 'file_attach',
       'filefield_source_attach_absolute' => '0',
       'filefield_source_attach_mode' => 'move',
-      'filefield_source_autocomplete' => '0',
       'label' => 'Slide image',
       'weight' => '-4',
       'description' => '',
@@ -392,40 +392,30 @@ function vojo_feature_content_default_fields() {
         'format' => 'default',
         'exclude' => 0,
       ),
-      '5' => array(
-        'format' => 'default',
-        'exclude' => 0,
-      ),
       'token' => array(
         'format' => 'default',
         'exclude' => 0,
       ),
     ),
     'widget_active' => '1',
-    'type' => 'voipnumber',
+    'type' => 'voipnumberfield',
     'required' => '0',
     'multiple' => '0',
-    'module' => 'voipnumber',
+    'module' => 'voipnumberfield',
     'active' => '1',
-    'voipnumber_choice' => '1',
-    'voipnumber_types' => '',
-    'voipnumber_allowed_countries' => array(),
-    'voipnumber_default' => '',
-    'voipnumber_max_length' => '15',
-    'voipnumber_show_code' => 1,
+    'voipnumberfield_choice' => '',
+    'voipnumberfield_types' => '',
+    'voipnumberfield_allowed_countries' => '',
+    'voipnumberfield_default' => '',
+    'voipnumberfield_max_length' => '',
+    'voipnumberfield_show_code' => '',
+    'voipnumberfield_allow_sip' => '',
     'widget' => array(
-      'default_value' => array(
-        '0' => array(
-          'number_prefix' => 'United States of America',
-          'phone' => '',
-        ),
-      ),
-      'default_value_php' => NULL,
       'label' => 'Direct Phone Number',
-      'weight' => '15',
-      'description' => 'Make sure to include the country-code if the number is not in the US.',
+      'weight' => '19',
+      'description' => '',
       'type' => 'voipphonenumber_widget',
-      'module' => 'voipnumber',
+      'module' => 'voipnumberfield',
     ),
   );
 
@@ -499,7 +489,6 @@ function vojo_feature_content_default_fields() {
   t('Link');
   t('Location');
   t('Slide image');
-  t('Make sure to include the country-code if the number is not in the US.');
 
   return $fields;
 }

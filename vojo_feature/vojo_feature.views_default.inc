@@ -1278,6 +1278,7 @@ if($has_audio) {
   /* Display: Group feed */
   $handler = $view->new_display('feed', 'Group feed', 'feed_1');
   $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['style_options']['mission_description'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'node_rss';
