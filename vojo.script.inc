@@ -404,7 +404,6 @@ function _vojo_send_sms($number, $msg){
   global $user;
   $tempUserId = $user->uid;
   $user = user_load(1);
-  watchdog('debug', 'sending sms as user ' . $user->name);
   $call = new VoipCall();
   $call->setCallChannel('text');
   $call->setCallNetwork('sms');
@@ -486,8 +485,6 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
   $script->addLog('Received incoming text from %caller_number, changing username');
-  $trace = debug_backtrace();
-  watchdog('debug', print_r($trace, true));
   $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
