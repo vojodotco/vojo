@@ -288,7 +288,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGoto('start_recording');
   $script->addLabel('record_create_user');
   $script->addLabel('creating user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
+  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid, 'simple'=>$simple));
   $script->addGoto('start_recording');
 
   // record a message
@@ -363,7 +363,7 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
  * Create a new user and send them an sms.  
  * TODO: This does not check if the user phone exists already!
  */
-function _vojo_create_user_script($number, $groupNid){
+function _vojo_create_user_script($number, $groupNid, $simple = false){
   global $user;
   // create the user
   $newUser = FALSE;
@@ -382,19 +382,16 @@ function _vojo_create_user_script($number, $groupNid){
   $user = $newUser;
   // add them to the group
   og_save_subscription($groupNid, $user->uid, array('is_active' => 1));
-  // send them an sms
-  $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
-  // TODO: centrally locate this text in sms_registration?
-  $result1 = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
-    array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')), $language ) ); 
-  $result2 = _vojo_send_sms($number, t("To change your username, just text the name you'd like to !sms_reg",
-    array('!sms_reg'=>sms_registration_get_address()), $language ) ); 
   watchdog('vojo', 'Created new user via phone %name / %number', array('%name'=> $user->name,'%number'=>$number));
   // provide audio feedback
   $script = new VoipScript('vojo_create_user');
+  $script->addSet('new_user', '1');
+  $script->addSet('password', $password);
   $script->addSet('user_uid', $user->uid);
-  $script->addSet('user_name', $user->name);  
-  $script->addSay("^v('We made a new user account for you. We have sent you an sms with your user name and password',null,null,%vojo_voice)");
+  $script->addSet('user_name', $user->name);
+  if (!$simple) {
+    $script->addSay("^v('We made a new user account for you. We have sent you an sms with your user name and password',null,null,%vojo_voice)");
+  }
   return $script;
 }
 
@@ -407,12 +404,17 @@ function _vojo_send_sms($number, $msg){
   global $user;
   $tempUserId = $user->uid;
   $user = user_load(1);
+  watchdog('debug', 'sending sms as user ' . $user->name);
   $call = new VoipCall();
   $call->setCallChannel('text');
   $call->setCallNetwork('sms');
   $call->setDestNumber($number);
-  $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));  // this is not a useful phone number :-(
-  $call->setCallerName(sms_registration_get_address());   // does this work?
+  // The following two lines don't currently work
+  $call->setCallerNumber(variable_get('voipcall_cid_number', NULL));
+  $call->setCallerName(sms_registration_get_address());
+  // Create a dummy script to prevent triggering inbound text script
+  $dummyscript = new VoipScript('dummyscript');
+  $call->setScript($dummyscript);
   voip_text($msg, $call);
   $user = user_load($tempUserId);
 }
@@ -483,6 +485,9 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
  */
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
+  $script->addLog('Received incoming text from %caller_number, changing username');
+  $trace = debug_backtrace();
+  watchdog('debug', print_r($trace, true));
   $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
@@ -540,4 +545,57 @@ function _vojo_update_username($number, $text) {
   $script->addReturn();
   return $script;
 }
+
+function _vojo_notify_new_user($uid, $number, $password) {
+  $user = user_load($uid);
+  // send them an sms
+  $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
+  // TODO: centrally locate this text in sms_registration?
+  $result1 = _vojo_send_sms($number, t('Welcome, thanks for the story! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
+    array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')), $user_language ) ); 
+  $result2 = _vojo_send_sms($number, t("To change your username, just text the name you'd like to !sms_reg",
+    array('!sms_reg'=>sms_registration_get_address()), $user_language ) ); 
+}
+
+function vojo_save_blog ($nid, $fid, $uid) {
+  global $user;
+  
+  // Log the user in
+  if ($uid==0) {
+    $uid = vojo_og_anon_get_user_id(); // DO NOT use user_load(0); - anonymous cannot post to og groups :-(
+  }
+  $user = user_load($uid);
+  
+  $node = new StdClass();
+  $node->type = 'blog';
+  $node->status = 1;                    // TODO: this should check the og group settings
+  $node->title = '';                    // will be autogenerated by auto_nodetitle later
+  $node->uid = $user->uid;
+  $node->og_groups = array($nid => $nid);
+  $result = db_query('SELECT * FROM {files} WHERE fid = %d', $fid);
+  if ($file = db_fetch_object($result)) {
+    $file->list = variable_get('upload_list_default', 1);
+    $node->files[$file->fid] = $file;
+    // Force upload module to recognize the file attachment.
+    $node->old_vid = 1;
+  }
+  node_save($node);
+}
+
+/**
+ * Function executed on hang up.
+ */
+function _vojo_voipscript_hangup_callback($original_call) {
+  module_load_include('inc', 'vojo', 'includes/vojo.script');
+  $original_script = $original_call->getScript();
+  $cid = $original_call->getCid();
+  $gid = $original_script->getVar('gid');
+  $fid = $original_script->getVar('recording_fid');
+  $uid = $original_script->getVar('user_uid');
+  $number = $original_script->getVar('caller_number');
+  $password = $original_script->getVar('password');
+  vojo_save_blog($gid, $fid, $uid);
+  _vojo_notify_new_user($uid, $number, $password);
+}
+
 
