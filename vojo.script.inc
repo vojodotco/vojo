@@ -288,7 +288,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGoto('start_recording');
   $script->addLabel('record_create_user');
   $script->addLabel('creating user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid, 'simple'=>$simple));
+  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $node->nid, 'simple'=>$simple));
   $script->addGoto('start_recording');
 
   // record a message
