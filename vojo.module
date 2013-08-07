@@ -58,7 +58,8 @@ function vojo_create_story_ajax_callback($js = FALSE) {
   }
   
   $title = t('Create story');
-  $output = theme('item_list', $links);
+  $intro = "<p>".t("Select the group you'd like to post your story to:")."</p>";
+  $output = $intro.theme('item_list', $links);
   
   if ($js) {
     ctools_include('ajax');
