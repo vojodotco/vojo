@@ -306,7 +306,6 @@ function _vojo_record_blog_script($node, $simple = false) {
     "^v('To save this recording, press 1. To record it once again, press 2. To listen to wat you said, press 3. To return, press the pound key.',null,null,%vojo_voice)",
     1, '', 10
   );
-  $script->addSet('voipscript_hangup_callback', '');
   $script->addGotoIf('accept recording', "^%input_digits == '1'");
   $script->addGotoIf('start_recording', "^%input_digits == '2'");
   $script->addGotoIf('review_recording', "^%input_digits == '3'");
