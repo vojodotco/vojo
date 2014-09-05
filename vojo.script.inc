@@ -292,7 +292,11 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGoto('start_recording');
 
   // record a message
+  // setting hangup_callback to make sure story is saved even if user hangs
+  // up without pressing pound (#) see user story #1683
   $script->addLabel('start_recording');
+  $script->addSet('auto_save_blog', True);
+  $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
   $prompt = $simple ? '' : 'Start recording your message after the tone. Press the pound key to stop recording.';
   $script->addRecord(
     "^v('$prompt',null,null,%vojo_voice)", 
@@ -301,6 +305,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   
   // review the recording (and save / re-record)
   $script->addLabel('accept_menu');
+  $script->addSet('auto_save_blog', False);
   $script->addGetInput(
     "^v('To save this recording, press 1. To record it once again, press 2. To listen to wat you said, press 3. To return, press the pound key.',null,null,%vojo_voice)",
     1, '', 10
@@ -430,7 +435,6 @@ function _vojo_save_blog_script($nid, $fid, $uid) {
   $script = new VoipScript('vojo_save_blog');
   $script->addSay("^v('Story saved.',null,null,%vojo_voice)");
   $script->addSet('blog_post_saved', True);
-  $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
   return $script;
 }
 
@@ -592,6 +596,7 @@ function vojo_save_blog ($nid, $fid, $uid) {
 }
 
 
+
 /**
  * Function executed on hang up.
  */
@@ -606,10 +611,14 @@ function _vojo_voipscript_hangup_callback($original_call) {
   $password = $original_script->getVar('password');
   $is_new_user = $original_script->getVar('is_new_user');
   $blog_post_saved = $original_script->getVar('blog_post_saved');
+  $auto_save_blog = $original_script->getVar('auto_save_blog');
+  if($auto_save_blog) {
+    vojo_save_blog($gid, $fid, $uid);
+  } 
   if($is_new_user) {
     _vojo_notify_new_user($uid, $number, $password);
   }
-  if($blog_post_saved) {
+  if($auto_save_blog || $blog_post_saved) {
     _vojo_notify_saved_blog($uid, $number);
   }
 }
