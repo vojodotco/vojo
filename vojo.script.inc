@@ -429,6 +429,7 @@ function _vojo_save_blog_script($nid, $fid, $uid) {
   vojo_save_blog($nid, $fid, $uid);
   $script = new VoipScript('vojo_save_blog');
   $script->addSay("^v('Story saved.',null,null,%vojo_voice)");
+  $script->addSet('blog_post_saved', True);
   $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
   return $script;
 }
@@ -559,9 +560,7 @@ function _vojo_notify_new_user($uid, $number, $password) {
 
 function _vojo_notify_saved_blog($uid, $number) {
   $user = user_load($uid);
-  // send them an sms
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
-  // TODO: centrally locate this text in sms_registration?
   $result1 = _vojo_send_sms($number, t('Thanks for the story, !name.',
     array('!name'=>$user->name), $user_language)); 
 }
@@ -592,6 +591,7 @@ function vojo_save_blog ($nid, $fid, $uid) {
   node_save($node);
 }
 
+
 /**
  * Function executed on hang up.
  */
@@ -602,14 +602,16 @@ function _vojo_voipscript_hangup_callback($original_call) {
   $gid = $original_script->getVar('gid');
   $fid = $original_script->getVar('recording_fid');
   $uid = $original_script->getVar('user_uid');
-  $is_new_user = $original_script->getVar('is_new_user');
   $number = $original_script->getVar('caller_number');
   $password = $original_script->getVar('password');
-  vojo_save_blog($gid, $fid, $uid);  
+  $is_new_user = $original_script->getVar('is_new_user');
+  $blog_post_saved = $original_script->getVar('blog_post_saved');
   if($is_new_user) {
     _vojo_notify_new_user($uid, $number, $password);
   }
-  _vojo_notify_saved_blog($uid, $number);
+  if($blog_post_saved) {
+    _vojo_notify_saved_blog($uid, $number);
+  }
 }
 
 
