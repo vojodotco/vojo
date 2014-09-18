@@ -77,17 +77,17 @@ function _vojo_pick_language_script(){
 
   // user picked english
   $script->addLabel('picked_en');
-  $script->addGoSub('vojo_change_language', array('language'=>'en') );
+  $script->addGosub('vojo_change_language', array('language'=>'en') );
   $script->addGoto('return');
 
   // user picked spanish
   $script->addLabel('picked_es');
-  $script->addGoSub('vojo_change_language', array('language'=>'es') );
+  $script->addGosub('vojo_change_language', array('language'=>'es') );
   $script->addGoto('return');
   
   // user picked portuguese
   $script->addLabel('picked_pt');
-  $script->addGoSub('vojo_change_language', array('language'=>'pt') );
+  $script->addGosub('vojo_change_language', array('language'=>'pt') );
   $script->addGoto('return');
 
   // return
@@ -138,6 +138,8 @@ function _vojo_redirect_to_group_script($number) {
   return $script;
 }
 
+
+
 /**
  * Script to use when a group extension is selected
  *
@@ -151,7 +153,7 @@ function _vojo_group_script($node) {
   // Change to group's language if no language is already set
   $script->addGotoIf('group_name', "^%vojo_language != ''");
   if (!empty($node->language)) {
-    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+    $script->addGosub('vojo_change_language', array('language'=>$node->language));
   }
   
   $script->addLabel('group_name');
@@ -175,11 +177,8 @@ function _vojo_group_script($node) {
   $script->addSay("^v('Input not recognized',null,null,%vojo_voice)");
   $script->addGoto('group_menu');
   
-  // user wants to hear other stories - this delegates to a voipview
   $script->addLabel('hear_stories');
-  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
-    'args' => json_encode(array($node->nid)));
-  $script->addGosub('voipviews_read_view', $params);
+  $script->addGosub('vojo_hear_group_stories', array('nid'=> $node->nid));
   $script->addGoto('begin');
 
   // user wants to record a story
@@ -201,6 +200,33 @@ function _vojo_group_script($node) {
   return $script;
 }
 
+
+function _vojo_hear_group_stories_script($nid) {
+  $script = new VoipScript('vojo_hear_group_stories');
+  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid in (select nid from og_ancestry where group_nid=%d and status=1) ORDER BY r.weight, f.fid;', $nid);
+  while ($file = db_fetch_array($result)) {
+     $extension = substr($file['filepath'], -3);
+     if( in_array($extension, array('wav','mp3')) ) {
+       $script->addSay("^v('This story was created by ',null,null,%vojo_voice)");
+       $uid = $file['uid'];
+       if ($uid==0) {
+	   $uid = vojo_og_anon_get_user_id(); 
+       }
+       $user = user_load($uid);
+       $script->addSay($user->name);
+       $script->addSay(file_create_url($file['filepath']));
+       $script->addLabel('voice_menu_'.$file['fid']);
+       $script->addGetInput("^v('Press 1 to hear another story, or # to go back to the main menu',null,null,%vojo_voice)", 1, '', 5);
+       $script->addGotoIf('return', "^%input_digits == '#'");
+       $script->addGotoIf('voice_menu_'.$file['fid'], "^%input_digits != '1'");      
+     }
+  }
+  $script->addLabel('return');
+  $script->addReturn();
+  return $script;
+}
+
+
 /**
  * Script to use when a group extension is selected
  *
@@ -215,7 +241,7 @@ function _vojo_simple_group_script($node) {
   $script->addSet('vojo_voice', vojo_voice_id_for_language());
   $script->addGotoIf('group_name', "^%vojo_language != ''");
   if (!empty($node->language)) {
-    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+    $script->addGosub('vojo_change_language', array('language'=>$node->language));
   }
   
   $script->addLabel('group_name');
@@ -288,7 +314,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGoto('start_recording');
   $script->addLabel('record_create_user');
   $script->addLabel('creating user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $node->nid, 'simple'=>$simple));
+  $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $node->nid, 'simple'=>$simple));
   $script->addGoto('start_recording');
 
   // record a message
@@ -355,7 +381,7 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
   $script->addGoto('end');
   
   $script->addLabel('create_user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
+  $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
   $script->addGoto('end');
   
   $script->addLabel('end');
@@ -476,9 +502,10 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
   }
   else {
     if (! $unknown = variable_get('voipextension_unknown_msg', FALSE)) {
-      $unknown = t('Unknown extension %number. ');
+      $unknown = "^v('Unknown extension %number.',null,null,%vojo_voice)";
     }
     $script->addSay($unknown);
+
   }
   $script->addReturn();
  
@@ -491,7 +518,7 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
   $script->addLog('Received incoming text from %caller_number, changing username');
-  $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
+  $script->addGosub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
 
