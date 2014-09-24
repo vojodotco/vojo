@@ -607,8 +607,9 @@ function _vojo_notify_new_user($uid, $number, $password) {
 function _vojo_notify_saved_blog($uid, $number) {
   $user = user_load($uid);
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
-  $result1 = _vojo_send_sms($number, t('Thanks for the story, !name.',
-    array('!name'=>$user->name), $user_language)); 
+  $blog_url = url('blog/'. $user->uid, array('absolute' => TRUE));
+  $result1 = _vojo_send_sms($number, t('Thanks for the story, !name. You can find it online at !blog_url',
+				       array('!name'=>$user->name, '!blog_url'=>$blog_url), $user_language)); 
 }
 
 
