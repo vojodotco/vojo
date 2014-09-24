@@ -528,7 +528,7 @@ function _vojo_default_incoming_text() {
 function _vojo_route_inbound_text($number, $text) {
   $script = new VoipScript('vojo_route_inboud_text');
   $arr = explode(' ',trim($text));
-  if ($arr[0] == 'name' || $arr[0] == 'nombre') {
+  if (($arr[0] == 'name' || $arr[0] == 'nombre') && count($arr) > 1) {
     $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
   }
   return $script;
