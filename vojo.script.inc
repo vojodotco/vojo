@@ -203,7 +203,7 @@ function _vojo_group_script($node) {
 
 function _vojo_hear_group_stories_script($nid) {
   $script = new VoipScript('vojo_hear_group_stories');
-  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.vid in (select nid from og_ancestry where group_nid=%d and status=1) ORDER BY r.weight, f.fid;', $nid);
+  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.nid in (select nid from og_ancestry where group_nid=%d and status=1) ORDER BY r.weight,f.fid desc;', $nid);
   while ($file = db_fetch_array($result)) {
      $extension = substr($file['filepath'], -3);
      if( in_array($extension, array('wav','mp3')) ) {
@@ -266,9 +266,7 @@ function _vojo_simple_group_script($node) {
   
   // user wants to hear other stories - this delegates to a voipview
   $script->addLabel('hear_stories');
-  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
-    'args' => json_encode(array($node->nid)));
-  $script->addGosub('voipviews_read_view', $params);
+  $script->addGosub('vojo_hear_group_stories', array('nid'=> $node->nid));
   $script->addGoto('begin');
 
   // user wants to record a story
@@ -518,9 +516,25 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
   $script->addLog('Received incoming text from %caller_number, changing username');
-  $script->addGosub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
+  
+  $script->addGosub('vojo_route_inboud_text', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
+
+/*
+ * Routes a text message to update_username or sms_post function
+ * depending on existence (or not) of 'name' keyword
+ */
+function _vojo_route_inbound_text($number, $text) {
+  $script = new VoipScript('vojo_route_inboud_text');
+  $arr = explode(' ',trim($text));
+  if ($arr[0] == 'name' || $arr[0] == 'nombre') {
+    $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
+  }
+  return $script;
+}
+
+
 
 /*
  * Update a username.  Eventually, this should be combined with the
@@ -583,8 +597,9 @@ function _vojo_notify_new_user($uid, $number, $password) {
   // TODO: centrally locate this text in sms_registration?
   $result1 = _vojo_send_sms($number, t('Welcome! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')), $user_language ) ); 
-  $result2 = _vojo_send_sms($number, t("To change your username, just text the name you'd like to !sms_reg",
-    array('!sms_reg'=>sms_registration_get_address()), $user_language ) ); 
+  
+  $result2 = _vojo_send_sms($number, t("To change your username, just text: name yourusername to !sms_reg",
+    array('!sms_reg'=>variable_get('voipcall_text_number', sms_registration_get_address())), $user_language ) ); 
 }
 
 

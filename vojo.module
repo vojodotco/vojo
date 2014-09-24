@@ -229,6 +229,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_hear_group_stories_script($params['nid']);
     }
+    elseif ($script_name == 'vojo_route_inboud_text') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_route_inbound_text($params['number'], $params['text']);
+    }
 
 }
 
@@ -251,7 +255,8 @@ function vojo_voipscript_get_script_names() {
     'vojo_play_extension',
     'vojo_default_incoming_text',
     'vojo_update_username',
-    'vojo_hear_group_stories'
+    'vojo_hear_group_stories',
+    'vojo_route_inboud_text'
   );
 }
 
