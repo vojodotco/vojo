@@ -225,6 +225,19 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_update_username($params['number'], $params['text']);
     }
+    elseif ($script_name == 'vojo_hear_group_stories') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_hear_group_stories_script($params['nid']);
+    }
+    elseif ($script_name == 'vojo_route_inboud_text') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_route_inbound_text($params['number'], $params['text']);
+    }
+     elseif ($script_name == 'vojo_post_sms_story') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_post_sms_story($params['number'], $params['text'], $params['nid'], $params['anon']);
+    }
+
 }
 
 /**
@@ -245,7 +258,10 @@ function vojo_voipscript_get_script_names() {
     'vojo_change_language',
     'vojo_play_extension',
     'vojo_default_incoming_text',
-    'vojo_update_username'
+    'vojo_update_username',
+    'vojo_hear_group_stories',
+    'vojo_route_inboud_text',
+    'vojo_post_sms_story'
   );
 }
 

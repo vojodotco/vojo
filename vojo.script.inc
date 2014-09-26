@@ -77,17 +77,17 @@ function _vojo_pick_language_script(){
 
   // user picked english
   $script->addLabel('picked_en');
-  $script->addGoSub('vojo_change_language', array('language'=>'en') );
+  $script->addGosub('vojo_change_language', array('language'=>'en') );
   $script->addGoto('return');
 
   // user picked spanish
   $script->addLabel('picked_es');
-  $script->addGoSub('vojo_change_language', array('language'=>'es') );
+  $script->addGosub('vojo_change_language', array('language'=>'es') );
   $script->addGoto('return');
   
   // user picked portuguese
   $script->addLabel('picked_pt');
-  $script->addGoSub('vojo_change_language', array('language'=>'pt') );
+  $script->addGosub('vojo_change_language', array('language'=>'pt') );
   $script->addGoto('return');
 
   // return
@@ -138,6 +138,8 @@ function _vojo_redirect_to_group_script($number) {
   return $script;
 }
 
+
+
 /**
  * Script to use when a group extension is selected
  *
@@ -151,7 +153,7 @@ function _vojo_group_script($node) {
   // Change to group's language if no language is already set
   $script->addGotoIf('group_name', "^%vojo_language != ''");
   if (!empty($node->language)) {
-    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+    $script->addGosub('vojo_change_language', array('language'=>$node->language));
   }
   
   $script->addLabel('group_name');
@@ -175,11 +177,8 @@ function _vojo_group_script($node) {
   $script->addSay("^v('Input not recognized',null,null,%vojo_voice)");
   $script->addGoto('group_menu');
   
-  // user wants to hear other stories - this delegates to a voipview
   $script->addLabel('hear_stories');
-  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
-    'args' => json_encode(array($node->nid)));
-  $script->addGosub('voipviews_read_view', $params);
+  $script->addGosub('vojo_hear_group_stories', array('nid'=> $node->nid));
   $script->addGoto('begin');
 
   // user wants to record a story
@@ -201,6 +200,33 @@ function _vojo_group_script($node) {
   return $script;
 }
 
+
+function _vojo_hear_group_stories_script($nid) {
+  $script = new VoipScript('vojo_hear_group_stories');
+  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.nid in (select nid from og_ancestry where group_nid=%d and status=1) ORDER BY r.weight,f.fid desc;', $nid);
+  while ($file = db_fetch_array($result)) {
+     $extension = substr($file['filepath'], -3);
+     if( in_array($extension, array('wav','mp3')) ) {
+       $script->addSay("^v('This story was created by ',null,null,%vojo_voice)");
+       $uid = $file['uid'];
+       if ($uid==0) {
+	   $uid = vojo_og_anon_get_user_id(); 
+       }
+       $user = user_load($uid);
+       $script->addSay($user->name);
+       $script->addSay(file_create_url($file['filepath']));
+       $script->addLabel('voice_menu_'.$file['fid']);
+       $script->addGetInput("^v('Press 1 to hear another story, or # to go back to the main menu',null,null,%vojo_voice)", 1, '', 5);
+       $script->addGotoIf('return', "^%input_digits == '#'");
+       $script->addGotoIf('voice_menu_'.$file['fid'], "^%input_digits != '1'");      
+     }
+  }
+  $script->addLabel('return');
+  $script->addReturn();
+  return $script;
+}
+
+
 /**
  * Script to use when a group extension is selected
  *
@@ -215,7 +241,7 @@ function _vojo_simple_group_script($node) {
   $script->addSet('vojo_voice', vojo_voice_id_for_language());
   $script->addGotoIf('group_name', "^%vojo_language != ''");
   if (!empty($node->language)) {
-    $script->addGoSub('vojo_change_language', array('language'=>$node->language));
+    $script->addGosub('vojo_change_language', array('language'=>$node->language));
   }
   
   $script->addLabel('group_name');
@@ -240,9 +266,7 @@ function _vojo_simple_group_script($node) {
   
   // user wants to hear other stories - this delegates to a voipview
   $script->addLabel('hear_stories');
-  $params = array('view_name' => 'vojo_group_stories_voip', 'display_id' => 'vojo_group_stories_voip', 
-    'args' => json_encode(array($node->nid)));
-  $script->addGosub('voipviews_read_view', $params);
+  $script->addGosub('vojo_hear_group_stories', array('nid'=> $node->nid));
   $script->addGoto('begin');
 
   // user wants to record a story
@@ -288,7 +312,7 @@ function _vojo_record_blog_script($node, $simple = false) {
   $script->addGoto('start_recording');
   $script->addLabel('record_create_user');
   $script->addLabel('creating user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $node->nid, 'simple'=>$simple));
+  $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $node->nid, 'simple'=>$simple));
   $script->addGoto('start_recording');
 
   // record a message
@@ -355,7 +379,7 @@ function _vojo_pick_create_or_anon_script($number, $groupNid){
   $script->addGoto('end');
   
   $script->addLabel('create_user');
-  $script->addGoSub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
+  $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $groupNid));
   $script->addGoto('end');
   
   $script->addLabel('end');
@@ -370,7 +394,7 @@ function _vojo_create_user_script($number, $groupNid, $simple = false){
   global $user;
   // create the user
   $newUser = FALSE;
-  $password = user_password(8);
+  $password = strtolower(user_password(6));
   while (!$newUser) {
     $newUser = user_save(NULL, array(
       'name' => variable_get('sms_registration_username', 'Drupal-') . mt_rand(1, db_result(db_query('SELECT MAX(uid) FROM {users}')) * 10),
@@ -395,8 +419,9 @@ function _vojo_create_user_script($number, $groupNid, $simple = false){
   if (!$simple) {
     $script->addSay("^v('We made a new user account for you. We have sent you an sms with your user name and password',null,null,%vojo_voice)");
   }
-  $script->addSet('is_new_user', True);
+
   $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
+  _vojo_notify_new_user($user->uid, $number, $password);
   return $script;
 }
 
@@ -476,14 +501,16 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
   }
   else {
     if (! $unknown = variable_get('voipextension_unknown_msg', FALSE)) {
-      $unknown = t('Unknown extension %number. ');
+      $unknown = "^v('Unknown extension %number.',null,null,%vojo_voice)";
     }
     $script->addSay($unknown);
+
   }
   $script->addReturn();
  
   return $script;
 }
+
 
 /*
  * Receive a text message.  Update the user's name if they have an existing account.
@@ -491,9 +518,96 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
 function _vojo_default_incoming_text() {
   $script = new VoipScript('vojo_default_incoming_text');
   $script->addLog('Received incoming text from %caller_number, changing username');
-  $script->addGoSub('vojo_update_username', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
+  
+  $script->addGosub('vojo_route_inboud_text', array('number' => '%caller_number', 'text' => '%inbound_text_contents'));
   return $script;
 }
+
+/*
+ * Routes a text message to update_username or sms_post function
+ * depending on existence (or not) of 'name' keyword
+ */
+function _vojo_route_inbound_text($number, $text) {
+  $script = new VoipScript('vojo_route_inboud_text');
+  
+  $group_keywords = array();
+  $rs = db_query("SELECT field_yeta_value,nid FROM {content_type_group};");  
+  while ($row = db_fetch_array($rs)) {
+    $group_email = $row['field_yeta_value'];
+    $group_nid = $row['nid'];
+    $group_keywords['#'.explode('@',$group_email)[0]] = $group_nid;
+  }
+
+  $arr = explode(' ',trim($text));
+  
+  // check for anon flag
+  $anon = False;
+  if (strtolower($arr[0]) == 'anon') {
+    $anon = True;
+    array_shift($arr);
+  }
+
+  $keyword = strtolower($arr[0]);
+  $uid = sms_user_get_uid($number);
+  if (($keyword == 'name' || $keyword == 'nombre') && count($arr) > 1) {
+    $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
+  } elseif (array_key_exists($keyword, $group_keywords)){
+    array_shift($arr);
+    $post_text = implode(' ', $arr);
+    $group_nid = $group_keywords[$keyword];
+    $script->addGosub('vojo_post_sms_story', array('number' => $number, 
+						   'text' => $post_text, 
+						   'nid' => $group_nid, 
+						   'anon' => $anon));
+  }elseif($uid) {
+    $post_text = implode(' ', $arr);
+    $user = user_load($uid);
+    $user_group_nid = array_keys($user->og_groups)[0];
+    $script->addGosub('vojo_post_sms_story', array('number' => $number, 
+						   'text' => $post_text, 
+						   'nid' => $user_group_nid, 
+						   'anon' => $anon));
+  }
+  return $script;
+}
+
+
+/*
+ * Post sms as story for user with specified number,
+ * if no number exits, creates account and post
+ */
+function _vojo_post_sms_story($number, $text, $nid, $anon = False) {
+
+  $script = new VoipScript('vojo_post_sms_story');
+  $uid = sms_user_get_uid($number);
+  if ($anon) {
+    $uid = vojo_og_anon_get_user_id();
+  }
+  elseif (!$uid) {
+    $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $nid, 'simple'=> True));
+    //_vojo_notify_new_user(68, $number, 'passtest');
+    return $script;
+
+  }
+  
+  $user = user_load($uid);
+  $node = new stdClass();
+  $node->pass = NULL;
+  $node->type = 'blog';
+  $node->uid = $uid;
+  $node->name = $user->name;
+  $node->body = $text;
+  $node->title = truncate_utf8(trim($node->body), 29, True);
+  node_validate($node);
+  $node = node_submit($node);
+  node_save($node);
+
+  $result = db_query('INSERT INTO {og_ancestry} (nid, group_nid) values (%d, %d)', $node->nid, $nid);
+  _vojo_notify_saved_blog($uid, $number, $node->nid);
+  return $script;
+}
+
+
 
 /*
  * Update a username.  Eventually, this should be combined with the
@@ -554,23 +668,25 @@ function _vojo_notify_new_user($uid, $number, $password) {
   // send them an sms
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
   // TODO: centrally locate this text in sms_registration?
-  $result1 = _vojo_send_sms($number, t('Welcome! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
+  $result1 = _vojo_send_sms($number, t('Welcome! Your username is !name, password is !pass. You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')), $user_language ) ); 
-  $result2 = _vojo_send_sms($number, t("To change your username, just text the name you'd like to !sms_reg",
-    array('!sms_reg'=>sms_registration_get_address()), $user_language ) ); 
+  $sms_reg = variable_get('voipcall_text_number', sms_registration_get_address());
+  $result2 = _vojo_send_sms($number, t("To change your username, just text: name yourusername to !sms_reg",
+				       array('!sms_reg'=>$sms_reg), $user_language)); 
 }
 
 
 
-function _vojo_notify_saved_blog($uid, $number) {
+function _vojo_notify_saved_blog($uid, $number, $nid) {
   $user = user_load($uid);
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
-  $result1 = _vojo_send_sms($number, t('Thanks for the story, !name.',
-    array('!name'=>$user->name), $user_language)); 
+  $blog_url = url('node/'. $nid, array('absolute' => True));
+  $result1 = _vojo_send_sms($number, t('Thanks for the story, !name. You can find it online at !blog_url',
+				       array('!name'=>$user->name, '!blog_url'=>$blog_url), $user_language)); 
 }
 
 
-function vojo_save_blog ($nid, $fid, $uid) {
+function vojo_save_blog($nid, $fid, $uid) {
   global $user;
   
   // Log the user in
@@ -609,17 +725,17 @@ function _vojo_voipscript_hangup_callback($original_call) {
   $uid = $original_script->getVar('user_uid');
   $number = $original_script->getVar('caller_number');
   $password = $original_script->getVar('password');
-  $is_new_user = $original_script->getVar('is_new_user');
   $blog_post_saved = $original_script->getVar('blog_post_saved');
   $auto_save_blog = $original_script->getVar('auto_save_blog');
   if($auto_save_blog) {
     vojo_save_blog($gid, $fid, $uid);
   } 
-  if($is_new_user) {
-    _vojo_notify_new_user($uid, $number, $password);
-  }
   if($auto_save_blog || $blog_post_saved) {
-    _vojo_notify_saved_blog($uid, $number);
+      $res = db_query("SELECT nid FROM {upload} where fid = %d", $fid);
+      while ($row = db_fetch_array($res)) {
+	$post_nid = $row['nid'];
+      }
+      _vojo_notify_saved_blog($uid, $number, $post_nid);
   }
 }
 
