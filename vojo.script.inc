@@ -567,7 +567,11 @@ function _vojo_route_inbound_text($number, $text) {
   }elseif($uid) {
     $post_text = implode(' ', $arr);
     $user = user_load($uid);
-    $user_group_nid = array_keys($user->og_groups)[0];
+    $user_group_nids = array_keys($user->og_groups);
+    if(sizeof($user_group_nids)==0) {
+      return $script;
+    }
+    $user_group_nid = $user_group_nids[0];
     $script->addGosub('vojo_post_sms_story', array('number' => $number, 
 						   'text' => $post_text, 
 						   'nid' => $user_group_nid, 
