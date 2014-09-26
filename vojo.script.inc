@@ -535,7 +535,12 @@ function _vojo_route_inbound_text($number, $text) {
   while ($row = db_fetch_array($rs)) {
     $group_email = $row['field_yeta_value'];
     $group_nid = $row['nid'];
-    $group_keywords['#'.explode('@',$group_email)[0]] = $group_nid;
+    $mail_arr = explode('@',$group_email);
+    if (sizeof($mail_arr) > 0) {
+      $group_hash = '#'.$mail_arr[0];
+      $group_keywords[$group_hash] = $group_nid;
+    }
+
   }
 
   $arr = explode(' ',trim($text));
@@ -682,7 +687,7 @@ function _vojo_notify_saved_blog($uid, $number, $nid) {
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
   $blog_url = url('node/'. $nid, array('absolute' => True));
   $result1 = _vojo_send_sms($number, t('Thanks for the story, !name. You can find it online at !blog_url',
-				       array('!name'=>$user->name, '!blog_url'=>$blog_url), $user_language)); 
+				       array('!name'=>$user->name,'!blog_url'=>$blog_url), $user_language)); 
 }
 
 
