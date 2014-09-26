@@ -603,7 +603,7 @@ function _vojo_post_sms_story($number, $text, $nid, $anon = False) {
   node_save($node);
 
   $result = db_query('INSERT INTO {og_ancestry} (nid, group_nid) values (%d, %d)', $node->nid, $nid);
-  _vojo_notify_saved_blog($uid, $number);
+  _vojo_notify_saved_blog($uid, $number, $node->nid);
   return $script;
 }
 
@@ -677,16 +677,16 @@ function _vojo_notify_new_user($uid, $number, $password) {
 
 
 
-function _vojo_notify_saved_blog($uid, $number) {
+function _vojo_notify_saved_blog($uid, $number, $nid) {
   $user = user_load($uid);
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
-  $blog_url = url('blog/'. $user->uid, array('absolute' => TRUE));
+  $blog_url = url('node/'. $nid, array('absolute' => True));
   $result1 = _vojo_send_sms($number, t('Thanks for the story, !name. You can find it online at !blog_url',
 				       array('!name'=>$user->name, '!blog_url'=>$blog_url), $user_language)); 
 }
 
 
-function vojo_save_blog ($nid, $fid, $uid) {
+function vojo_save_blog($nid, $fid, $uid) {
   global $user;
   
   // Log the user in
@@ -725,14 +725,17 @@ function _vojo_voipscript_hangup_callback($original_call) {
   $uid = $original_script->getVar('user_uid');
   $number = $original_script->getVar('caller_number');
   $password = $original_script->getVar('password');
-
   $blog_post_saved = $original_script->getVar('blog_post_saved');
   $auto_save_blog = $original_script->getVar('auto_save_blog');
   if($auto_save_blog) {
     vojo_save_blog($gid, $fid, $uid);
   } 
   if($auto_save_blog || $blog_post_saved) {
-    _vojo_notify_saved_blog($uid, $number);
+      $res = db_query("SELECT nid FROM {upload} where fid = %d", $fid);
+      while ($row = db_fetch_array($res)) {
+	$post_nid = $row['nid'];
+      }
+      _vojo_notify_saved_blog($uid, $number, $post_nid);
   }
 }
 
