@@ -668,11 +668,11 @@ function _vojo_notify_new_user($uid, $number, $password) {
   // send them an sms
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
   // TODO: centrally locate this text in sms_registration?
-  $result1 = _vojo_send_sms($number, t('Welcome! Your username is !name, password is !pass.  You can login to !server_url on the web with this info.',
+  $result1 = _vojo_send_sms($number, t('Welcome! Your username is !name, password is !pass. You can login to !server_url on the web with this info.',
     array('!name'=>$user->name, '!pass'=>$password, '!server_url'=>variable_get('site_name', 'vojo.co')), $user_language ) ); 
-  
+  $sms_reg = variable_get('voipcall_text_number', sms_registration_get_address());
   $result2 = _vojo_send_sms($number, t("To change your username, just text: name yourusername to !sms_reg",
-    array('!sms_reg'=>variable_get('voipcall_text_number', sms_registration_get_address())), $user_language ) ); 
+				       array('!sms_reg'=>$sms_reg), $user_language)); 
 }
 
 
