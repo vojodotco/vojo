@@ -419,8 +419,9 @@ function _vojo_create_user_script($number, $groupNid, $simple = false){
   if (!$simple) {
     $script->addSay("^v('We made a new user account for you. We have sent you an sms with your user name and password',null,null,%vojo_voice)");
   }
-  $script->addSet('is_new_user', True);
+
   $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
+  _vojo_notify_new_user($user->uid, $number, $password);
   return $script;
 }
 
@@ -510,6 +511,7 @@ function _vojo_get_play_extension_script($eid, $options=array()) {
   return $script;
 }
 
+
 /*
  * Receive a text message.  Update the user's name if they have an existing account.
  */
@@ -527,10 +529,81 @@ function _vojo_default_incoming_text() {
  */
 function _vojo_route_inbound_text($number, $text) {
   $script = new VoipScript('vojo_route_inboud_text');
-  $arr = explode(' ',trim($text));
-  if (($arr[0] == 'name' || $arr[0] == 'nombre') && count($arr) > 1) {
-    $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
+  
+  $group_keywords = array();
+  $rs = db_query("SELECT field_yeta_value,nid FROM {content_type_group};");  
+  while ($row = db_fetch_array($rs)) {
+    $group_email = $row['field_yeta_value'];
+    $group_nid = $row['nid'];
+    $group_keywords['#'.explode('@',$group_email)[0]] = $group_nid;
   }
+
+  $arr = explode(' ',trim($text));
+  
+  // check for anon flag
+  $anon = False;
+  if (strtolower($arr[0]) == 'anon') {
+    $anon = True;
+    array_shift($arr);
+  }
+
+  $keyword = strtolower($arr[0]);
+  $uid = sms_user_get_uid($number);
+  if (($keyword == 'name' || $keyword == 'nombre') && count($arr) > 1) {
+    $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
+  } elseif (array_key_exists($keyword, $group_keywords)){
+    array_shift($arr);
+    $post_text = implode(' ', $arr);
+    $group_nid = $group_keywords[$keyword];
+    $script->addGosub('vojo_post_sms_story', array('number' => $number, 
+						   'text' => $post_text, 
+						   'nid' => $group_nid, 
+						   'anon' => $anon));
+  }elseif($uid) {
+    $post_text = implode(' ', $arr);
+    $user = user_load($uid);
+    $user_group_nid = array_keys($user->og_groups)[0];
+    $script->addGosub('vojo_post_sms_story', array('number' => $number, 
+						   'text' => $post_text, 
+						   'nid' => $user_group_nid, 
+						   'anon' => $anon));
+  }
+  return $script;
+}
+
+
+/*
+ * Post sms as story for user with specified number,
+ * if no number exits, creates account and post
+ */
+function _vojo_post_sms_story($number, $text, $nid, $anon = False) {
+
+  $script = new VoipScript('vojo_post_sms_story');
+  $uid = sms_user_get_uid($number);
+  if ($anon) {
+    $uid = vojo_og_anon_get_user_id();
+  }
+  elseif (!$uid) {
+    $script->addGosub('vojo_create_user', array('number' => '%caller_number','nid' => $nid, 'simple'=> True));
+    //_vojo_notify_new_user(68, $number, 'passtest');
+    return $script;
+
+  }
+  
+  $user = user_load($uid);
+  $node = new stdClass();
+  $node->pass = NULL;
+  $node->type = 'blog';
+  $node->uid = $uid;
+  $node->name = $user->name;
+  $node->body = $text;
+  $node->title = truncate_utf8(trim($node->body), 29, True);
+  node_validate($node);
+  $node = node_submit($node);
+  node_save($node);
+
+  $result = db_query('INSERT INTO {og_ancestry} (nid, group_nid) values (%d, %d)', $node->nid, $nid);
+  _vojo_notify_saved_blog($uid, $number);
   return $script;
 }
 
@@ -652,15 +725,12 @@ function _vojo_voipscript_hangup_callback($original_call) {
   $uid = $original_script->getVar('user_uid');
   $number = $original_script->getVar('caller_number');
   $password = $original_script->getVar('password');
-  $is_new_user = $original_script->getVar('is_new_user');
+
   $blog_post_saved = $original_script->getVar('blog_post_saved');
   $auto_save_blog = $original_script->getVar('auto_save_blog');
   if($auto_save_blog) {
     vojo_save_blog($gid, $fid, $uid);
   } 
-  if($is_new_user) {
-    _vojo_notify_new_user($uid, $number, $password);
-  }
   if($auto_save_blog || $blog_post_saved) {
     _vojo_notify_saved_blog($uid, $number);
   }

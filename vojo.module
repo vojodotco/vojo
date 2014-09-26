@@ -233,6 +233,10 @@ function vojo_voipscript_load_script($script_name, $params = NULL) {
         module_load_include('inc', 'vojo', 'vojo.script');
         return _vojo_route_inbound_text($params['number'], $params['text']);
     }
+     elseif ($script_name == 'vojo_post_sms_story') {
+        module_load_include('inc', 'vojo', 'vojo.script');
+        return _vojo_post_sms_story($params['number'], $params['text'], $params['nid'], $params['anon']);
+    }
 
 }
 
@@ -256,7 +260,8 @@ function vojo_voipscript_get_script_names() {
     'vojo_default_incoming_text',
     'vojo_update_username',
     'vojo_hear_group_stories',
-    'vojo_route_inboud_text'
+    'vojo_route_inboud_text',
+    'vojo_post_sms_story'
   );
 }
 
