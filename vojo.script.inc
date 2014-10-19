@@ -201,9 +201,14 @@ function _vojo_group_script($node) {
 }
 
 
+/**
+ * Script to hear stories for a specific group
+ *
+ * $param['nid'] = Node ID.
+ */
 function _vojo_hear_group_stories_script($nid) {
   $script = new VoipScript('vojo_hear_group_stories');
-  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.nid in (select nid from og_ancestry where group_nid=%d and status=1) ORDER BY r.weight,f.fid desc;', $nid);
+  $result = db_query('SELECT * FROM {files} f INNER JOIN {upload} r ON f.fid = r.fid WHERE r.nid in (select nid from {og_ancestry} where group_nid=%d and status=1) ORDER BY r.weight,f.fid desc;', $nid);
   while ($file = db_fetch_array($result)) {
      $extension = substr($file['filepath'], -3);
      if( in_array($extension, array('wav','mp3')) ) {
@@ -319,6 +324,9 @@ function _vojo_record_blog_script($node, $simple = false) {
   // setting hangup_callback to make sure story is saved even if user hangs
   // up without pressing pound (#) see user story #1683
   $script->addLabel('start_recording');
+  // auto_save_blog flag is checked on hangup, if set the recorded user story
+  // wii be saved for the corresponding group. This is meant for users that call
+  // and record a voice message but quickly hang up before reaching the "save this recording" menu
   $script->addSet('auto_save_blog', True);
   $script->addSet('voipscript_hangup_callback', '_vojo_voipscript_hangup_callback');
   $prompt = $simple ? '' : 'Start recording your message after the tone. Press the pound key to stop recording.';
@@ -459,6 +467,9 @@ function _vojo_save_blog_script($nid, $fid, $uid) {
   vojo_save_blog($nid, $fid, $uid);
   $script = new VoipScript('vojo_save_blog');
   $script->addSay("^v('Story saved.',null,null,%vojo_voice)");
+  // blog_post_saved flag is used on hangup to indicate the user
+  // has manually saved a new recording. in those cases sms with published story
+  // is sent to the corrsponding user via sms
   $script->addSet('blog_post_saved', True);
   return $script;
 }
@@ -530,6 +541,7 @@ function _vojo_default_incoming_text() {
 function _vojo_route_inbound_text($number, $text) {
   $script = new VoipScript('vojo_route_inboud_text');
   
+  // keywords for groups are '#'+the username of the group posting address
   $group_keywords = array();
   $rs = db_query("SELECT field_yeta_value,nid FROM {content_type_group};");  
   while ($row = db_fetch_array($rs)) {
@@ -555,8 +567,10 @@ function _vojo_route_inbound_text($number, $text) {
   $keyword = strtolower($arr[0]);
   $uid = sms_user_get_uid($number);
   if (($keyword == 'name' || $keyword == 'nombre') && count($arr) > 1) {
+    //change username
     $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
   } elseif (array_key_exists($keyword, $group_keywords)){
+    //look for group keywords
     array_shift($arr);
     $post_text = implode(' ', $arr);
     $group_nid = $group_keywords[$keyword];
@@ -565,6 +579,8 @@ function _vojo_route_inbound_text($number, $text) {
 						   'nid' => $group_nid, 
 						   'anon' => $anon));
   }elseif($uid) {
+    // previously registered users can post to the group they registered without requiring
+    // group keyword
     $post_text = implode(' ', $arr);
     $user = user_load($uid);
     $user_group_nids = array_keys($user->og_groups);
@@ -672,6 +688,15 @@ function _vojo_update_username($number, $text) {
   return $script;
 }
 
+
+/**
+ * VoIP Script used to send sms messages with username and password information
+ * to new users
+ *
+ * @param (int) (uid) new user id
+ * @param (int) (number) new user's registered phone number
+ * @param (string) (password) new user's generated password
+ */
 function _vojo_notify_new_user($uid, $number, $password) {
   $user = user_load($uid);
   // send them an sms
@@ -685,7 +710,14 @@ function _vojo_notify_new_user($uid, $number, $password) {
 }
 
 
-
+/**
+ * VoIP Script used to send sms messages with url information of new user posts
+ *
+ *
+ * @param (int) (uid) new user id
+ * @param (int) (number) new user's registered phone number
+ * @param (int) (nid) node id for new blog post
+ */
 function _vojo_notify_saved_blog($uid, $number, $nid) {
   $user = user_load($uid);
   $user_language = sms_registration_get_user_language($user);  // switch to the correct language for SMSs
@@ -694,7 +726,13 @@ function _vojo_notify_saved_blog($uid, $number, $nid) {
 				       array('!name'=>$user->name,'!blog_url'=>$blog_url), $user_language)); 
 }
 
-
+/**
+ * VoIP Script used to assign a new user recording to a new blog post
+ *
+ * @param (int) (nid) group node id
+ * @param (int) (fid) file id, from files table
+ * @param (uid) (uid) user id
+ */
 function vojo_save_blog($nid, $fid, $uid) {
   global $user;
   
