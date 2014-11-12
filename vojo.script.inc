@@ -403,13 +403,14 @@ function _vojo_create_user_script($number, $groupNid, $simple = false){
   // create the user
   $newUser = FALSE;
   $password = strtolower(user_password(6));
+  $group = node_load($groupNid); 
   while (!$newUser) {
     $newUser = user_save(NULL, array(
       'name' => variable_get('sms_registration_username', 'Drupal-') . mt_rand(1, db_result(db_query('SELECT MAX(uid) FROM {users}')) * 10),
       'pass' => $password,
       'roles' => ($role = variable_get('sms_registration_role', NULL)) ? array($role => 1) : NULL,
       'status' => 1,
-      'language' => $node->language,
+      'language' => $group->language,
       'sms_user' => array('number' => sms_formatter($number), 'status' => SMS_USER_PENDING),
       'access' => time(),
     ));
