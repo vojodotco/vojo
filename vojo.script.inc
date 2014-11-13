@@ -567,7 +567,7 @@ function _vojo_route_inbound_text($number, $text) {
 
   $keyword = strtolower($arr[0]);
   $uid = sms_user_get_uid($number);
-  if (($keyword == 'name' || $keyword == 'nombre') && count($arr) > 1) {
+  if (($keyword == 'name' || $keyword == 'nombre' || $keyword == 'nome') && count($arr) > 1) {
     //change username
     $script->addGosub('vojo_update_username', array('number' => $number, 'text' => $arr[1]));
   } elseif (array_key_exists($keyword, $group_keywords)){
