@@ -242,7 +242,7 @@ function _vojo_simple_group_script($node) {
   $script->addLabel('begin');
   
   // Change to group's language if no language is already set
-  $script->addSet('vojo_language', '');
+  //$script->addSet('vojo_language', '');
   $script->addSet('vojo_voice', vojo_voice_id_for_language());
   $script->addGotoIf('group_name', "^%vojo_language != ''");
   if (!empty($node->language)) {
