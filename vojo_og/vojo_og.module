@@ -114,7 +114,7 @@ function _set_custom_theme($theme_name){
  * of groups isn't showing up for anonymous users, so I'm forcing it to be added to the form here.
  */
 function vojo_form_alter(&$form, &$form_state, $form_id) {
-  watchdog('mariorz11', 'vojo_og: form_alter');
+
   // Add audience selection to node forms
   if (isset($form['#node']) && $form_id == $form['#node']->type .'_node_form') {
     $node = $form['#node'];
@@ -156,7 +156,7 @@ function vojo_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 function vojo_form_group_node_form_alter($form, &$form_state) {
-  watchdog('mariorz11', 'vojo_og: group_node_form_alter');
+
   $form['body_field']['body']['#description'] = t("Write a short description of your group for your about page.");
   // Add after build function. 
   $form['#after_build'][] = 'vojo_form_group_node_form_after_build';
@@ -164,7 +164,7 @@ function vojo_form_group_node_form_alter($form, &$form_state) {
   $form['#validate'][] = 'vojo_form_group_node_form_alter_validate';
 }
 function vojo_form_group_node_form_alter_validate($form, &$form_state) {
-  watchdog('mariorz11', 'vojo_og: node_form_alter_validate');
+
   $nid = $form['nid']['#value'];
   $desiredEmail = $form_state['values']['field_yeta'][0]['value'];
   // verify email address ends with @vojo.co
@@ -190,7 +190,7 @@ function vojo_form_group_node_form_after_build($form, &$form_state) {
  * Should this delegate out to mail2og_find_email_address($email) instead?
  */
 function _vojo_group_email_exists($email,$ignoreThisNid){
-   watchdog('mariorz11', 'vojo_og: group_email_exists');
+
   $result = db_query('SELECT count(field_yeta_value) as existing FROM {content_type_group} ctg WHERE ctg.field_yeta_value = "%s" and ctg.nid!=%d', 
     $email,$ignoreThisNid);
   $info = db_fetch_array($result);
