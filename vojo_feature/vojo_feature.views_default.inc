@@ -1220,7 +1220,7 @@ if( property_exists($node, \'media_mover\') ) {
     foreach($mm_config as $mm_item){
       $pathinfo = pathinfo($mm_item[\'complete_file\']);
       if(array_key_exists(\'extension\',$pathinfo)){
-        if($pathinfo[\'extension\']==\'mp3\'){
+        if($pathinfo[\'extension\']==\'mp3\' || $pathinfo[\'extension\']==\'ogg\')){
           $has_audio = true;
         }
       }

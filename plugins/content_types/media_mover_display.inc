@@ -28,14 +28,14 @@ function vojo_media_mover_display_content_type_render($subtype, $conf, $panel_ar
     foreach ($node->media_mover as $cid) {
       foreach ($cid as $mmfid) {
         $harvest_files[$mmfid['harvest_file']] = true;
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav' ) {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.mp3' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.wav'  ||
+	   strtolower(substr($mmfid['complete_file'], -4, 4)) == 'ogg') {
           if( !array_key_exists($mmfid['fid'], $playlist) ){
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
             $playlist[$mmfid['fid']]['image'] = $base_url . '/' . drupal_get_path('theme', 'vojo_generic') . '/images/vojo/audio_icon_large.png';
           }
         }
-        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.flv' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.m4v' || 
-            strtolower(substr($mmfid['complete_file'], -4, 4)) == '.ogg') {
+        if (strtolower(substr($mmfid['complete_file'], -4, 4)) == '.flv' || strtolower(substr($mmfid['complete_file'], -4, 4)) == '.m4v') {
           if( !array_key_exists($mmfid['fid'], $playlist) ){
             $playlist[$mmfid['fid']] = array('url' => file_create_url($mmfid['complete_file']));
             $playlist[$mmfid['fid']]['image'] = base_path() . $node->field_image[0]['filepath'];
