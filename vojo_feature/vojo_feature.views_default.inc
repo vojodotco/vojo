@@ -1220,13 +1220,14 @@ if( property_exists($node, \'media_mover\') ) {
     foreach($mm_config as $mm_item){
       $pathinfo = pathinfo($mm_item[\'complete_file\']);
       if(array_key_exists(\'extension\',$pathinfo)){
-        if($pathinfo[\'extension\']==\'mp3\' || $pathinfo[\'extension\']==\'ogg\')){
+        if($pathinfo[\'extension\']==\'mp3\' || $pathinfo[\'extension\']==\'ogg\'){
           $has_audio = true;
         }
       }
     }
   }
 }
+$has_audio = TRUE;
 if($has_audio) {
   print \'<a href="\' . url(\'node/\' . $node->nid) . \'" class="vojo-story-has-audio">\'.t(\'Has audio\')."</a>";
 }
