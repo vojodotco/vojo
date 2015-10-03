@@ -1227,7 +1227,6 @@ if( property_exists($node, \'media_mover\') ) {
     }
   }
 }
-$has_audio = TRUE;
 if($has_audio) {
   print \'<a href="\' . url(\'node/\' . $node->nid) . \'" class="vojo-story-has-audio">\'.t(\'Has audio\')."</a>";
 }
